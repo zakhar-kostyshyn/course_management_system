@@ -13,6 +13,17 @@ services:
     ports:
       - ${POSTGRES_PORT}:5432
 
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cms_app
+    depends_on:
+      - db
+    ports:
+      - ${SPRING_SERVER_PORT}:8881
+
+
   liquibase:
     image: liquibase/liquibase
     container_name: cms_liquibase

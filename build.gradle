@@ -2,6 +2,8 @@ plugins {
     id 'org.springframework.boot' version '2.6.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+
+    id "co.uzzu.dotenv.gradle" version "1.2.0"
 }
 
 group = 'com.sombra'
@@ -28,6 +30,28 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 }
+
+task forExample() {
+    doLast {
+        exec {
+            environment 'test', 'test'
+        }
+    }
+}
+
+
+
+tasks.register("setEnv") {
+//    environment = env.allVariables
+    println env.POSTGRES_DB.value
+    println env.POSTGRES_USER.value
+    println env.POSTGRES_PASSWORD.value
+    println env.POSTGRES_PORT.value
+    println env.SPRING_SERVER_PORT.value
+    println env.DB_HOST.value
+    environment 'test', 'test'
+}
+
 
 tasks.named('test') {
     useJUnitPlatform()
