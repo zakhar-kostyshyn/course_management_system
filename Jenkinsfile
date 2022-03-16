@@ -1,9 +1,14 @@
 pipeline {
     agent { dockerfile true }
     stages {
-        stage('Example') {
+        stage('Test') {
             steps {
-                echo 'Hello world'
+                sh './gradlew test'
+            }
+            post {
+                always {
+                    junit '**/build/test-results/test/TEST-*.xml'
+                }
             }
         }
     }
