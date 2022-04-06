@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://192.168.192.2:54321/cms_db
+    url: jdbc:postgresql://cms_db:5432/cms_db
     username: root
     password: root
     driverClassName: org.postgresql.Driver
@@ -10,4 +10,4 @@ spring:
     database: postgresql
     show-sql: true
 server:
-  port: 8881
+  port: 8080
