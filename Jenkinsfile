@@ -8,9 +8,7 @@ pipeline {
     stages {
         stage('Run tests') {
             agent {
-                docker {
-                    image: 'gradle:6.7-jdk11'
-                }
+                docker { image 'gradle:6.7-jdk11' }
             }
             steps {
                 sh './gradlew test'
