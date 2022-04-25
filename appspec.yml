@@ -1,0 +1,17 @@
+version: 0.0
+os: linux
+files:
+  - source: /index.html
+    destination: /var/www/html/
+hooks:
+  BeforeInstall:
+    - location: start-db-container.sh
+      timeout: 1000
+      runas: root
+    - location: start-app-container.sh
+      timeout: 1000
+      runas: root
+  ApplicationStop:
+    - location: stop-db-and-containers.sh
+      timeout: 300
+      runas: root

@@ -22,7 +22,7 @@ class TestController {
 
     @GetMapping("/test")
     public ResponseEntity<String> test() {
-        return ResponseEntity.ok("It is working");
+        return ResponseEntity.ok("It is working. Pipeline made a deploy!!");
     }
 
 }
