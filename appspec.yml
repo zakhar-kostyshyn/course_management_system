@@ -5,13 +5,10 @@ files:
     destination: /var/www/html/
 hooks:
   BeforeInstall:
-    - location: start-db-container.sh
-      timeout: 1000
-      runas: root
-    - location: start-app-container.sh
+    - location: start-containers.sh
       timeout: 1000
       runas: root
   ApplicationStop:
-    - location: stop-db-and-containers.sh
+    - location: stop-containers.sh
       timeout: 300
       runas: root

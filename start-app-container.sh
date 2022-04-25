@@ -1,1 +1,0 @@
-docker run --name cms_app -p 8882:8080 zakhar0kostyshyn/cms_app

@@ -1,1 +1,0 @@
-docker stop cms_app cms_db
