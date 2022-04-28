@@ -1,3 +1,4 @@
 #!/bin/bash
 docker ps
-docker-compose up
+cat docker-compose.yml
+docker-compose -f docker-compose.yml up
