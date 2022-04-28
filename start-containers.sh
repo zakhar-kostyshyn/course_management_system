@@ -1,5 +1,3 @@
 #!/bin/bash
-docker ps
-ls
-cat docker-compose.yml
-docker-compose -f docker-compose.yml up
+cat //home/king-haki/app/docker-compose.yml
+docker-compose -f //home/king-haki/app/docker-compose.yml up -d
