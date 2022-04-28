@@ -14,10 +14,7 @@ services:
       - "5432:5432"
 
   app:
-#    image: zakhar0kostyshyn/cms_app
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: zakhar0kostyshyn/cms_app
     container_name: cms_app
     depends_on:
       - db
