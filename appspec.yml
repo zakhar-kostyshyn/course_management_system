@@ -1,8 +1,12 @@
 version: 0.0
 os: linux
 files:
-  - source: /index.html
-    destination: /var/www/html/
+  - source: /
+    destination: /home/king-haki/app
+permissions:
+  - object: /home/king-haki/app
+    owner: root
+    group: root
 hooks:
   BeforeInstall:
     - location: start-containers.sh
