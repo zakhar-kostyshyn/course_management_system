@@ -17,8 +17,6 @@ hooks:
       runas: root
     - location: aws/after-install-start-gradle-spring-app.sh
       runas: root
-    - location: aws/after-install-set-execute-permissions-for-jar.sh
-      runas: root
   ApplicationStart:
     - location: aws/application-start.sh
       runas: root
