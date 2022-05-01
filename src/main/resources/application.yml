@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://cms_db:5432/cms_db
+    url: jdbc:postgresql://localhost:5432/cms_db
     username: root
     password: root
     driverClassName: org.postgresql.Driver
