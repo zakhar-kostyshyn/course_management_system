@@ -1,2 +1,2 @@
 #!/bin/bash
-./app/courseManagementSystem/gradlew bootRun
+cd app/courseManagementSystem && ./gradlew bootRun
