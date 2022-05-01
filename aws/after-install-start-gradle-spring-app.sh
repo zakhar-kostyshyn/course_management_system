@@ -1,2 +1,2 @@
 #!/bin/bash
-../gradlew clean build
+./app/courseManagementSystem/gradlew clean build
