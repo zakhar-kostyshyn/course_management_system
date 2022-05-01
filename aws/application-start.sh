@@ -1,2 +1,2 @@
 #!/bin/bash
-cd app/courseManagementSystem && ./gradlew bootRun
+cd app/courseManagementSystem && nohup ./gradlew bootRun
