@@ -1,2 +1,2 @@
 #!/bin/bash
-cd .. && ./gradlew clean build
+./gradlew clean build
