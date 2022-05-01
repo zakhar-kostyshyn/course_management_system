@@ -2,17 +2,26 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/king-haki/app
+    destination: /app/courseManagementSystem
+file_exists_behavior: OVERWRITE
 permissions:
-  - object: /home/king-haki/app
+  - object: /app/courseManagementSystem
     owner: root
     group: root
 hooks:
   BeforeInstall:
-    - location: start-containers.sh
-      timeout: 1000
+    - location: aws/before-install-pull-postgres.sh
+      runas: root
+  AfterInstall:
+    - location: aws/after-install-start-db-container.sh
+      runas: root
+    - location: aws/after-install-start-gradle-spring-app.sh
+      runas: root
+    - location: aws/after-install-set-execute-permissions-for-jar.sh
+      runas: root
+  ApplicationStart:
+    - location: aws/application-start.sh
       runas: root
   ApplicationStop:
-    - location: stop-containers.sh
-      timeout: 300
+    - location: aws/application-stop-remove-docker-container.sh
       runas: root
