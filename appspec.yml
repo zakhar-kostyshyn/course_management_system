@@ -1,25 +1,21 @@
 version: 0.0
 os: linux
+
 files:
   - source: /
-    destination: /app/courseManagementSystem
+    destination: /app/course_management_system
 file_exists_behavior: OVERWRITE
-permissions:
-  - object: /app/courseManagementSystem
-    owner: root
-    group: root
+
 hooks:
   BeforeInstall:
-    - location: aws/before-install-pull-postgres.sh
+    - location: server_clear.sh
       runas: root
   AfterInstall:
-    - location: aws/after-install-start-db-container.sh
-      runas: root
-    - location: aws/after-install-start-gradle-spring-app.sh
+    - location: fix_privileges.sh
       runas: root
   ApplicationStart:
-    - location: aws/application-start.sh
+    - location: server_start.sh
       runas: root
   ApplicationStop:
-    - location: aws/application-stop-remove-docker-container.sh
+    - location: server_stop.sh
       runas: root
