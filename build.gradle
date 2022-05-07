@@ -29,30 +29,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
-}
 
-task forExample() {
-    doLast {
-        exec {
-            environment 'test', 'test'
-        }
-    }
-}
+    implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 
-
-
-tasks.register("setEnv") {
-//    environment = env.allVariables
-    println env.POSTGRES_DB.value
-    println env.POSTGRES_USER.value
-    println env.POSTGRES_PASSWORD.value
-    println env.POSTGRES_PORT.value
-    println env.SPRING_SERVER_PORT.value
-    println env.DB_HOST.value
-    environment 'test', 'test'
-}
-
-
-tasks.named('test') {
-    useJUnitPlatform()
 }
