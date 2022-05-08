@@ -1,5 +1,6 @@
-package com.sombra.promotion.domain;
+package com.sombra.promotion.domain.homework;
 
+import com.sombra.promotion.domain.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 

@@ -1,5 +1,6 @@
-package com.sombra.promotion.domain;
+package com.sombra.promotion.domain.feedback;
 
+import com.sombra.promotion.domain.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -12,13 +13,11 @@ import javax.validation.constraints.NotNull;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "lesson")
-public class Lesson extends BaseEntity {
+@Table(name = "feedback")
+public class Feedback extends BaseEntity {
 
     @NotNull
-    @Column(name = "name", columnDefinition = "VARCHAR(255)", unique = true, nullable = false)
-    private String name;
-
-
+    @Column(name = "feedback", columnDefinition = "VARCHAR(255)", unique = true, nullable = false)
+    private String feedback;
 
 }

@@ -1,5 +1,6 @@
-package com.sombra.promotion.domain;
+package com.sombra.promotion.domain.role;
 
+import com.sombra.promotion.domain.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "role")
-public class Role extends BaseEntity  {
+public class Role extends BaseEntity {
 
     @NotNull
     @Enumerated(EnumType.STRING)
