@@ -3,15 +3,19 @@ package com.sombra.promotion.domain;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Homework {
+@Table(name = "homework")
+public class Homework extends BaseEntity {
 
-    @Id
-    int id;
+    @NotNull
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "homework", columnDefinition = "CLOB", nullable = false)
+    private String homework;
 
 }
