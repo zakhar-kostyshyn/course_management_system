@@ -1,0 +1,18 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="ee506d8b-9b40-4f66-9e93-e83cca624103" author="Zakhar Kostyshyn">
+        <preConditions>
+            <sqlCheck expectedResult="0">
+                select count(*)
+                from "user" u
+                         left join user_role ur on u.id = ur.user_id
+            </sqlCheck>
+        </preConditions>
+        <sqlFile path="sql/predefine_admin.sql" relativeToChangelogFile="true" splitStatements="false"/>
+    </changeSet>
+
+</databaseChangeLog>

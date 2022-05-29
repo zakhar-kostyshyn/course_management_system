@@ -4,7 +4,11 @@ plugins {
     id 'java'
 
     id "co.uzzu.dotenv.gradle" version "1.2.0"
+    id 'org.liquibase.gradle' version '2.1.0'
+    id 'nu.studer.jooq' version '6.0.1'
+
 }
+
 
 group = 'com.sombra'
 version = '0.0.1-SNAPSHOT'
@@ -21,15 +25,75 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-jooq'
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.8'
+
+    compileOnly 'org.liquibase:liquibase-groovy-dsl:3.0.2'
     compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'org.postgresql:postgresql'
+
     annotationProcessor 'org.projectlombok:lombok'
+
+    runtimeOnly 'org.postgresql:postgresql'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
 
-    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.8'
+    liquibaseRuntime 'org.liquibase:liquibase-core:4.10.0'
+    liquibaseRuntime 'org.liquibase:liquibase-groovy-dsl:3.0.2'
+    liquibaseRuntime 'info.picocli:picocli:4.6.3'
+    liquibaseRuntime 'org.postgresql:postgresql'
 
+    jooqGenerator 'org.postgresql:postgresql:42.3.2'
 }
+
+jooq {
+    configurations {
+        main {
+            generationTool {
+                jdbc {
+                    driver = 'org.postgresql.Driver'
+                    url = 'jdbc:postgresql://localhost:5432/cms_db'
+                    user = 'root'
+                    password = 'root'
+                }
+                generator {
+                    name = 'org.jooq.codegen.DefaultGenerator'
+                    database {
+                        name = 'org.jooq.meta.postgres.PostgresDatabase'
+                        inputSchema = 'public'
+                    }
+                    generate {
+                        deprecated = false
+                        records = true
+                        immutablePojos = true
+                        fluentSetters = true
+                    }
+                    target {
+                        packageName = 'com.sombra.promotion'
+                        directory = 'build/generated-src/jooq/main'
+                    }
+                    strategy.name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+                }
+            }
+        }
+    }
+}
+
+liquibase {
+    activities {
+        main {
+            changeLogFile 'liquibase/main_changelog.xml'
+            url 'jdbc:postgresql://localhost:5432/cms_db'
+            username 'root'
+            password 'root'
+        }
+    }
+}
+
+update {
+    environment "root_admin_username", "root"
+    environment "root_admin_password", "root"
+}
+
+build.dependsOn update

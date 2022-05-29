@@ -1,0 +1,32 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="f7a83ae4-884c-4e3f-8be7-4741cfd364cf" author="Zakhar Kostyshyn">
+        <sql>
+            CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+        </sql>
+    </changeSet>
+
+    <changeSet id="b962dd8f-f434-4d88-8d56-d4e884316581" author="Zakhar Kostyshyn">
+        <preConditions>
+            <not>
+                <tableExists tableName="user"/>
+                <tableExists tableName="role"/>
+                <tableExists tableName="course"/>
+                <tableExists tableName="lesson"/>
+                <tableExists tableName="homework"/>
+                <tableExists tableName="mark"/>
+                <tableExists tableName="feedback"/>
+                <tableExists tableName="student_course"/>
+                <tableExists tableName="instructor_course"/>
+                <tableExists tableName="user_role"/>
+            </not>
+        </preConditions>
+        <sqlFile path="sql/base.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    
+</databaseChangeLog>
