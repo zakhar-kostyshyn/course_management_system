@@ -7,6 +7,6 @@ import lombok.NonNull;
 public class CourseSubscriptionRequest {
 
     @NonNull private final String course;
-    @NonNull private final String user;
+    @NonNull private final String student;
 
 }

@@ -4,12 +4,13 @@ import lombok.Data;
 import lombok.NonNull;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 public class InstructorCourseResponse {
 
-    @NonNull private final Integer id;
+    @NonNull private final UUID id;
     @NonNull private final List<InstructorCourseStudentResponse> students;
-    @NonNull private final String name;
+    @NonNull private final String courseName;
 
 }

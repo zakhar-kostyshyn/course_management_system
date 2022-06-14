@@ -9,5 +9,6 @@ public class GiveFinalFeedbackRequest {
     @NonNull private final String feedback;
     @NonNull private final String course;
     @NonNull private final String student;
+    @NonNull private final String instructor;
 
 }

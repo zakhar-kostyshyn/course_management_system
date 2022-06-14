@@ -9,7 +9,6 @@ import java.util.List;
 public class StudentCourseResponse {
 
     @NonNull private final String course;
-    @NonNull private final String student;
     @NonNull private final List<StudentCourseLessonResponse> lessons;
 
 }
