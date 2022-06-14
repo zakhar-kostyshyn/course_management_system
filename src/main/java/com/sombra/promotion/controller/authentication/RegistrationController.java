@@ -1,7 +1,7 @@
 package com.sombra.promotion.controller.authentication;
 
 import com.sombra.promotion.controller.authentication.request.RegistrationUserRequest;
-import com.sombra.promotion.controller.authentication.response.AuthenticationResponse;
+import com.sombra.promotion.service.UserRegistrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,11 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class RegistrationController {
 
+    private final UserRegistrationService userRegistrationService;
+
     @PostMapping
-    public ResponseEntity<AuthenticationResponse> register(
+    public ResponseEntity<String> register(
             @RequestBody RegistrationUserRequest request
     ) {
-
+        userRegistrationService.register(request);
+        return ResponseEntity.ok("Created");
     }
 
 }
