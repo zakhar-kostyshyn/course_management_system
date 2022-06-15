@@ -27,6 +27,7 @@ import static com.sombra.promotion.tables.Role.ROLE;
 import static com.sombra.promotion.tables.StudentCourse.STUDENT_COURSE;
 import static com.sombra.promotion.tables.User.USER;
 import static com.sombra.promotion.tables.UserRole.USER_ROLE;
+import static java.util.Objects.requireNonNull;
 
 @Repository
 @RequiredArgsConstructor
@@ -42,11 +43,12 @@ public class DomainRepository {
             RoleEnum roleEnum
     ) {
         UUID createdUserID =
-                ctx.insertInto(USER, USER.USERNAME, USER.PASSWORD, USER.SALT)
-                        .values(username, hashedPassword, salt)
-                        .returningResult(USER.ID)
-                        .fetchOne()
-                        .value1();
+                requireNonNull(
+                        ctx.insertInto(USER, USER.USERNAME, USER.PASSWORD, USER.SALT)
+                                .values(username, hashedPassword, salt)
+                                .returningResult(USER.ID)
+                                .fetchOne()
+                ).value1();
 
         UUID idByRoleType = selectRoleIDByRoleType(roleEnum);
         ctx.insertInto(USER_ROLE, USER_ROLE.USER_ID, USER_ROLE.ROLE_ID)
@@ -77,29 +79,29 @@ public class DomainRepository {
     }
 
     public UUID selectUserIdByUsername(String username) {
-        return ctx.select(USER.ID)
+        return requireNonNull(ctx.select(USER.ID)
                 .from(USER)
                 .where(USER.USERNAME.eq(username))
                 .fetchOne()
-                .component1();
+        ).component1();
     }
 
     public RoleEnum selectRoleTypeByUsername(String username) {
-        return ctx.select(ROLE.NAME)
+        return requireNonNull(ctx.select(ROLE.NAME)
                 .from(USER)
                 .join(USER_ROLE).on(USER.ID.eq(USER_ROLE.USER_ID))
                 .join(ROLE).on(ROLE.ID.eq(USER_ROLE.ROLE_ID))
                 .where(USER.USERNAME.eq(username))
                 .fetchOne()
-                .component1();
+        ).component1();
     }
 
     public UUID selectRoleIDByRoleType(RoleEnum roleEnum) {
-        return ctx.select(ROLE.ID)
+        return requireNonNull(ctx.select(ROLE.ID)
                 .from(ROLE)
                 .where(ROLE.NAME.eq(roleEnum))
                 .fetchOne()
-                .component1();
+        ).component1();
     }
 
     public void setInstructorForCourse(String instructorUsername, String courseName) {
@@ -111,11 +113,11 @@ public class DomainRepository {
     }
 
     public UUID selectCourseIdByName(String courseName) {
-        return ctx.select(COURSE.ID)
+        return requireNonNull(ctx.select(COURSE.ID)
                 .from(COURSE)
                 .where(COURSE.NAME.eq(courseName))
                 .fetchOne()
-                .component1();
+        ).component1();
     }
 
     public void setStudentForCourse(String studentUsername, String courseName) {
@@ -163,11 +165,11 @@ public class DomainRepository {
 
     public UUID selectLessonByNameAndCourse(String lessonName, String courseName) {
         UUID courseId = selectCourseIdByName(courseName);
-        return ctx.select(LESSON.ID)
+        return requireNonNull(ctx.select(LESSON.ID)
                 .from(LESSON)
                 .where(LESSON.COURSE_ID.eq(courseId).and(LESSON.NAME.eq(lessonName)))
                 .fetchOne()
-                .component1();
+        ).component1();
     }
 
 
