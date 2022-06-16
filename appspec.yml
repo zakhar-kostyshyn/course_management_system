@@ -1,14 +1,25 @@
 version: 0.0
 os: linux
+
 files:
-  - source: /index.html
-    destination: /var/www/html/
+  - source: /
+    destination: /app/course_management_system
+file_exists_behavior: OVERWRITE
+
 hooks:
   BeforeInstall:
-    - location: start-containers.sh
-      timeout: 1000
+    - location: server_clear.sh
+      runas: root
+    - location: server_pull_posgres_image.sh
+      runas: root
+  AfterInstall:
+    - location: fix_privileges.sh
+      runas: root
+  ApplicationStart:
+    - location: server_start.sh
+      runas: root
+    - location: server_start_db.sh
       runas: root
   ApplicationStop:
-    - location: stop-containers.sh
-      timeout: 300
+    - location: server_stop.sh
       runas: root

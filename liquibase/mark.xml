@@ -1,0 +1,25 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="6515a80b-70c9-4d51-adbc-18c9ed5639b0" author="Zakhar Kostyshyn">
+        <preConditions>
+            <tableExists tableName="mark"/>
+            <not>
+                <columnExists tableName="mark" columnName="instructor_id"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="mark">
+            <column name="instructor_id">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="mark" baseColumnNames="instructor_id"
+                                 constraintName="fk_mark_instructor"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -10,19 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CourseManagementSystemApplication {
 
     public static void main(String[] args) {
-        System.out.println("Started");
         SpringApplication.run(CourseManagementSystemApplication.class, args);
-    }
-
-}
-
-
-@RestController
-class TestController {
-
-    @GetMapping("/test")
-    public ResponseEntity<String> test() {
-        return ResponseEntity.ok("It is working. Pipeline made a deploy!!");
     }
 
 }

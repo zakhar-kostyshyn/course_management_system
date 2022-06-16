@@ -1,0 +1,16 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+        <changeSet id="452b8316-e625-4a1d-9dcf-5046a7561463" author="Zakhar Kostyshyn">
+            <preConditions>
+                <sqlCheck expectedResult="0">
+                    select count(*) from role
+                </sqlCheck>
+            </preConditions>
+            <sqlFile path="sql/predefine_roles.sql" relativeToChangelogFile="true"/>
+        </changeSet>
+
+</databaseChangeLog>
