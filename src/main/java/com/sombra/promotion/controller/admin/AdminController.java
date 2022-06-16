@@ -2,18 +2,21 @@ package com.sombra.promotion.controller.admin;
 
 import com.sombra.promotion.controller.admin.request.AssignInstructorForCourseRequest;
 import com.sombra.promotion.controller.admin.request.AssignRoleByAdminRequest;
+import com.sombra.promotion.service.AllUsersService;
 import com.sombra.promotion.service.AssignService;
+import com.sombra.promotion.tables.pojos.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 public class AdminController {
+
+    private final AllUsersService allUsersService;
 
     @RestController
     @RequestMapping("/assign")
@@ -38,6 +41,11 @@ public class AdminController {
             return ResponseEntity.ok("Success");
         }
 
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok(allUsersService.getAllUsers());
     }
 
 

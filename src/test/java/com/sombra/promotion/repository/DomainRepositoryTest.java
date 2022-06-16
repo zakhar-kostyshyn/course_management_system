@@ -17,6 +17,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,6 +33,8 @@ import static com.sombra.promotion.tables.Role.ROLE;
 import static com.sombra.promotion.tables.StudentCourse.STUDENT_COURSE;
 import static com.sombra.promotion.tables.User.USER;
 import static com.sombra.promotion.tables.UserRole.USER_ROLE;
+import static java.util.Arrays.stream;
+import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.range;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -720,7 +723,7 @@ class DomainRepositoryTest {
                     );
 
             // act
-            List<User> actual = repository.selectStudentByCourseId(givenCourseId);
+            List<User> actual = repository.selectStudentsByCourseId(givenCourseId);
 
             // verify
             assertThat(actual, allOf(
@@ -845,6 +848,132 @@ class DomainRepositoryTest {
 
             // verify
             assertThat(actual, is(givenCourseId));
+
+        }
+
+    }
+
+    @Nested
+    @DisplayName("Insert course")
+    class InsertCourse {
+
+        @Test
+        void must_insert_course() {
+
+            // given
+            String givenInstructor = "test-instructor";
+            String givenCourse = "test-course";
+
+            UUID givenInstructorId = ctx.insertInto(USER, USER.USERNAME, USER.PASSWORD, USER.SALT)
+                    .values(givenInstructor, "test-password", UUID.randomUUID())
+                    .returningResult(USER.ID)
+                    .fetchOne()
+                    .component1();
+
+            // act
+            repository.insertCourse(givenCourse, givenInstructor);
+
+            // fetch
+            Course actualCourse = ctx.select()
+                    .from(COURSE)
+                    .fetchAnyInto(Course.class);
+            InstructorCourse actualInstructorCourse = ctx.select()
+                    .from(INSTRUCTOR_COURSE)
+                    .fetchAnyInto(InstructorCourse.class);
+
+            // verify
+            assertThat(actualCourse, allOf(
+                    hasProperty("id", notNullValue()),
+                    hasProperty("name", is(givenCourse))
+            ));
+            assertThat(actualInstructorCourse, allOf(
+                    hasProperty("instructorId", is(givenInstructorId)),
+                    hasProperty("courseId", is(actualCourse.getId()))
+            ));
+
+        }
+
+    }
+
+    @Nested
+    @DisplayName("Insert Lesson")
+    class InsertLesson {
+
+        @Test
+        void must_insert_lesson() {
+
+            // given
+            String givenLesson = "test-lesson";
+            String givenCourse = "test-course";
+
+            UUID givenCourseId = ctx.insertInto(COURSE, COURSE.NAME)
+                    .values(givenCourse)
+                    .returning(COURSE.ID)
+                    .fetchAny()
+                    .component1();
+
+            // act
+            repository.insertLesson(givenLesson, givenCourse);
+
+            // fetch
+            Lesson actualLesson = ctx.select()
+                    .from(LESSON)
+                    .fetchAnyInto(Lesson.class);
+
+            // verify
+            assertThat(actualLesson, allOf(
+                    hasProperty("id", notNullValue()),
+                    hasProperty("name", is(givenLesson)),
+                    hasProperty("courseId", is(givenCourseId))
+            ));
+        }
+
+    }
+
+    @Nested
+    @DisplayName("Select all users")
+    class SelectAllUsers {
+
+        @Test
+        void must_select_all_users() {
+
+            // given
+            String givenUser1 = "test-user-1";
+            ctx.insertInto(USER, USER.USERNAME, USER.PASSWORD, USER.SALT)
+                    .values(givenUser1, "test-password", UUID.randomUUID())
+                    .execute();
+
+            String givenUser2 = "test-user-2";
+            ctx.insertInto(USER, USER.USERNAME, USER.PASSWORD, USER.SALT)
+                    .values(givenUser2, "test-password", UUID.randomUUID())
+                    .execute();
+
+            String givenUser3 = "test-user-3";
+            ctx.insertInto(USER, USER.USERNAME, USER.PASSWORD, USER.SALT)
+                    .values(givenUser3, "test-password", UUID.randomUUID())
+                    .execute();
+
+            // act
+            List<User> actual = repository.selectAllUsers();
+
+            // verify
+            assertThat(actual, allOf(
+                    hasItem(allOf(
+                            hasProperty("username", is(givenUser1)),
+                            hasProperty("password", is("test-password")),
+                            hasProperty("salt", notNullValue())
+                    )),
+                    hasItem(allOf(
+                            hasProperty("username", is(givenUser2)),
+                            hasProperty("password", is("test-password")),
+                            hasProperty("salt", notNullValue())
+                    )),
+                    hasItem(allOf(
+                            hasProperty("username", is(givenUser3)),
+                            hasProperty("password", is("test-password")),
+                            hasProperty("salt", notNullValue())
+                    ))
+            ));
 
         }
 

@@ -204,13 +204,38 @@ public class DomainRepository {
                 .fetchInto(Course.class);
     }
 
-    public List<User> selectStudentByCourseId(UUID courseId) {
+    public List<User> selectStudentsByCourseId(UUID courseId) {
         return ctx.select(USER.ID, USER.USERNAME, USER.PASSWORD, USER.SALT)
                 .from(COURSE)
                 .join(STUDENT_COURSE).on(STUDENT_COURSE.COURSE_ID.eq(COURSE.ID))
                 .join(USER).on(USER.ID.eq(STUDENT_COURSE.STUDENT_ID))
                 .where(COURSE.ID.eq(courseId))
                 .fetchInto(User.class);
+    }
+
+    public List<User> selectAllUsers() {
+        return ctx.select()
+                .from(USER)
+                .fetchInto(User.class);
+    }
+
+    public void insertCourse(String course, String instructor) {
+        UUID instructorId = selectUserIdByUsername(instructor);
+        UUID courseId = requireNonNull(ctx.insertInto(COURSE, COURSE.NAME)
+                .values(course)
+                .returning(COURSE.ID)
+                .fetchAny()
+        ).component1();
+        ctx.insertInto(INSTRUCTOR_COURSE, INSTRUCTOR_COURSE.INSTRUCTOR_ID, INSTRUCTOR_COURSE.COURSE_ID)
+                .values(instructorId, courseId)
+                .execute();
+    }
+
+    public void insertLesson(String lesson, String course) {
+        UUID courseId = selectCourseIdByName(course);
+        ctx.insertInto(LESSON, LESSON.NAME, LESSON.COURSE_ID)
+                .values(lesson, courseId)
+                .execute();
     }
 
 }

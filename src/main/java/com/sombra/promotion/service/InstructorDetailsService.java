@@ -21,7 +21,7 @@ public class InstructorDetailsService {
                 .map(course ->
                         new InstructorCourseResponse(
                                 course.getId(),
-                                repository.selectStudentByCourseId(course.getId()).stream()
+                                repository.selectStudentsByCourseId(course.getId()).stream()
                                         .map(user -> new InstructorCourseStudentResponse(user.getId(), user.getUsername()))
                                         .collect(Collectors.toList()),
                                 course.getName()
