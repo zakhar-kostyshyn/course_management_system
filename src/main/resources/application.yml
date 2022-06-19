@@ -1,16 +1,11 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/cms_db
-    username: root
-    password: root
+    url: jdbc:postgresql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_DB}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
     driverClassName: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: create
-    database: postgresql
-    show-sql: true
 server:
-  port: 8188
+  port: ${SPRING_SERVER_PORT}
 springdoc:
   swagger-ui:
-    path: /swagger-ui.html
+    path: ${SWAGGER_URL}
