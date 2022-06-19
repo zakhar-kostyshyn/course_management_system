@@ -14,6 +14,8 @@ group = 'com.sombra'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -52,15 +54,23 @@ dependencies {
     jooqGenerator 'org.postgresql:postgresql:42.3.2'
 }
 
+def db = property('DATABASE_DB')
+def dbPort = property('DATABASE_PORT')
+def dbHost = property('DATABASE_HOST')
+
+def dbUrl = 'jdbc:postgresql://' + dbHost + ':' + dbPort + '/' + db
+def dbUsername = property('DATABASE_USERNAME')
+def dbPassword = property('DATABASE_PASSWORD')
+
 jooq {
     configurations {
         main {
             generationTool {
                 jdbc {
                     driver = 'org.postgresql.Driver'
-                    url = 'jdbc:postgresql://localhost:5432/cms_db'
-                    user = 'root'
-                    password = 'root'
+                    url = dbUrl
+                    user = dbUsername
+                    password = dbPassword
                 }
                 generator {
                     name = 'org.jooq.codegen.DefaultGenerator'
@@ -89,9 +99,9 @@ liquibase {
     activities {
         main {
             changeLogFile 'liquibase/main_changelog.xml'
-            url 'jdbc:postgresql://localhost:5432/cms_db'
-            username 'root'
-            password 'root'
+            url dbUrl
+            username dbUsername
+            password dbPassword
         }
     }
 }
