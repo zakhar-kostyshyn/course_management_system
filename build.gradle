@@ -106,4 +106,4 @@ liquibase {
     }
 }
 
-build.dependsOn update
+generateJooq.dependsOn update
