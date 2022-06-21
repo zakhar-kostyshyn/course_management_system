@@ -2,11 +2,10 @@ plugins {
     id 'org.springframework.boot' version '2.6.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
-
     id "co.uzzu.dotenv.gradle" version "1.2.0"
     id 'org.liquibase.gradle' version '2.1.0'
     id 'nu.studer.jooq' version '6.0.1'
-
+    id "com.avast.gradle.docker-compose" version "0.16.4"
 }
 
 
@@ -54,13 +53,19 @@ dependencies {
     jooqGenerator 'org.postgresql:postgresql:42.3.2'
 }
 
-def db = property('DATABASE_DB')
-def dbPort = property('DATABASE_PORT')
-def dbHost = property('DATABASE_HOST')
+def db = findProperty('DATABASE_DB') ?: 'cms_db'
+def dbPort = findProperty('DATABASE_PORT') ?: '5433'
+def dbHost = findProperty('DATABASE_HOST') ?: 'localhost'
 
 def dbUrl = 'jdbc:postgresql://' + dbHost + ':' + dbPort + '/' + db
-def dbUsername = property('DATABASE_USERNAME')
-def dbPassword = property('DATABASE_PASSWORD')
+def dbUsername = findProperty('DATABASE_USERNAME') ?: 'root'
+def dbPassword = findProperty('DATABASE_PASSWORD') ?: 'root'
+
+dockerCompose {
+    database {
+        useComposeFiles = ['docker-compose-build.yml']
+    }
+}
 
 jooq {
     configurations {
@@ -106,4 +111,5 @@ liquibase {
     }
 }
 
+update.dependsOn 'databaseComposeUp'
 generateJooq.dependsOn update
