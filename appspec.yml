@@ -13,8 +13,6 @@ hooks:
   AfterInstall:
     - location: fix_privileges.sh
       runas: root
-    - location: set_env_variables.sh
-      runas: root
   ApplicationStart:
     - location: server_start.sh
       runas: root
