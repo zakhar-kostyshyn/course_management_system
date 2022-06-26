@@ -1,7 +1,10 @@
 package com.sombra.promotion.repository;
 
+import com.sombra.promotion.config.TestUtilsConfiguration;
 import com.sombra.promotion.tables.pojos.Course;
 import com.sombra.promotion.tables.pojos.InstructorCourse;
+import com.sombra.promotion.utils.InsertUtils;
+import com.sombra.promotion.utils.SelectUtils;
 import org.jooq.DSLContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -9,16 +12,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jooq.JooqTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 
 import java.util.UUID;
 
-import static com.sombra.promotion.tables.Course.COURSE;
-import static com.sombra.promotion.tables.InstructorCourse.INSTRUCTOR_COURSE;
-import static com.sombra.promotion.tables.User.USER;
+import static com.sombra.promotion.Constants.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 @JooqTest
+@Import(TestUtilsConfiguration.class)
 @ComponentScan(basePackageClasses = {
         InstructorCourseRepository.class,
         UserRepository.class,
@@ -27,10 +30,10 @@ import static org.hamcrest.Matchers.*;
 class InstructorCourseRepositoryTest {
 
     @Autowired
-    private DSLContext ctx;
-
-    @Autowired
     private InstructorCourseRepository repository;
+
+    @Autowired private InsertUtils insert;
+    @Autowired private SelectUtils select;
 
     @Nested
     @DisplayName("Set instructor for course")
@@ -40,31 +43,15 @@ class InstructorCourseRepositoryTest {
         void must_set_instructor_for_course() {
 
             // given
-            String givenCourseName = "test-courseName";
-            String givenUsername = "test-username";
-
-            UUID givenUserId = ctx.insertInto(USER, USER.USERNAME, USER.PASSWORD, USER.SALT)
-                    .values(givenUsername, "test-password", UUID.randomUUID())
-                    .returningResult(USER.ID)
-                    .fetchOne()
-                    .component1();
-
-            UUID givenCourseId = ctx.insertInto(COURSE, COURSE.NAME)
-                    .values(givenCourseName)
-                    .returning(COURSE.ID)
-                    .fetchOne()
-                    .component1();
+            UUID givenUserId = insert.user(TEST_USERNAME, TEST_PASSWORD);
+            UUID givenCourseId = insert.course(TEST_COURSE);
 
             // act
-            repository.setInstructorForCourse(givenUsername, givenCourseName);
-
-            // fetch
-            InstructorCourse actual = ctx.select()
-                    .from(INSTRUCTOR_COURSE)
-                    .fetchSingleInto(InstructorCourse.class);
+            repository.setInstructorForCourse(TEST_USERNAME, TEST_COURSE);
 
             // verify
-            assertThat(actual, allOf(
+            InstructorCourse result = select.instructorCourse();
+            assertThat(result, allOf(
                     hasProperty("instructorId", is(givenUserId)),
                     hasProperty("courseId", is(givenCourseId))
             ));
@@ -81,34 +68,22 @@ class InstructorCourseRepositoryTest {
         void must_insert_course() {
 
             // given
-            String givenInstructor = "test-instructor";
-            String givenCourse = "test-course";
-
-            UUID givenInstructorId = ctx.insertInto(USER, USER.USERNAME, USER.PASSWORD, USER.SALT)
-                    .values(givenInstructor, "test-password", UUID.randomUUID())
-                    .returningResult(USER.ID)
-                    .fetchOne()
-                    .component1();
+            UUID givenInstructorId = insert.user(TEST_INSTRUCTOR, TEST_PASSWORD);
 
             // act
-            repository.insertCourse(givenCourse, givenInstructor);
-
-            // fetch
-            Course actualCourse = ctx.select()
-                    .from(COURSE)
-                    .fetchAnyInto(Course.class);
-            InstructorCourse actualInstructorCourse = ctx.select()
-                    .from(INSTRUCTOR_COURSE)
-                    .fetchAnyInto(InstructorCourse.class);
+            repository.insertCourse(TEST_COURSE, TEST_INSTRUCTOR);
 
             // verify
-            assertThat(actualCourse, allOf(
+            Course resultCourse = select.course();
+            assertThat(resultCourse, allOf(
                     hasProperty("id", notNullValue()),
-                    hasProperty("name", is(givenCourse))
+                    hasProperty("name", is(TEST_COURSE))
             ));
-            assertThat(actualInstructorCourse, allOf(
+
+            InstructorCourse resultInstructorCourse = select.instructorCourse();
+            assertThat(resultInstructorCourse, allOf(
                     hasProperty("instructorId", is(givenInstructorId)),
-                    hasProperty("courseId", is(actualCourse.getId()))
+                    hasProperty("courseId", is(resultCourse.getId()))
             ));
 
         }

@@ -1,7 +1,10 @@
 package com.sombra.promotion.repository;
 
+import com.sombra.promotion.config.TestUtilsConfiguration;
 import com.sombra.promotion.controller.instructor.request.GiveFinalFeedbackRequest;
 import com.sombra.promotion.tables.pojos.Feedback;
+import com.sombra.promotion.utils.InsertUtils;
+import com.sombra.promotion.utils.SelectUtils;
 import org.jooq.DSLContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -9,16 +12,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jooq.JooqTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 
 import java.util.UUID;
 
-import static com.sombra.promotion.tables.Course.COURSE;
-import static com.sombra.promotion.tables.Feedback.FEEDBACK;
-import static com.sombra.promotion.tables.User.USER;
+import static com.sombra.promotion.Constants.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 @JooqTest
+@Import(TestUtilsConfiguration.class)
 @ComponentScan(basePackageClasses = {
         CourseRepository.class,
         UserRepository.class,
@@ -26,11 +29,9 @@ import static org.hamcrest.Matchers.*;
 })
 class FeedbackRepositoryTest {
 
-    @Autowired
-    private DSLContext ctx;
-
-    @Autowired
-    private FeedbackRepository repository;
+    @Autowired private FeedbackRepository repository;
+    @Autowired private InsertUtils insert;
+    @Autowired private SelectUtils select;
 
     @Nested
     @DisplayName("Insert feedback")
@@ -40,48 +41,18 @@ class FeedbackRepositoryTest {
         void must_insert_feedback() {
 
             // given
-            String givenFeedback = "test-feedback";
-            String givenCourse = "test-course";
-            String givenStudent = "test-student";
-            String givenInstructor = "test-instructor";
-
-            GiveFinalFeedbackRequest givenRequest = new GiveFinalFeedbackRequest(
-                    givenFeedback,
-                    givenCourse,
-                    givenStudent,
-                    givenInstructor
-            );
-
-
-            UUID givenStudentId = ctx.insertInto(USER, USER.USERNAME, USER.PASSWORD, USER.SALT)
-                    .values(givenStudent, "test-password", UUID.randomUUID())
-                    .returningResult(USER.ID)
-                    .fetchOne()
-                    .component1();
-
-            UUID givenInstructorId = ctx.insertInto(USER, USER.USERNAME, USER.PASSWORD, USER.SALT)
-                    .values(givenInstructor, "test-password", UUID.randomUUID())
-                    .returningResult(USER.ID)
-                    .fetchOne()
-                    .component1();
-
-            UUID givenCourseId = ctx.insertInto(COURSE, COURSE.NAME)
-                    .values(givenCourse)
-                    .returning(COURSE.ID)
-                    .fetchOne()
-                    .component1();
+            GiveFinalFeedbackRequest givenRequest = new GiveFinalFeedbackRequest(TEST_FEEDBACK, TEST_COURSE, TEST_STUDENT, TEST_INSTRUCTOR);
+            UUID givenStudentId = insert.user(TEST_STUDENT, TEST_PASSWORD);
+            UUID givenInstructorId = insert.user(TEST_INSTRUCTOR, TEST_PASSWORD);
+            UUID givenCourseId = insert.course(TEST_COURSE);
 
             // act
             repository.insertFeedback(givenRequest);
 
-            // fetch
-            Feedback actual = ctx.select()
-                    .from(FEEDBACK)
-                    .fetchSingleInto(Feedback.class);
-
             // verify
-            assertThat(actual, allOf(
-                    hasProperty("feedback", is(givenFeedback)),
+            Feedback result = select.feedback();
+            assertThat(result, allOf(
+                    hasProperty("feedback", is(TEST_FEEDBACK)),
                     hasProperty("studentId", is(givenStudentId)),
                     hasProperty("instructorId", is(givenInstructorId)),
                     hasProperty("courseId", is(givenCourseId)),

@@ -1,7 +1,10 @@
 package com.sombra.promotion.repository;
 
+import com.sombra.promotion.config.TestUtilsConfiguration;
 import com.sombra.promotion.enums.RoleEnum;
 import com.sombra.promotion.tables.pojos.User;
+import com.sombra.promotion.utils.InsertUtils;
+import com.sombra.promotion.utils.SelectUtils;
 import org.jooq.DSLContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -9,33 +12,27 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jooq.JooqTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 
 import java.util.List;
 import java.util.UUID;
 
+import static com.sombra.promotion.Constants.*;
 import static com.sombra.promotion.enums.RoleEnum.student;
-import static com.sombra.promotion.tables.Course.COURSE;
-import static com.sombra.promotion.tables.Role.ROLE;
-import static com.sombra.promotion.tables.StudentCourse.STUDENT_COURSE;
-import static com.sombra.promotion.tables.User.USER;
-import static com.sombra.promotion.tables.UserRole.USER_ROLE;
-import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.range;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 @JooqTest
+@Import(TestUtilsConfiguration.class)
 @ComponentScan(basePackageClasses = {
         UserRepository.class
 })
 class UserRepositoryTest {
 
-    @Autowired
-    private DSLContext ctx;
-
-    @Autowired
-    private UserRepository repository;
-
+    @Autowired private UserRepository repository;
+    @Autowired private InsertUtils insert;
+    @Autowired private SelectUtils select;
 
     @Nested
     @DisplayName("Select user ID by username")
@@ -46,17 +43,13 @@ class UserRepositoryTest {
 
             // give
             UUID userId = UUID.randomUUID();
-            String username = "test-username";
-
-            ctx.insertInto(USER, USER.ID, USER.USERNAME, USER.PASSWORD, USER.SALT)
-                    .values(userId, username, "test-password", UUID.randomUUID())
-                    .execute();
+            insert.user(userId, TEST_USERNAME, TEST_PASSWORD);
 
             // act
-            UUID actual = repository.selectUserIdByUsername(username);
+            UUID result = repository.selectUserIdByUsername(TEST_USERNAME);
 
             // verify
-            assertThat(actual, is(userId));
+            assertThat(result, is(userId));
 
         }
 
@@ -71,30 +64,16 @@ class UserRepositoryTest {
         void must_select_roleType_by_username() {
 
             // setup
-            String username = "test-username";
             RoleEnum roleType = student;
-
-            UUID createdUserId = ctx.insertInto(USER, USER.USERNAME, USER.PASSWORD, USER.SALT)
-                    .values(username, "test-password", UUID.randomUUID())
-                    .returningResult(USER.ID)
-                    .fetchOne()
-                    .component1();
-
-            UUID instructorRoleId = ctx.select(ROLE.ID)
-                    .from(ROLE)
-                    .where(ROLE.NAME.eq(roleType))
-                    .fetchAny()
-                    .component1();
-
-            ctx.insertInto(USER_ROLE, USER_ROLE.USER_ID, USER_ROLE.ROLE_ID, USER_ROLE.PREDEFINED)
-                    .values(createdUserId, instructorRoleId, false)
-                    .execute();
+            UUID createdUserId = insert.user(TEST_USERNAME, TEST_PASSWORD);
+            UUID instructorRoleId = select.roleId(roleType);
+            insert.userRole(createdUserId, instructorRoleId);
 
             // act
-            RoleEnum actual = repository.selectRoleTypeByUsername(username);
+            RoleEnum result = repository.selectRoleTypeByUsername(TEST_USERNAME);
 
             // verify
-            assertThat(actual, is(roleType));
+            assertThat(result, is(roleType));
 
         }
 
@@ -109,35 +88,17 @@ class UserRepositoryTest {
         void must_select_users_by_course_id() {
 
             // given
-            String givenStudentPrefix = "test-student-";
-            String givenCourseName = "test-course";
-
-            UUID givenCourseId = ctx.insertInto(COURSE, COURSE.NAME)
-                    .values(givenCourseName)
-                    .returning(COURSE.ID)
-                    .fetchOne()
-                    .component1();
-
-            List<UUID> studentIds = range(1, 5)
-                    .mapToObj(i -> ctx.insertInto(USER, USER.USERNAME, USER.PASSWORD, USER.SALT)
-                            .values(givenStudentPrefix + i, "test-password", UUID.randomUUID())
-                            .returningResult(USER.ID)
-                            .fetchOne()
-                            .component1()
-                    ).collect(toList());
-
-            studentIds.stream()
+            UUID givenCourseId = insert.course(TEST_COURSE);
+            range(1, 5)
+                    .mapToObj(i -> insert.user(TEST_STUDENT + "-" + i, TEST_PASSWORD))
                     .limit(3)
-                    .forEach(studentId -> ctx.insertInto(STUDENT_COURSE, STUDENT_COURSE.STUDENT_ID, STUDENT_COURSE.COURSE_ID)
-                            .values(studentId, givenCourseId)
-                            .execute()
-                    );
+                    .forEach(studentId -> insert.studentCourse(studentId, givenCourseId));
 
             // act
-            List<User> actual = repository.selectStudentsByCourseId(givenCourseId);
+            List<User> result = repository.selectStudentsByCourseId(givenCourseId);
 
             // verify
-            assertThat(actual, allOf(
+            assertThat(result, allOf(
                     hasItem(hasProperty("username", is("test-student-1"))),
                     hasItem(hasProperty("username", is("test-student-2"))),
                     hasItem(hasProperty("username", is("test-student-3"))),
@@ -158,25 +119,19 @@ class UserRepositoryTest {
 
             // given
             String givenUser1 = "test-user-1";
-            ctx.insertInto(USER, USER.USERNAME, USER.PASSWORD, USER.SALT)
-                    .values(givenUser1, "test-password", UUID.randomUUID())
-                    .execute();
+            insert.user(givenUser1, TEST_PASSWORD);
 
             String givenUser2 = "test-user-2";
-            ctx.insertInto(USER, USER.USERNAME, USER.PASSWORD, USER.SALT)
-                    .values(givenUser2, "test-password", UUID.randomUUID())
-                    .execute();
+            insert.user(givenUser2, TEST_PASSWORD);
 
             String givenUser3 = "test-user-3";
-            ctx.insertInto(USER, USER.USERNAME, USER.PASSWORD, USER.SALT)
-                    .values(givenUser3, "test-password", UUID.randomUUID())
-                    .execute();
+            insert.user(givenUser3, TEST_PASSWORD);
 
             // act
-            List<User> actual = repository.selectAllUsers();
+            List<User> result = repository.selectAllUsers();
 
             // verify
-            assertThat(actual, allOf(
+            assertThat(result, allOf(
                     hasItem(allOf(
                             hasProperty("username", is(givenUser1)),
                             hasProperty("password", is("test-password")),

@@ -1,7 +1,10 @@
 package com.sombra.promotion.repository;
 
+import com.sombra.promotion.config.TestUtilsConfiguration;
 import com.sombra.promotion.controller.instructor.request.PutMarkRequest;
 import com.sombra.promotion.tables.pojos.Mark;
+import com.sombra.promotion.utils.InsertUtils;
+import com.sombra.promotion.utils.SelectUtils;
 import org.jooq.DSLContext;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -9,18 +12,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jooq.JooqTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 
 import java.util.UUID;
 
-import static com.sombra.promotion.tables.Course.COURSE;
-import static com.sombra.promotion.tables.Lesson.LESSON;
-import static com.sombra.promotion.tables.Mark.MARK;
-import static com.sombra.promotion.tables.StudentCourse.STUDENT_COURSE;
-import static com.sombra.promotion.tables.User.USER;
+import static com.sombra.promotion.Constants.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 @JooqTest
+@Import(TestUtilsConfiguration.class)
 @ComponentScan(basePackageClasses = {
         MarkRepository.class,
         UserRepository.class,
@@ -28,11 +29,9 @@ import static org.hamcrest.Matchers.*;
 })
 class MarkRepositoryTest {
 
-    @Autowired
-    private DSLContext ctx;
-
-    @Autowired
-    private MarkRepository repository;
+    @Autowired private MarkRepository repository;
+    @Autowired private InsertUtils insert;
+    @Autowired private SelectUtils select;
 
     @Nested
     @DisplayName("Select mark by student username and lesson ID")
@@ -42,53 +41,20 @@ class MarkRepositoryTest {
         void must_select_mark_by_student_username_and_lesson_id() {
 
             // given
-            String givenCourseName = "test-courseName";
-            String givenStudent = "test-student";
-            String givenInstructor = "test-instructor";
-            String givenLessonName = "test-lesson";
-            int givenMark = 100;
-
-            UUID givenStudentId = ctx.insertInto(USER, USER.USERNAME, USER.PASSWORD, USER.SALT)
-                    .values(givenStudent, "test-password", UUID.randomUUID())
-                    .returningResult(USER.ID)
-                    .fetchOne()
-                    .component1();
-
-            UUID givenInstructorId = ctx.insertInto(USER, USER.USERNAME, USER.PASSWORD, USER.SALT)
-                    .values(givenInstructor, "test-password", UUID.randomUUID())
-                    .returningResult(USER.ID)
-                    .fetchOne()
-                    .component1();
-
-            UUID givenCourseId = ctx.insertInto(COURSE, COURSE.NAME)
-                    .values(givenCourseName)
-                    .returning(COURSE.ID)
-                    .fetchOne()
-                    .component1();
-
-            UUID givenLessonId = ctx.insertInto(LESSON, LESSON.COURSE_ID, LESSON.NAME)
-                    .values(givenCourseId, givenLessonName)
-                    .returning(LESSON.ID)
-                    .fetchOne()
-                    .component1();
-
-            ctx.insertInto(STUDENT_COURSE, STUDENT_COURSE.STUDENT_ID, STUDENT_COURSE.COURSE_ID)
-                    .values(givenStudentId, givenCourseId)
-                    .execute();
-
-            UUID givenMarkId = ctx.insertInto(MARK, MARK.STUDENT_ID, MARK.INSTRUCTOR_ID, MARK.LESSON_ID, MARK.MARK_)
-                    .values(givenStudentId, givenInstructorId, givenLessonId, givenMark)
-                    .returning(MARK.ID)
-                    .fetchOne()
-                    .component1();
+            UUID givenStudentId = insert.user(TEST_STUDENT, TEST_PASSWORD);
+            UUID givenInstructorId = insert.user(TEST_INSTRUCTOR, TEST_PASSWORD);
+            UUID givenCourseId = insert.course(TEST_COURSE);
+            UUID givenLessonId = insert.lesson(TEST_LESSON, givenCourseId);
+            insert.studentCourse(givenStudentId, givenCourseId);
+            UUID givenMarkId = insert.mark(TEST_MARK, givenStudentId, givenInstructorId, givenLessonId);
 
             // act
-            Mark actual = repository.selectMarkByStudentUsernameAndLessonId(givenStudent, givenLessonId);
+            Mark result = repository.selectMarkByStudentUsernameAndLessonId(TEST_STUDENT, givenLessonId);
 
             // verify
-            assertThat(actual, allOf(
+            assertThat(result, allOf(
                     hasProperty("id", is(givenMarkId)),
-                    hasProperty("mark", is(givenMark)),
+                    hasProperty("mark", is(TEST_MARK)),
                     hasProperty("instructorId", is(givenInstructorId)),
                     hasProperty("studentId", is(givenStudentId)),
                     hasProperty("lessonId", is(givenLessonId))
@@ -105,59 +71,28 @@ class MarkRepositoryTest {
         void must_insert_mark() {
 
             // given
-            String givenCourseName = "test-courseName";
-            String givenStudent = "test-student";
-            String givenInstructor = "test-instructor";
-            String givenLessonName = "test-lesson";
-            int givenMark = 100;
-
             PutMarkRequest givenRequest = new PutMarkRequest(
-                    givenMark,
-                    givenStudent,
-                    givenInstructor,
-                    givenLessonName,
-                    givenCourseName
+                    TEST_MARK,
+                    TEST_STUDENT,
+                    TEST_INSTRUCTOR,
+                    TEST_LESSON,
+                    TEST_COURSE
             );
 
-            UUID givenStudentId = ctx.insertInto(USER, USER.USERNAME, USER.PASSWORD, USER.SALT)
-                    .values(givenStudent, "test-password", UUID.randomUUID())
-                    .returningResult(USER.ID)
-                    .fetchOne()
-                    .component1();
-
-            UUID givenInstructorId = ctx.insertInto(USER, USER.USERNAME, USER.PASSWORD, USER.SALT)
-                    .values(givenInstructor, "test-password", UUID.randomUUID())
-                    .returningResult(USER.ID)
-                    .fetchOne()
-                    .component1();
-
-            UUID givenCourseId = ctx.insertInto(COURSE, COURSE.NAME)
-                    .values(givenCourseName)
-                    .returning(COURSE.ID)
-                    .fetchOne()
-                    .component1();
-
-            UUID givenLessonId = ctx.insertInto(LESSON, LESSON.COURSE_ID, LESSON.NAME)
-                    .values(givenCourseId, givenLessonName)
-                    .returning(LESSON.ID)
-                    .fetchOne()
-                    .component1();
-
-            ctx.insertInto(STUDENT_COURSE, STUDENT_COURSE.STUDENT_ID, STUDENT_COURSE.COURSE_ID)
-                    .values(givenStudentId, givenCourseId)
-                    .execute();
+            UUID givenStudentId = insert.user(TEST_STUDENT, TEST_PASSWORD);
+            UUID givenInstructorId = insert.user(TEST_INSTRUCTOR, TEST_PASSWORD);
+            UUID givenCourseId = insert.course(TEST_COURSE);
+            UUID givenLessonId = insert.lesson(TEST_LESSON, givenCourseId);
+            insert.studentCourse(givenStudentId, givenCourseId);
 
             // act
             repository.insertMark(givenRequest);
 
-            // fetch
-            Mark actual = ctx.select().from(MARK).fetchSingleInto(Mark.class);
-
             // verify
-            // verify
-            assertThat(actual, allOf(
+            Mark result = select.mark();
+            assertThat(result, allOf(
                     hasProperty("id", notNullValue()),
-                    hasProperty("mark", is(givenMark)),
+                    hasProperty("mark", is(TEST_MARK)),
                     hasProperty("instructorId", is(givenInstructorId)),
                     hasProperty("studentId", is(givenStudentId)),
                     hasProperty("lessonId", is(givenLessonId))
