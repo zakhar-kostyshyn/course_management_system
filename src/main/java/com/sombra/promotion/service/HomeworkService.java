@@ -1,7 +1,7 @@
 package com.sombra.promotion.service;
 
 import com.sombra.promotion.controller.student.request.UploadHomeworkRequest;
-import com.sombra.promotion.repository.DomainRepository;
+import com.sombra.promotion.repository.HomeworkRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class HomeworkService {
 
-    private final DomainRepository repository;
+    private final HomeworkRepository homeworkRepository;
 
     public void saveHomework(UploadHomeworkRequest request) {
-        repository.insertHomework(request);
+        homeworkRepository.insertHomework(request);
     }
 
 }

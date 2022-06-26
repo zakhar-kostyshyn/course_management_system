@@ -6,7 +6,7 @@ import com.sombra.promotion.controller.instructor.request.GiveFinalFeedbackReque
 import com.sombra.promotion.controller.instructor.request.PutMarkRequest;
 import com.sombra.promotion.controller.student.request.CourseSubscriptionRequest;
 import com.sombra.promotion.enums.RoleEnum;
-import com.sombra.promotion.repository.DomainRepository;
+import com.sombra.promotion.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,60 +14,51 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AssignService {
 
-    private final DomainRepository domainRepository;
+    private UserRoleRepository userRoleRepository;
+    private UserRepository userRepository;
+    private InstructorCourseRepository instructorCourseRepository;
+    private StudentCourseRepository studentCourseRepository;
+    private MarkRepository markRepository;
+    private FeedbackRepository feedbackRepository;
+
     public void assignRole(
             AssignRoleByAdminRequest request
     ) {
         RoleEnum roleEnum = RoleEnum.valueOf(request.getRole());
-        domainRepository.setRoleForUser(request.getUsername(), roleEnum);
+        userRoleRepository.setRoleForUser(request.getUsername(), roleEnum);
     }
 
     public void assignInstructorOnCourse(AssignInstructorForCourseRequest request) {
-        RoleEnum userRole = domainRepository.selectRoleTypeByUsername(request.getInstructor());
+        RoleEnum userRole = userRepository.selectRoleTypeByUsername(request.getInstructor());
         if (!userRole.equals(RoleEnum.instructor))
             throw new RuntimeException("Cannot assign course on " + userRole + ". Role should be instructor");
-        domainRepository.setInstructorForCourse(request.getInstructor(), request.getCourse());
+        instructorCourseRepository.setInstructorForCourse(request.getInstructor(), request.getCourse());
     }
 
     public void subscribeStudentOnCourse(CourseSubscriptionRequest request) {
-        RoleEnum userRole = domainRepository.selectRoleTypeByUsername(request.getStudent());
+        RoleEnum userRole = userRepository.selectRoleTypeByUsername(request.getStudent());
         if (!userRole.equals(RoleEnum.student))
             throw new RuntimeException("Cannot subscribe on course user with role: " + userRole + ". Role should be instructor");
 
-        domainRepository.setStudentForCourse(request.getStudent(), request.getCourse());
+        studentCourseRepository.setStudentForCourse(request.getStudent(), request.getCourse());
     }
 
     public void assignMark(PutMarkRequest request) {
 
-        RoleEnum userRole = domainRepository.selectRoleTypeByUsername(request.getStudent());
+        RoleEnum userRole = userRepository.selectRoleTypeByUsername(request.getStudent());
         if (!userRole.equals(RoleEnum.instructor))
             throw new RuntimeException("User with role: " + userRole + " cannot assign mark");
 
-        domainRepository.insertMark(request);
+        markRepository.insertMark(request);
 
     }
 
     public void giveFeedbackForCourse(GiveFinalFeedbackRequest request) {
-        RoleEnum userRole = domainRepository.selectRoleTypeByUsername(request.getStudent());
+        RoleEnum userRole = userRepository.selectRoleTypeByUsername(request.getStudent());
         if (!userRole.equals(RoleEnum.instructor))
             throw new RuntimeException("User with role: " + userRole + " cannot assign mark");
 
-        domainRepository.insertFeedback(request);
+        feedbackRepository.insertFeedback(request);
 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,6 +1,6 @@
 package com.sombra.promotion.service;
 
-import com.sombra.promotion.repository.DomainRepository;
+import com.sombra.promotion.repository.UserRepository;
 import com.sombra.promotion.tables.pojos.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,10 +11,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AllUsersService {
 
-    private final DomainRepository repository;
+    private final UserRepository userRepository;
 
     public List<User> getAllUsers() {
-        return repository.selectAllUsers();
+        return userRepository.selectAllUsers();
     }
 
 }

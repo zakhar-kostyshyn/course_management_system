@@ -1,7 +1,7 @@
 package com.sombra.promotion.service;
 
 import com.sombra.promotion.controller.instructor.request.CreateLessonRequest;
-import com.sombra.promotion.repository.DomainRepository;
+import com.sombra.promotion.repository.LessonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class LessonCreateService {
 
-    private final DomainRepository repository;
+    private final LessonRepository lessonRepository;
 
     public void createLesson(CreateLessonRequest request) {
-        repository.insertLesson(request.getLesson(), request.getCourse());
+        lessonRepository.insertLesson(request.getLesson(), request.getCourse());
     }
 
 }

@@ -2,7 +2,7 @@ package com.sombra.promotion.service;
 
 import com.sombra.promotion.controller.authentication.request.RegistrationUserRequest;
 import com.sombra.promotion.enums.RoleEnum;
-import com.sombra.promotion.repository.DomainRepository;
+import com.sombra.promotion.repository.UserRoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserRegistrationService {
 
-    private final DomainRepository domainRepository;
+    private final UserRoleRepository userRoleRepository;
 
     public void register(RegistrationUserRequest request) {
 
@@ -22,7 +22,7 @@ public class UserRegistrationService {
                 .getEncoder()
                 .encodeToString((request.getPassword() + salt).getBytes());
 
-        domainRepository.insertUser(
+        userRoleRepository.insertUser(
                 request.getUsername(),
                 hashedPassword,
                 salt,
