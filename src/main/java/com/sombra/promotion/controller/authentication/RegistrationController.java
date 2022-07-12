@@ -2,6 +2,7 @@ package com.sombra.promotion.controller.authentication;
 
 import com.sombra.promotion.controller.authentication.request.RegistrationUserRequest;
 import com.sombra.promotion.service.UserRegistrationService;
+import com.sombra.promotion.tables.pojos.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,11 +18,11 @@ public class RegistrationController {
     private final UserRegistrationService userRegistrationService;
 
     @PostMapping
-    public ResponseEntity<String> register(
+    public ResponseEntity<User> register(
             @RequestBody RegistrationUserRequest request
     ) {
-        userRegistrationService.register(request);
-        return ResponseEntity.ok("Created");
+        User user = userRegistrationService.register(request);
+        return ResponseEntity.ok(user);
     }
 
 }

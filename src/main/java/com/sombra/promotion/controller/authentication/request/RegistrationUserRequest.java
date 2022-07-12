@@ -1,12 +1,18 @@
 package com.sombra.promotion.controller.authentication.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
-@Data
-public class RegistrationUserRequest {
+import java.io.Serializable;
 
-    @NonNull private final String username;
-    @NonNull private final String password;
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class RegistrationUserRequest implements Serializable {
+
+    @NonNull private String username;
+    @NonNull private String password;
 
 }

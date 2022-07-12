@@ -57,4 +57,19 @@ public class UserRepository {
                 .fetchInto(User.class);
     }
 
+
+    public User selectUserByUsername(String username) {
+        return ctx.select()
+                .from(USER)
+                .where(USER.USERNAME.eq(username))
+                .fetchSingleInto(User.class);
+    }
+
+    public User selectUserById(UUID id) {
+           return ctx.select()
+                   .from(USER)
+                   .where(USER.ID.eq(id))
+                   .fetchSingleInto(User.class);
+    }
+
 }

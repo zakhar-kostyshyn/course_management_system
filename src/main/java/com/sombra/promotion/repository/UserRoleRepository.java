@@ -2,13 +2,16 @@ package com.sombra.promotion.repository;
 
 
 import com.sombra.promotion.enums.RoleEnum;
+import com.sombra.promotion.tables.pojos.Role;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
+import static com.sombra.promotion.tables.Role.ROLE;
 import static com.sombra.promotion.tables.User.USER;
 import static com.sombra.promotion.tables.UserRole.USER_ROLE;
 import static java.util.Objects.requireNonNull;
@@ -62,6 +65,14 @@ public class UserRoleRepository {
                 .execute();
 
         return createdUserID;
+    }
+
+    public List<Role> selectRolesByUsername(String username) {
+        return ctx.select()
+                .from(USER)
+                .join(USER_ROLE).on(USER.ID.eq(USER_ROLE.USER_ID))
+                .join(ROLE).on(USER_ROLE.ROLE_ID.eq(ROLE.ID))
+                .fetchInto(Role.class);
     }
 
 }
