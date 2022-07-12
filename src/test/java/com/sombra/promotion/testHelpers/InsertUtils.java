@@ -1,4 +1,4 @@
-package com.sombra.promotion.utils;
+package com.sombra.promotion.testHelpers;
 
 import org.jooq.DSLContext;
 

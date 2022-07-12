@@ -1,7 +1,7 @@
 package com.sombra.promotion.repository;
 
-import com.sombra.promotion.config.TestUtilsConfiguration;
-import com.sombra.promotion.utils.SelectUtils;
+import com.sombra.promotion.testConfigs.TestHelpersConfiguration;
+import com.sombra.promotion.testHelpers.SelectUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 @JooqTest
-@Import(TestUtilsConfiguration.class)
+@Import(TestHelpersConfiguration.class)
 @ComponentScan(basePackageClasses = {
         RoleRepository.class
 })

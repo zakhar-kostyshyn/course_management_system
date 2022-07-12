@@ -1,4 +1,4 @@
-package com.sombra.promotion.utils;
+package com.sombra.promotion.testHelpers;
 
 import com.sombra.promotion.enums.RoleEnum;
 import com.sombra.promotion.tables.pojos.*;

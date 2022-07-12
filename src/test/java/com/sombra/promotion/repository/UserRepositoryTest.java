@@ -1,11 +1,10 @@
 package com.sombra.promotion.repository;
 
-import com.sombra.promotion.config.TestUtilsConfiguration;
+import com.sombra.promotion.testConfigs.TestHelpersConfiguration;
 import com.sombra.promotion.enums.RoleEnum;
 import com.sombra.promotion.tables.pojos.User;
-import com.sombra.promotion.utils.InsertUtils;
-import com.sombra.promotion.utils.SelectUtils;
-import org.jooq.DSLContext;
+import com.sombra.promotion.testHelpers.InsertUtils;
+import com.sombra.promotion.testHelpers.SelectUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -24,7 +23,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 @JooqTest
-@Import(TestUtilsConfiguration.class)
+@Import(TestHelpersConfiguration.class)
 @ComponentScan(basePackageClasses = {
         UserRepository.class
 })
@@ -149,6 +148,43 @@ class UserRepositoryTest {
                     ))
             ));
 
+        }
+
+    }
+
+    @Nested
+    class SelectUserByUsername {
+
+        @Test
+        void must_select_and_return_user_by_username() {
+            UUID userId = insert.user(TEST_USERNAME, TEST_PASSWORD);
+            User user = repository.selectUserByUsername(TEST_USERNAME);
+            assertThat(user, allOf(
+                    hasProperty("id", is(userId)),
+                    hasProperty("username", is(TEST_USERNAME)),
+                    hasProperty("password", is(TEST_PASSWORD)),
+                    hasProperty("salt", notNullValue())
+
+            ));
+        }
+
+    }
+
+
+    @Nested
+    class SelectUserById {
+
+        @Test
+        void must_select_and_return_user_by_id() {
+            UUID userId = insert.user(TEST_USERNAME, TEST_PASSWORD);
+            User user = repository.selectUserById(userId);
+            assertThat(user, allOf(
+                    hasProperty("id", is(userId)),
+                    hasProperty("username", is(TEST_USERNAME)),
+                    hasProperty("password", is(TEST_PASSWORD)),
+                    hasProperty("salt", notNullValue())
+
+            ));
         }
 
     }

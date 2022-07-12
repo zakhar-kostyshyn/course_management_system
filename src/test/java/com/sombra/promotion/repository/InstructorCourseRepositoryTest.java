@@ -1,11 +1,10 @@
 package com.sombra.promotion.repository;
 
-import com.sombra.promotion.config.TestUtilsConfiguration;
+import com.sombra.promotion.testConfigs.TestHelpersConfiguration;
 import com.sombra.promotion.tables.pojos.Course;
 import com.sombra.promotion.tables.pojos.InstructorCourse;
-import com.sombra.promotion.utils.InsertUtils;
-import com.sombra.promotion.utils.SelectUtils;
-import org.jooq.DSLContext;
+import com.sombra.promotion.testHelpers.InsertUtils;
+import com.sombra.promotion.testHelpers.SelectUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -21,7 +20,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 @JooqTest
-@Import(TestUtilsConfiguration.class)
+@Import(TestHelpersConfiguration.class)
 @ComponentScan(basePackageClasses = {
         InstructorCourseRepository.class,
         UserRepository.class,
