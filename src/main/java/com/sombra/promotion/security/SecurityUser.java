@@ -5,17 +5,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 public class SecurityUser implements UserDetails {
 
     private final String username;
     private final String password;
     private final List<GrantedAuthority> authorities;
+    private final UUID salt;
 
-    public SecurityUser(String username, String password, List<GrantedAuthority> authorities) {
+    public SecurityUser(String username, String password, List<GrantedAuthority> authorities, UUID salt) {
         this.username = username;
         this.password = password;
         this.authorities = authorities;
+        this.salt = salt;
     }
 
 
@@ -53,4 +56,9 @@ public class SecurityUser implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public UUID getSalt() {
+        return salt;
+    }
+
 }

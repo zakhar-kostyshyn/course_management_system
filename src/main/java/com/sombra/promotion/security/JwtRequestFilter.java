@@ -43,33 +43,24 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = authorizationHeader.substring(7);
-        DecodedJWT decodedToken = jwtTokenService.decode(token);
-
-        if (decodedToken.getExpiresAtAsInstant().isBefore(Instant.now())) {
-            log.warn("Token has been expired");
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        String username = decodedToken.getSubject();
-
-        if (username == null || username.isBlank()) {
-            filterChain.doFilter(request, response);
-            log.warn("Username from token is null or blank");
-            return;
-        }
-
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             log.warn("Security context already fulfilled");
-            filterChain.doFilter(request, response);
             return;
         }
+
+        String token = authorizationHeader.substring(7);
+        DecodedJWT decodedToken = jwtTokenService.decode(token);
+        if (decodedToken.getExpiresAtAsInstant().isBefore(Instant.now()))
+            throw new RuntimeException("Token has been expired");
+
+        String username = decodedToken.getSubject();
+        if (username == null || username.isBlank())
+            throw new RuntimeException("Username from token is null or blank");
 
         UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(username);
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                 userDetails.getUsername(),
-                userDetails.getPassword(),
+                null,
                 userDetails.getAuthorities()
         );
         usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
