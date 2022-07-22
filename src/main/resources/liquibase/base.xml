@@ -12,7 +12,7 @@
     </changeSet>
 
     <changeSet id="b962dd8f-f434-4d88-8d56-d4e884316581" author="Zakhar Kostyshyn">
-        <preConditions>
+        <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="user"/>
                 <tableExists tableName="role"/>

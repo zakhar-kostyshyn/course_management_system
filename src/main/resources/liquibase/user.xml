@@ -5,28 +5,14 @@
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
     <changeSet id="ee506d8b-9b40-4f66-9e93-e83cca624103" author="Zakhar Kostyshyn">
-        <preConditions>
+        <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">
                 select count(*)
                 from "user" u
-                         left join user_role ur on u.id = ur.user_id
+                left join user_role ur on u.id = ur.user_id
             </sqlCheck>
         </preConditions>
         <sqlFile path="sql/predefine_admin.sql" relativeToChangelogFile="true" splitStatements="false"/>
-    </changeSet>
-
-    <changeSet id="eba85b5b-e7a3-4570-a479-9dcf288355ab" author="Zakhar Kostyshyn">
-        <preConditions>
-            <tableExists tableName="user"/>
-            <not>
-                <columnExists tableName="user" columnName="salt"/>
-            </not>
-        </preConditions>
-        <addColumn tableName="user">
-            <column name="salt" type="uuid" defaultValueComputed="uuid_generate_v4()">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
     </changeSet>
     
 </databaseChangeLog>
