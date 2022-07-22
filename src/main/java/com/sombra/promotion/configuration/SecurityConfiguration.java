@@ -47,6 +47,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/instructor/**").hasAnyRole("ROLE_INSTRUCTOR", "ROLE_ADMIN")
                 .antMatchers("/student/**").hasAnyRole("ROLE_STUDENT", "ROLE_ADMIN")
                 .antMatchers("/", "/register", "/login").permitAll()
+                .antMatchers("/swagger", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
