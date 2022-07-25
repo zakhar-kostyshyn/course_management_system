@@ -80,18 +80,14 @@ class UserRoleRepositoryTest {
         @Test
         void must_insert_user() {
 
-            // given
-            UUID salt = UUID.randomUUID();
-
             // act
-            UUID userId = repository.insertUser("test-username1", "test-hashedPassword1", salt, student);
+            UUID userId = repository.insertUser("test-username1", "test-hashedPassword1", student);
 
             // verify
             User result = select.user(userId);
             assertThat(result, allOf(
                     hasProperty("username", is("test-username1")),
                     hasProperty("password", is("test-hashedPassword1")),
-                    hasProperty("salt", is(salt)),
                     hasProperty("id", notNullValue())
             ));
 
@@ -100,11 +96,8 @@ class UserRoleRepositoryTest {
         @Test
         void must_insert_user_role() {
 
-            // given
-            UUID salt = UUID.randomUUID();
-
             // act
-            UUID userId = repository.insertUser("test-username1", "test-hashedPassword1", salt, student);
+            UUID userId = repository.insertUser("test-username1", "test-hashedPassword1", student);
 
             // verify
             RoleEnum resultRoleStudentName = select.roleTypeForUserWith(userId);

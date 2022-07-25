@@ -43,7 +43,7 @@ public class UserRepository {
     }
 
     public List<User> selectStudentsByCourseId(UUID courseId) {
-        return ctx.select(USER.ID, USER.USERNAME, USER.PASSWORD, USER.SALT)
+        return ctx.select(USER.ID, USER.USERNAME, USER.PASSWORD)
                 .from(COURSE)
                 .join(STUDENT_COURSE).on(STUDENT_COURSE.COURSE_ID.eq(COURSE.ID))
                 .join(USER).on(USER.ID.eq(STUDENT_COURSE.STUDENT_ID))

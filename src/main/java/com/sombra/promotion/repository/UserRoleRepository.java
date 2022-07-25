@@ -48,13 +48,12 @@ public class UserRoleRepository {
     public UUID insertUser(
             String username,
             String hashedPassword,
-            UUID salt,
             RoleEnum roleEnum
     ) {
         UUID createdUserID =
                 requireNonNull(
-                        ctx.insertInto(USER, USER.USERNAME, USER.PASSWORD, USER.SALT)
-                                .values(username, hashedPassword, salt)
+                        ctx.insertInto(USER, USER.USERNAME, USER.PASSWORD)
+                                .values(username, hashedPassword)
                                 .returningResult(USER.ID)
                                 .fetchOne()
                 ).value1();

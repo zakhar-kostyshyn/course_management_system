@@ -133,18 +133,15 @@ class UserRepositoryTest {
             assertThat(result, allOf(
                     hasItem(allOf(
                             hasProperty("username", is(givenUser1)),
-                            hasProperty("password", is("test-password")),
-                            hasProperty("salt", notNullValue())
+                            hasProperty("password", is("test-password"))
                     )),
                     hasItem(allOf(
                             hasProperty("username", is(givenUser2)),
-                            hasProperty("password", is("test-password")),
-                            hasProperty("salt", notNullValue())
+                            hasProperty("password", is("test-password"))
                     )),
                     hasItem(allOf(
                             hasProperty("username", is(givenUser3)),
-                            hasProperty("password", is("test-password")),
-                            hasProperty("salt", notNullValue())
+                            hasProperty("password", is("test-password"))
                     ))
             ));
 
@@ -162,9 +159,7 @@ class UserRepositoryTest {
             assertThat(user, allOf(
                     hasProperty("id", is(userId)),
                     hasProperty("username", is(TEST_USERNAME)),
-                    hasProperty("password", is(TEST_PASSWORD)),
-                    hasProperty("salt", notNullValue())
-
+                    hasProperty("password", is(TEST_PASSWORD))
             ));
         }
 
@@ -181,9 +176,7 @@ class UserRepositoryTest {
             assertThat(user, allOf(
                     hasProperty("id", is(userId)),
                     hasProperty("username", is(TEST_USERNAME)),
-                    hasProperty("password", is(TEST_PASSWORD)),
-                    hasProperty("salt", notNullValue())
-
+                    hasProperty("password", is(TEST_PASSWORD))
             ));
         }
 

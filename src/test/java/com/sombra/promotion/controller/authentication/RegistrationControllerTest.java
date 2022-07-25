@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@Import({JacksonTestConfiguration.class, TestHelpersConfiguration.class})
+@Import(TestHelpersConfiguration.class)
 class RegistrationControllerTest {
 
     @MockBean
@@ -45,9 +45,9 @@ class RegistrationControllerTest {
 
     @Test
     void must_return_200_and_user() throws Exception {
-        var user = new User(TEST_UUID, TEST_USERNAME, TEST_PASSWORD, TEST_SALT);
-        when(userRoleRepository.insertUser(anyString(), anyString(), any(), eq(student)))
-                .thenReturn(TEST_UUID);
+        var user = new User(TEST_RANDOM_UUID, TEST_USERNAME, TEST_PASSWORD);
+        when(userRoleRepository.insertUser(anyString(), anyString(), eq(student)))
+                .thenReturn(TEST_RANDOM_UUID);
         when(userRepository.selectUserById(any())).thenReturn(user);
         var request = new RegistrationUserRequest(TEST_USERNAME, TEST_PASSWORD);
 
@@ -55,11 +55,10 @@ class RegistrationControllerTest {
                         .contentType(APPLICATION_JSON)
                         .content(jsonBuilderUtils.asJsonString(request)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", aMapWithSize(4)))
+                .andExpect(jsonPath("$", aMapWithSize(3)))
                 .andExpect(jsonPath("$.id", notNullValue()))
                 .andExpect(jsonPath("$.username", is(TEST_USERNAME)))
-                .andExpect(jsonPath("$.password", is(TEST_PASSWORD)))
-                .andExpect(jsonPath("$.salt", notNullValue()));
+                .andExpect(jsonPath("$.password", is(TEST_PASSWORD)));
     }
 
 }

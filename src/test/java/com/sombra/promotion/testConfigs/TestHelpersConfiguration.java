@@ -8,8 +8,10 @@ import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 
 @TestConfiguration
+@Import(JacksonTestConfiguration.class)
 public class TestHelpersConfiguration {
 
     @Bean public InsertUtils insertUtils(@Autowired DSLContext ctx) {

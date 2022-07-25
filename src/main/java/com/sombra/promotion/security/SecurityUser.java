@@ -12,13 +12,11 @@ public class SecurityUser implements UserDetails {
     private final String username;
     private final String password;
     private final List<GrantedAuthority> authorities;
-    private final UUID salt;
 
-    public SecurityUser(String username, String password, List<GrantedAuthority> authorities, UUID salt) {
+    public SecurityUser(String username, String password, List<GrantedAuthority> authorities) {
         this.username = username;
         this.password = password;
         this.authorities = authorities;
-        this.salt = salt;
     }
 
 
@@ -55,10 +53,6 @@ public class SecurityUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public UUID getSalt() {
-        return salt;
     }
 
 }

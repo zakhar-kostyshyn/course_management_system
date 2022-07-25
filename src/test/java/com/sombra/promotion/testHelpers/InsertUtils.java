@@ -20,16 +20,16 @@ public class InsertUtils {
     }
 
     public UUID user(String username, String password) {
-        return ctx.insertInto(USER, USER.USERNAME, USER.PASSWORD, USER.SALT)
-                .values(username, password, UUID.randomUUID())
+        return ctx.insertInto(USER, USER.USERNAME, USER.PASSWORD)
+                .values(username, password)
                 .returningResult(USER.ID)
                 .fetchOne()
                 .component1();
     }
 
     public UUID user(UUID id, String username, String password) {
-        return ctx.insertInto(USER, USER.ID, USER.USERNAME, USER.PASSWORD, USER.SALT)
-                .values(id, username, password, UUID.randomUUID())
+        return ctx.insertInto(USER, USER.ID, USER.USERNAME, USER.PASSWORD)
+                .values(id, username, password)
                 .returningResult(USER.ID)
                 .fetchOne()
                 .component1();

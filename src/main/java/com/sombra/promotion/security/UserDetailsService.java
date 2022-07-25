@@ -5,7 +5,6 @@ import com.sombra.promotion.repository.UserRoleRepository;
 import com.sombra.promotion.tables.pojos.Role;
 import com.sombra.promotion.tables.pojos.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +14,7 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
-public class SecurityUserDetailsService implements UserDetailsService {
+public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
@@ -31,8 +30,7 @@ public class SecurityUserDetailsService implements UserDetailsService {
         return new SecurityUser(
                 user.getUsername(),
                 user.getPassword(),
-                roles.stream().map(SecurityRole::new).collect(toList()),
-                user.getSalt()
+                roles.stream().map(SecurityRole::new).collect(toList())
         );
     }
 
