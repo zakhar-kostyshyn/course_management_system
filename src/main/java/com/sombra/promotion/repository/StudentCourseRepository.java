@@ -18,11 +18,22 @@ public class StudentCourseRepository {
 
     public void setStudentForCourse(String studentUsername, String courseName) {
         UUID studentId = userRepository.selectUserIdByUsername(studentUsername);
-        UUID courseId = courseRepository.selectCourseIdByName(courseName);
+        UUID courseId = courseRepository.selectCourseIdBy(courseName);
 
         ctx.insertInto(STUDENT_COURSE, STUDENT_COURSE.STUDENT_ID, STUDENT_COURSE.COURSE_ID)
                 .values(studentId, courseId)
                 .execute();
+    }
+
+    public boolean existStudentCourseBy(UUID courseId, String student) {
+        UUID studentId = userRepository.selectUserIdByUsername(student);
+        return ctx.fetchExists(
+                ctx.select()
+                        .from(STUDENT_COURSE)
+                        .where(STUDENT_COURSE.COURSE_ID.eq(courseId)
+                                .and(STUDENT_COURSE.STUDENT_ID.eq(studentId))
+                        )
+        );
     }
 
 }

@@ -1,5 +1,6 @@
 package com.sombra.promotion.repository;
 
+import com.sombra.promotion.tables.pojos.User;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
@@ -20,13 +21,13 @@ public class InstructorCourseRepository {
 
     public void setInstructorForCourse(String instructorUsername, String courseName) {
         UUID instructorId = userRepository.selectUserIdByUsername(instructorUsername);
-        UUID courseId = courseRepository.selectCourseIdByName(courseName);
+        UUID courseId = courseRepository.selectCourseIdBy(courseName);
         ctx.insertInto(INSTRUCTOR_COURSE, INSTRUCTOR_COURSE.INSTRUCTOR_ID, INSTRUCTOR_COURSE.COURSE_ID)
                 .values(instructorId, courseId)
                 .execute();
     }
 
-    public void insertCourse(String course, String instructor) {
+    public UUID insertCourse(String course, String instructor) {
         UUID instructorId = userRepository.selectUserIdByUsername(instructor);
         UUID courseId = requireNonNull(ctx.insertInto(COURSE, COURSE.NAME)
                 .values(course)
@@ -36,5 +37,18 @@ public class InstructorCourseRepository {
         ctx.insertInto(INSTRUCTOR_COURSE, INSTRUCTOR_COURSE.INSTRUCTOR_ID, INSTRUCTOR_COURSE.COURSE_ID)
                 .values(instructorId, courseId)
                 .execute();
+        return courseId;
     }
+
+    public boolean existInstructorCourseBy(UUID courseId, String instructor) {
+        UUID instructorId = userRepository.selectUserIdByUsername(instructor);
+        return ctx.fetchExists(
+                ctx.select()
+                        .from(INSTRUCTOR_COURSE)
+                        .where(INSTRUCTOR_COURSE.COURSE_ID.eq(courseId)
+                                .and(INSTRUCTOR_COURSE.INSTRUCTOR_ID.eq(instructorId))
+                        )
+        );
+    }
+
 }

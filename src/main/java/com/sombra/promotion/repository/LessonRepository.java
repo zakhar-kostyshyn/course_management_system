@@ -19,7 +19,7 @@ public class LessonRepository {
     private final DSLContext ctx;
     private final CourseRepository courseRepository;
 
-    public List<Lesson> selectLessonsByCourse(String courseName) {
+    public List<Lesson> selectLessonsByCourseName(String courseName) {
         return ctx.select(LESSON.ID, LESSON.NAME, LESSON.COURSE_ID)
                 .from(LESSON)
                 .join(COURSE).on(COURSE.ID.eq(LESSON.COURSE_ID))
@@ -27,8 +27,16 @@ public class LessonRepository {
                 .fetchInto(Lesson.class);
     }
 
+    public List<Lesson> selectLessonsByCourseId(UUID courseId) {
+        return ctx.select(LESSON.ID, LESSON.NAME, LESSON.COURSE_ID)
+                .from(LESSON)
+                .join(COURSE).on(COURSE.ID.eq(LESSON.COURSE_ID))
+                .where(COURSE.ID.eq(courseId))
+                .fetchInto(Lesson.class);
+    }
+
     public UUID selectLessonByNameAndCourse(String lessonName, String courseName) {
-        UUID courseId = courseRepository.selectCourseIdByName(courseName);
+        UUID courseId = courseRepository.selectCourseIdBy(courseName);
         return requireNonNull(ctx.select(LESSON.ID)
                 .from(LESSON)
                 .where(LESSON.COURSE_ID.eq(courseId).and(LESSON.NAME.eq(lessonName)))
@@ -36,11 +44,20 @@ public class LessonRepository {
         ).component1();
     }
 
-    public void insertLesson(String lesson, String course) {
-        UUID courseId = courseRepository.selectCourseIdByName(course);
-        ctx.insertInto(LESSON, LESSON.NAME, LESSON.COURSE_ID)
+    public UUID insertLesson(String lesson, String course) {
+        UUID courseId = courseRepository.selectCourseIdBy(course);
+        return requireNonNull(ctx.insertInto(LESSON, LESSON.NAME, LESSON.COURSE_ID)
                 .values(lesson, courseId)
-                .execute();
+                .returningResult(LESSON.ID)
+                .fetchOne())
+                .component1();
+    }
+
+    public Lesson selectLessonBy(UUID id) {
+        return ctx.select()
+                .from(LESSON)
+                .where(LESSON.ID.eq(id))
+                .fetchSingleInto(Lesson.class);
     }
 
 

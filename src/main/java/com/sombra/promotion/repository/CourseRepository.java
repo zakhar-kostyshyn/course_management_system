@@ -20,12 +20,26 @@ public class CourseRepository {
 
     private final DSLContext ctx;
 
-    public UUID selectCourseIdByName(String courseName) {
+    public UUID selectCourseIdBy(String courseName) {
         return requireNonNull(ctx.select(COURSE.ID)
                 .from(COURSE)
                 .where(COURSE.NAME.eq(courseName))
                 .fetchOne()
         ).component1();
+    }
+
+    public Course selectCourseBy(String courseName) {
+        return ctx.select()
+                .from(COURSE)
+                .where(COURSE.NAME.eq(courseName))
+                .fetchSingleInto(Course.class);
+    }
+
+    public Course selectCourseBy(UUID id) {
+        return ctx.select()
+                .from(COURSE)
+                .where(COURSE.ID.eq(id))
+                .fetchSingleInto(Course.class);
     }
 
     public List<Course> selectCoursesByStudent(String student) {
