@@ -16,3 +16,5 @@ springdoc:
     path: ${SWAGGER_URL}
 security:
   secret: ${SECURITY_SECRET}
+app:
+  max-course-for-student: 5

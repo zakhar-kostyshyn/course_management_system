@@ -25,14 +25,23 @@ public class StudentCourseRepository {
                 .execute();
     }
 
-    public boolean existStudentCourseBy(UUID courseId, String student) {
-        UUID studentId = userRepository.selectUserIdByUsername(student);
+    public boolean existStudentCourseBy(UUID courseId, String studentUsername) {
+        UUID studentId = userRepository.selectUserIdByUsername(studentUsername);
         return ctx.fetchExists(
                 ctx.select()
                         .from(STUDENT_COURSE)
                         .where(STUDENT_COURSE.COURSE_ID.eq(courseId)
                                 .and(STUDENT_COURSE.STUDENT_ID.eq(studentId))
                         )
+        );
+    }
+
+    public int countAmountStudentCourseBy(String studentUsername) {
+        UUID studentId = userRepository.selectUserIdByUsername(studentUsername);
+        return ctx.fetchCount(
+                ctx.select()
+                        .from(STUDENT_COURSE)
+                        .where(STUDENT_COURSE.STUDENT_ID.eq(studentId))
         );
     }
 
