@@ -1,8 +1,8 @@
 package com.sombra.promotion.service;
 
+import com.sombra.promotion.dto.details.InstructorCourseDetails;
 import com.sombra.promotion.dto.request.AssignInstructorForCourseRequest;
 import com.sombra.promotion.dto.request.CreateCourseRequest;
-import com.sombra.promotion.dto.details.InstructorCourseDetails;
 import com.sombra.promotion.exception.NotFoundCourseBelongsForInstructorException;
 import com.sombra.promotion.factory.InstructorCourseDetailsFactory;
 import com.sombra.promotion.repository.InstructorCourseRepository;
@@ -10,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
-
-import static java.lang.String.format;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +30,7 @@ public class InstructorCourseService {
 
     public void assertCourseBelongsToInstructor(UUID courseId, String instructor) {
         boolean isExist = instructorCourseRepository.existInstructorCourseBy(courseId, instructor);
-        if (!isExist) throw new NotFoundCourseBelongsForInstructorException(format("Course with ID: %s and instructor with username: %s", courseId, instructor));
+        if (!isExist) throw new NotFoundCourseBelongsForInstructorException(courseId, instructor);
     }
 
 }
