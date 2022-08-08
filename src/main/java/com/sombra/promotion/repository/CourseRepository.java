@@ -60,4 +60,12 @@ public class CourseRepository {
                 .fetchInto(Course.class);
     }
 
+    public UUID insertCourse(String course) {
+        return requireNonNull(ctx.insertInto(COURSE, COURSE.NAME)
+                .values(course)
+                .returning(COURSE.ID)
+                .fetchAny()
+        ).component1();
+    }
+
 }

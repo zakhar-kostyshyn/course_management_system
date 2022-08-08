@@ -3,6 +3,7 @@ package com.sombra.promotion.repository;
 import com.sombra.promotion.tables.pojos.Lesson;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
+import org.jooq.Record1;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,6 +12,8 @@ import java.util.UUID;
 import static com.sombra.promotion.tables.Course.COURSE;
 import static com.sombra.promotion.tables.Lesson.LESSON;
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
+import static org.jooq.impl.DSL.row;
 
 @Repository
 @RequiredArgsConstructor
@@ -44,13 +47,13 @@ public class LessonRepository {
         ).component1();
     }
 
-    public UUID insertLesson(String lesson, String course) {
+    public List<UUID> insertLesson(List<String> lessons, String course) {
         UUID courseId = courseRepository.selectCourseIdBy(course);
-        return requireNonNull(ctx.insertInto(LESSON, LESSON.NAME, LESSON.COURSE_ID)
-                .values(lesson, courseId)
+        return ctx.insertInto(LESSON, LESSON.NAME, LESSON.COURSE_ID)
+                .values(lessons.stream().map(lesson -> row(lesson, courseId)).collect(toList()))
                 .returningResult(LESSON.ID)
-                .fetchOne())
-                .component1();
+                .fetch()
+                .map(Record1::component1);
     }
 
     public Lesson selectLessonBy(UUID id) {

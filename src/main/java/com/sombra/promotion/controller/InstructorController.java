@@ -2,7 +2,7 @@ package com.sombra.promotion.controller;
 
 import com.sombra.promotion.dto.details.*;
 import com.sombra.promotion.dto.request.CreateCourseRequest;
-import com.sombra.promotion.dto.request.CreateLessonRequest;
+import com.sombra.promotion.dto.request.CreateLessonsRequest;
 import com.sombra.promotion.dto.request.GiveFinalFeedbackRequest;
 import com.sombra.promotion.dto.request.PutMarkRequest;
 import com.sombra.promotion.security.SecurityUser;
@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -21,9 +22,9 @@ public class InstructorController {
     private final MarkService markService;
     private final FeedbackService feedbackService;
     private final CourseService courseService;
-    private final InstructorCourseService instructorCourseService;
     private final LessonService lessonService;
     private final InstructorStudentCourseService instructorStudentCourseService;
+    private final CreateCourseService createCourseService;
 
     @PatchMapping("/mark")
     public MarkDetails putMarkForLesson(@RequestBody PutMarkRequest request) {
@@ -41,12 +42,12 @@ public class InstructorController {
     }
 
     @PostMapping("/course")
-    public InstructorCourseDetails createCourse(@RequestBody CreateCourseRequest request) {
-        return instructorCourseService.createCourse(request);
+    public CourseInstructorLessonsDetails createCourse(@RequestBody CreateCourseRequest request) {
+        return createCourseService.createCourse(request);
     }
 
     @PostMapping("/lesson")
-    public LessonDetails createLesson(@RequestBody CreateLessonRequest request) {
+    public List<LessonDetails> createLesson(@RequestBody CreateLessonsRequest request) {
         return lessonService.createLesson(request);
     }
 

@@ -1,15 +1,15 @@
 package com.sombra.promotion.repository;
 
-import com.sombra.promotion.tables.pojos.User;
+import com.sombra.promotion.tables.pojos.InstructorCourse;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
-import static com.sombra.promotion.tables.Course.COURSE;
 import static com.sombra.promotion.tables.InstructorCourse.INSTRUCTOR_COURSE;
-import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
 
 @Repository
 @RequiredArgsConstructor
@@ -19,25 +19,26 @@ public class InstructorCourseRepository {
     private final UserRepository userRepository;
     private final CourseRepository courseRepository;
 
-    public void setInstructorForCourse(String instructorUsername, String courseName) {
+    public InstructorCourse setInstructorForCourse(String instructorUsername, String courseName) {
         UUID instructorId = userRepository.selectUserIdByUsername(instructorUsername);
         UUID courseId = courseRepository.selectCourseIdBy(courseName);
-        ctx.insertInto(INSTRUCTOR_COURSE, INSTRUCTOR_COURSE.INSTRUCTOR_ID, INSTRUCTOR_COURSE.COURSE_ID)
+        return ctx.insertInto(INSTRUCTOR_COURSE, INSTRUCTOR_COURSE.INSTRUCTOR_ID, INSTRUCTOR_COURSE.COURSE_ID)
                 .values(instructorId, courseId)
-                .execute();
+                .returningResult(INSTRUCTOR_COURSE.INSTRUCTOR_ID, INSTRUCTOR_COURSE.COURSE_ID)
+                .fetchSingleInto(InstructorCourse.class);
     }
 
-    public UUID insertCourse(String course, String instructor) {
+    public InstructorCourse insertInstructorCourse(String courseName, String instructor) {
         UUID instructorId = userRepository.selectUserIdByUsername(instructor);
-        UUID courseId = requireNonNull(ctx.insertInto(COURSE, COURSE.NAME)
-                .values(course)
-                .returning(COURSE.ID)
-                .fetchAny()
-        ).component1();
-        ctx.insertInto(INSTRUCTOR_COURSE, INSTRUCTOR_COURSE.INSTRUCTOR_ID, INSTRUCTOR_COURSE.COURSE_ID)
+        UUID courseId = courseRepository.selectCourseIdBy(courseName);
+        return ctx.insertInto(INSTRUCTOR_COURSE, INSTRUCTOR_COURSE.INSTRUCTOR_ID, INSTRUCTOR_COURSE.COURSE_ID)
                 .values(instructorId, courseId)
-                .execute();
-        return courseId;
+                .returningResult(INSTRUCTOR_COURSE.INSTRUCTOR_ID, INSTRUCTOR_COURSE.COURSE_ID)
+                .fetchSingleInto(InstructorCourse.class);
+    }
+
+    public List<InstructorCourse> insertInstructorCourse(String course, List<String> instructors) {
+        return instructors.stream().map(instructor -> insertInstructorCourse(course, instructor)).collect(toList());
     }
 
     public boolean existInstructorCourseBy(UUID courseId, String instructor) {

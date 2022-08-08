@@ -9,7 +9,7 @@ import java.util.UUID;
 public class CourseDetails {
 
     @NonNull private UUID id;
-    @NonNull private String username;
+    @NonNull private String courseName;
 
 }
 

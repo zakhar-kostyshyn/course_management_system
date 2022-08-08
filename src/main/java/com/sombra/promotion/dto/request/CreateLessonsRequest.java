@@ -4,12 +4,13 @@ import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @Data
 @RequiredArgsConstructor
-public class CreateLessonRequest {
+public class CreateLessonsRequest {
 
-    @NonNull private final String instructor;
     @NonNull private final String course;
-    @NonNull private final String lesson;
+    @NonNull private final List<String> lessons;
 
 }

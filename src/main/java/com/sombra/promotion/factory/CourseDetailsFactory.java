@@ -25,7 +25,7 @@ public class CourseDetailsFactory {
     private CourseDetails build(Course course) {
         return CourseDetails.builder()
                 .id(course.getId())
-                .username(course.getName())
+                .courseName(course.getName())
                 .build();
     }
 
