@@ -14,6 +14,7 @@ import com.sombra.promotion.service.StudentLessonCourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
@@ -33,8 +34,15 @@ public class StudentController {
     }
 
     @PutMapping("/homework")
-    public HomeworkDetails uploadHomework(@RequestBody UploadHomeworkRequest request) {
-        return homeworkService.saveHomework(request);
+    public HomeworkDetails uploadHomework(
+            @RequestParam MultipartFile homework,
+            @RequestParam String student,
+            @RequestParam String lesson,
+            @RequestParam String course
+    ) {
+        return homeworkService.saveHomework(new UploadHomeworkRequest(
+                homework, student, lesson, course
+        ));
     }
 
     @GetMapping("/courses")
