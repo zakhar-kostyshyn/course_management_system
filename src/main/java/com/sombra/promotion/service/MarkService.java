@@ -7,6 +7,7 @@ import com.sombra.promotion.repository.MarkRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -19,6 +20,10 @@ public class MarkService {
     public MarkDetails assignMark(PutMarkRequest request) {
         UUID insertMarkId = markRepository.insertMark(request);
         return markDetailsFactory.build(insertMarkId);
+    }
+
+    public List<MarkDetails> getMarksForStudents(String student, List<UUID> lessonsIds) {
+        return markDetailsFactory.build(markRepository.selectMarksByStudentAndLessons(student, lessonsIds));
     }
 
 }

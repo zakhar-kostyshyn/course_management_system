@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 import static com.sombra.promotion.tables.Feedback.FEEDBACK;
@@ -33,11 +34,23 @@ public class FeedbackRepository {
 
     }
 
-    public Feedback selectHomeworkBy(UUID id) {
+    public Feedback selectFeedbackBy(UUID id) {
         return ctx.select()
                 .from(FEEDBACK)
                 .where(FEEDBACK.ID.eq(id))
                 .fetchSingleInto(Feedback.class);
+    }
+
+    public List<Feedback> selectFeedbackBy(String student, String course) {
+
+        UUID studentId = userRepository.selectUserIdByUsername(student);
+        UUID courseId = courseRepository.selectCourseIdBy(course);
+
+        return ctx.select(FEEDBACK.ID, FEEDBACK.FEEDBACK_, FEEDBACK.STUDENT_ID, FEEDBACK.INSTRUCTOR_ID, FEEDBACK.COURSE_ID)
+                .from(FEEDBACK)
+                .where(FEEDBACK.COURSE_ID.eq(courseId)
+                        .and(FEEDBACK.STUDENT_ID.eq(studentId))
+                ).fetchInto(Feedback.class);
     }
 
 }

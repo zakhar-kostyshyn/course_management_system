@@ -1,16 +1,11 @@
 package com.sombra.promotion.controller;
 
-import com.sombra.promotion.dto.details.CoursesOfStudentDetails;
-import com.sombra.promotion.dto.details.HomeworkDetails;
-import com.sombra.promotion.dto.details.LessonsOfCourseAndStudentDetails;
-import com.sombra.promotion.dto.details.StudentCourseDetails;
+import com.sombra.promotion.dto.details.*;
 import com.sombra.promotion.dto.request.CourseSubscriptionRequest;
+import com.sombra.promotion.dto.request.FinishCourseRequest;
 import com.sombra.promotion.dto.request.UploadHomeworkRequest;
 import com.sombra.promotion.security.SecurityUser;
-import com.sombra.promotion.service.CourseService;
-import com.sombra.promotion.service.HomeworkService;
-import com.sombra.promotion.service.StudentCourseService;
-import com.sombra.promotion.service.StudentLessonCourseService;
+import com.sombra.promotion.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +22,7 @@ public class StudentController {
     private final HomeworkService homeworkService;
     private final CourseService courseService;
     private final StudentLessonCourseService studentLessonCourseService;
+    private final UserCourseFinishService userCourseFinishService;
 
     @PatchMapping("/subscribe")
     public StudentCourseDetails subscribeOnCourse(@RequestBody CourseSubscriptionRequest request) {
@@ -56,6 +52,11 @@ public class StudentController {
             @AuthenticationPrincipal SecurityUser authenticatedUser
     ) {
         return studentLessonCourseService.getStudentLessonsFromCourse(courseId, authenticatedUser);
+    }
+
+    @PostMapping("/finishCourse")
+    public FinishCourseDetails finishCourse(@RequestBody FinishCourseRequest request) {
+        return userCourseFinishService.finishCourse(request);
     }
 
 }

@@ -1,11 +1,13 @@
 package com.sombra.promotion.dto.details;
 
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NonNull;
 
 import java.util.UUID;
 
 @Builder
+@Getter
 public class LessonDetails {
 
     @NonNull private UUID lessonId;

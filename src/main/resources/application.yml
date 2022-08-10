@@ -17,4 +17,5 @@ springdoc:
 security:
   secret: ${SECURITY_SECRET}
 app:
+  minimum-course-pass-mark: 80
   max-course-for-student: 5

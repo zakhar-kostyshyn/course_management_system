@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 import static com.sombra.promotion.tables.Mark.MARK;
@@ -43,6 +44,14 @@ public class MarkRepository {
                         .returningResult(MARK.ID)
                         .fetchOne())
                 .value1();
+    }
+
+    public List<Mark> selectMarksByStudentAndLessons(String student, List<UUID> lessonIds) {
+        UUID studentId = userRepository.selectUserIdByUsername(student);
+        return ctx.select()
+                .from(MARK)
+                .where(MARK.STUDENT_ID.eq(studentId).and(MARK.LESSON_ID.in(lessonIds)))
+                .fetchInto(Mark.class);
     }
 
 }

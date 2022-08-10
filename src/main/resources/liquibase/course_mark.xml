@@ -1,0 +1,39 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="29d775a1-e557-4808-914a-8993f7e2308c" author="Zakhar Kostyshyn">
+        <preConditions>
+            <not>
+                <tableExists tableName="course_mark"/>
+            </not>
+        </preConditions>
+        <createTable tableName="course_mark">
+            <column name="id" type="UUID" defaultValueComputed="uuid_generate_v4()">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="mark" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="student_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="course_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="course_mark"
+                                 baseColumnNames="student_id"
+                                 constraintName="fk_mark_student"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="course_mark"
+                                 baseColumnNames="course_id"
+                                 constraintName="fk_course_mark_student"
+                                 referencedTableName="course"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>
