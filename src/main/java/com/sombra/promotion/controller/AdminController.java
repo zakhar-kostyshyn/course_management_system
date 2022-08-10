@@ -1,7 +1,7 @@
 package com.sombra.promotion.controller;
 
-import com.sombra.promotion.dto.details.InstructorCourseDetails;
-import com.sombra.promotion.dto.details.UserDetails;
+import com.sombra.promotion.dto.response.InstructorCourseResponse;
+import com.sombra.promotion.dto.response.UserResponse;
 import com.sombra.promotion.dto.request.AssignInstructorForCourseRequest;
 import com.sombra.promotion.dto.request.AssignRoleRequest;
 import com.sombra.promotion.service.InstructorCourseService;
@@ -23,17 +23,17 @@ public class AdminController {
 
 
     @PatchMapping("/assign/role")
-    public UserDetails assignRole(@RequestBody AssignRoleRequest request) {
+    public UserResponse assignRole(@RequestBody AssignRoleRequest request) {
         return userRoleService.assignRole(request);
     }
 
     @PatchMapping("/assign/instructor")
-    public InstructorCourseDetails assignInstructorForCourse(@RequestBody AssignInstructorForCourseRequest request) {
+    public InstructorCourseResponse assignInstructorForCourse(@RequestBody AssignInstructorForCourseRequest request) {
         return instructorCourseService.assignInstructorOnCourse(request);
     }
 
     @GetMapping("/users")
-    public List<UserDetails> getAllUsers() {
+    public List<UserResponse> getAllUsers() {
         return userService.getAllUsers();
     }
 

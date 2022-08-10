@@ -1,6 +1,6 @@
 package com.sombra.promotion.service;
 
-import com.sombra.promotion.dto.details.LessonsOfCourseAndStudentDetails;
+import com.sombra.promotion.dto.response.LessonsOfCourseAndStudentResponse;
 import com.sombra.promotion.factory.LessonsOfCourseAndStudentFactory;
 import com.sombra.promotion.repository.LessonRepository;
 import com.sombra.promotion.security.SecurityUser;
@@ -18,7 +18,7 @@ public class StudentLessonCourseService {
     private final StudentCourseService studentCourseService;
 
 
-    public LessonsOfCourseAndStudentDetails getStudentLessonsFromCourse(UUID courseId, SecurityUser authenticatedUser) {
+    public LessonsOfCourseAndStudentResponse getStudentLessonsFromCourse(UUID courseId, SecurityUser authenticatedUser) {
         String student = authenticatedUser.getUsername();
         studentCourseService.assertCourseContainsStudent(courseId, student);
         return lessonsOfCourseAndStudentFactory.build(

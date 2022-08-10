@@ -1,6 +1,6 @@
 package com.sombra.promotion.controller;
 
-import com.sombra.promotion.dto.details.UserDetails;
+import com.sombra.promotion.dto.response.UserResponse;
 import com.sombra.promotion.dto.request.RegistrationUserRequest;
 import com.sombra.promotion.service.UserRegistrationService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ public class RegistrationController {
     private final UserRegistrationService userRegistrationService;
 
     @PostMapping
-    public UserDetails register(@RequestBody RegistrationUserRequest request) {
+    public UserResponse register(@RequestBody RegistrationUserRequest request) {
         return userRegistrationService.register(request);
     }
 

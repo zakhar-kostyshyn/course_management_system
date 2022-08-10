@@ -1,6 +1,6 @@
 package com.sombra.promotion.factory;
 
-import com.sombra.promotion.dto.details.FeedbackDetails;
+import com.sombra.promotion.dto.response.FeedbackResponse;
 import com.sombra.promotion.repository.FeedbackRepository;
 import com.sombra.promotion.tables.pojos.Feedback;
 import lombok.RequiredArgsConstructor;
@@ -12,24 +12,24 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class FeedbackDetailsFactory {
+public class FeedbackFactory {
 
     private final FeedbackRepository feedbackRepository;
-    private final UserDetailsFactory userDetailsFactory;
-    private final CourseDetailsFactory courseDetailsFactory;
+    private final UserFactory userFactory;
+    private final CourseFactory courseFactory;
 
-    public FeedbackDetails build(UUID feedbackId) {
+    public FeedbackResponse build(UUID feedbackId) {
         Feedback feedback = feedbackRepository.selectFeedbackBy(feedbackId);
-        return FeedbackDetails.builder()
+        return FeedbackResponse.builder()
                 .feedbackId(feedback.getId())
                 .feedback(feedback.getFeedback())
-                .studentWhoReceive(userDetailsFactory.build(feedback.getStudentId()))
-                .instructorWhoLeft(userDetailsFactory.build(feedback.getInstructorId()))
-                .courseDetails(courseDetailsFactory.build(feedback.getCourseId()))
+                .studentWhoReceive(userFactory.build(feedback.getStudentId()))
+                .instructorWhoLeft(userFactory.build(feedback.getInstructorId()))
+                .courseResponse(courseFactory.build(feedback.getCourseId()))
                 .build();
     }
 
-    public List<FeedbackDetails> build(List<UUID> feedbacksIds) {
+    public List<FeedbackResponse> build(List<UUID> feedbacksIds) {
         return feedbacksIds.stream().map(this::build).collect(Collectors.toList());
     }
 

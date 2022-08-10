@@ -1,6 +1,6 @@
 package com.sombra.promotion.factory;
 
-import com.sombra.promotion.dto.details.HomeworkDetails;
+import com.sombra.promotion.dto.response.HomeworkResponse;
 import com.sombra.promotion.repository.HomeworkRepository;
 import com.sombra.promotion.tables.pojos.Homework;
 import lombok.RequiredArgsConstructor;
@@ -10,18 +10,18 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class HomeworkDetailsFactory {
+public class HomeworkFactory {
 
     private final HomeworkRepository homeworkRepository;
-    private final LessonDetailsFactory lessonDetailsFactory;
-    private final UserDetailsFactory userDetailsFactory;
+    private final LessonFactory lessonFactory;
+    private final UserFactory userFactory;
 
-    public HomeworkDetails build(UUID homeworkId) {
+    public HomeworkResponse build(UUID homeworkId) {
         Homework homework = homeworkRepository.selectHomeworkBy(homeworkId);
-        return HomeworkDetails.builder()
+        return HomeworkResponse.builder()
                 .homeworkId(homework.getId())
-                .lesson(lessonDetailsFactory.build(homework.getLessonId()))
-                .student(userDetailsFactory.build(homework.getStudentId()))
+                .lesson(lessonFactory.build(homework.getLessonId()))
+                .student(userFactory.build(homework.getStudentId()))
                 .build();
     }
 

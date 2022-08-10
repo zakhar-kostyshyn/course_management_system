@@ -1,7 +1,7 @@
 package com.sombra.promotion.service;
 
-import com.sombra.promotion.dto.details.UserDetails;
-import com.sombra.promotion.factory.UserDetailsFactory;
+import com.sombra.promotion.dto.response.UserResponse;
+import com.sombra.promotion.factory.UserFactory;
 import com.sombra.promotion.repository.UserRepository;
 import com.sombra.promotion.tables.pojos.User;
 import lombok.RequiredArgsConstructor;
@@ -17,17 +17,17 @@ import static java.util.stream.Collectors.toList;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final UserDetailsFactory userDetailsFactory;
+    private final UserFactory userFactory;
 
-    public List<UserDetails> getAllUsers() {
+    public List<UserResponse> getAllUsers() {
         return userRepository.selectAllUsers().stream()
                 .map(User::getId)
-                .map(userDetailsFactory::build)
+                .map(userFactory::build)
                 .collect(toList());
     }
 
-    public List<UserDetails> getStudentsByCourseId(UUID courseId) {
-        return userDetailsFactory.build(userRepository.selectStudentsByCourseId(courseId));
+    public List<UserResponse> getStudentsByCourseId(UUID courseId) {
+        return userFactory.build(userRepository.selectStudentsByCourseId(courseId));
     }
 
 }

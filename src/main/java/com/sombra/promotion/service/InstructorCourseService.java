@@ -1,9 +1,9 @@
 package com.sombra.promotion.service;
 
-import com.sombra.promotion.dto.details.InstructorCourseDetails;
+import com.sombra.promotion.dto.response.InstructorCourseResponse;
 import com.sombra.promotion.dto.request.AssignInstructorForCourseRequest;
 import com.sombra.promotion.exception.NotFoundCourseBelongsForInstructorException;
-import com.sombra.promotion.factory.InstructorCourseDetailsFactory;
+import com.sombra.promotion.factory.InstructorCourseFactory;
 import com.sombra.promotion.repository.InstructorCourseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,16 +16,16 @@ import java.util.UUID;
 public class InstructorCourseService {
 
     private final InstructorCourseRepository instructorCourseRepository;
-    private final InstructorCourseDetailsFactory instructorCourseDetailsFactory;
+    private final InstructorCourseFactory instructorCourseFactory;
 
-    public InstructorCourseDetails assignInstructorOnCourse(AssignInstructorForCourseRequest request) {
-        return instructorCourseDetailsFactory.build(
+    public InstructorCourseResponse assignInstructorOnCourse(AssignInstructorForCourseRequest request) {
+        return instructorCourseFactory.build(
                 instructorCourseRepository.setInstructorForCourse(request.getInstructor(), request.getCourse())
         );
     }
 
-    public List<InstructorCourseDetails> createInstructorCourse(String course, List<String> instructors) {
-        return instructorCourseDetailsFactory.build(
+    public List<InstructorCourseResponse> createInstructorCourse(String course, List<String> instructors) {
+        return instructorCourseFactory.build(
                 instructorCourseRepository.insertInstructorCourse(course, instructors)
         );
     }

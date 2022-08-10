@@ -1,6 +1,6 @@
 package com.sombra.promotion.factory;
 
-import com.sombra.promotion.dto.details.LessonDetails;
+import com.sombra.promotion.dto.response.LessonResponse;
 import com.sombra.promotion.repository.LessonRepository;
 import com.sombra.promotion.tables.pojos.Lesson;
 import lombok.RequiredArgsConstructor;
@@ -13,21 +13,21 @@ import static java.util.stream.Collectors.toList;
 
 @Component
 @RequiredArgsConstructor
-public class LessonDetailsFactory {
+public class LessonFactory {
 
     private final LessonRepository lessonRepository;
-    private final CourseDetailsFactory courseDetailsFactory;
+    private final CourseFactory courseFactory;
 
-    public LessonDetails build(UUID lessonId) {
+    public LessonResponse build(UUID lessonId) {
         Lesson lesson = lessonRepository.selectLessonBy(lessonId);
-        return LessonDetails.builder()
+        return LessonResponse.builder()
                 .lessonId(lesson.getId())
                 .lessonName(lesson.getName())
-                .course(courseDetailsFactory.build(lesson.getCourseId()))
+                .course(courseFactory.build(lesson.getCourseId()))
                 .build();
     }
 
-    public List<LessonDetails> build(List<UUID> lessonIds) {
+    public List<LessonResponse> build(List<UUID> lessonIds) {
         return lessonIds.stream().map(this::build).collect(toList());
     }
 

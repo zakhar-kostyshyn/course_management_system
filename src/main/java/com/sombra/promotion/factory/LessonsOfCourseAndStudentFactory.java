@@ -1,6 +1,6 @@
 package com.sombra.promotion.factory;
 
-import com.sombra.promotion.dto.details.LessonsOfCourseAndStudentDetails;
+import com.sombra.promotion.dto.response.LessonsOfCourseAndStudentResponse;
 import com.sombra.promotion.tables.pojos.Lesson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,22 +14,22 @@ import static java.util.stream.Collectors.toList;
 @RequiredArgsConstructor
 public class LessonsOfCourseAndStudentFactory {
 
-    private final UserDetailsFactory userDetailsFactory;
-    private final CourseDetailsFactory courseDetailsFactory;
-    private final LessonDetailsFactory lessonDetailsFactory;
+    private final UserFactory userFactory;
+    private final CourseFactory courseFactory;
+    private final LessonFactory lessonFactory;
 
-    public LessonsOfCourseAndStudentDetails build(
+    public LessonsOfCourseAndStudentResponse build(
             String student,
             UUID courseId,
             List<Lesson> lessons
     ) {
-        return LessonsOfCourseAndStudentDetails.builder()
+        return LessonsOfCourseAndStudentResponse.builder()
                 .lessons(lessons.stream()
                         .map(Lesson::getId)
-                        .map(lessonDetailsFactory::build)
+                        .map(lessonFactory::build)
                         .collect(toList())
-                ).student(userDetailsFactory.build(student))
-                .course(courseDetailsFactory.build(courseId))
+                ).student(userFactory.build(student))
+                .course(courseFactory.build(courseId))
                 .build();
     }
 

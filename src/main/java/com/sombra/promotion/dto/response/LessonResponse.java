@@ -1,4 +1,4 @@
-package com.sombra.promotion.dto.details;
+package com.sombra.promotion.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -8,10 +8,10 @@ import java.util.UUID;
 
 @Builder
 @Getter
-public class LessonDetails {
+public class LessonResponse {
 
     @NonNull private UUID lessonId;
     @NonNull private String lessonName;
-    @NonNull private CourseDetails course;
+    @NonNull private CourseResponse course;
 
 }

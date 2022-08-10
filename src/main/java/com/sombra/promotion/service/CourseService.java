@@ -1,11 +1,11 @@
 package com.sombra.promotion.service;
 
-import com.sombra.promotion.dto.details.CourseDetails;
-import com.sombra.promotion.dto.details.CoursesOfInstructorDetails;
-import com.sombra.promotion.dto.details.CoursesOfStudentDetails;
-import com.sombra.promotion.factory.CourseDetailsFactory;
-import com.sombra.promotion.factory.InstructorCourseDetailsFactory;
-import com.sombra.promotion.factory.StudentCourseDetailsFactory;
+import com.sombra.promotion.dto.response.CourseResponse;
+import com.sombra.promotion.dto.response.CoursesOfInstructorResponse;
+import com.sombra.promotion.dto.response.CoursesOfStudentResponse;
+import com.sombra.promotion.factory.CourseFactory;
+import com.sombra.promotion.factory.InstructorCourseFactory;
+import com.sombra.promotion.factory.StudentCourseFactory;
 import com.sombra.promotion.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,22 +15,22 @@ import org.springframework.stereotype.Service;
 public class CourseService {
 
     private final CourseRepository courseRepository;
-    private final InstructorCourseDetailsFactory instructorCourseDetailsFactory;
-    private final StudentCourseDetailsFactory studentCourseDetailsFactory;
-    private final CourseDetailsFactory courseDetailsFactory;
+    private final InstructorCourseFactory instructorCourseFactory;
+    private final StudentCourseFactory studentCourseFactory;
+    private final CourseFactory courseFactory;
 
-    public CoursesOfInstructorDetails getAllCoursesForInstructor(String instructor) {
-        return instructorCourseDetailsFactory.build(
+    public CoursesOfInstructorResponse getAllCoursesForInstructor(String instructor) {
+        return instructorCourseFactory.build(
                 instructor, courseRepository.selectCoursesByInstructor(instructor)
         );
     }
 
-    public CourseDetails createCourse(String courseName) {
-        return courseDetailsFactory.build(courseRepository.insertCourse(courseName));
+    public CourseResponse createCourse(String courseName) {
+        return courseFactory.build(courseRepository.insertCourse(courseName));
     }
 
-    public CoursesOfStudentDetails getAllCoursesForStudent(String student) {
-        return studentCourseDetailsFactory.build(
+    public CoursesOfStudentResponse getAllCoursesForStudent(String student) {
+        return studentCourseFactory.build(
                 student, courseRepository.selectCoursesByStudent(student)
         );
     }

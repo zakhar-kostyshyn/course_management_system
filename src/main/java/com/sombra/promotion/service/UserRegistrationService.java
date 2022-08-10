@@ -1,9 +1,9 @@
 package com.sombra.promotion.service;
 
 import com.sombra.promotion.dto.request.RegistrationUserRequest;
-import com.sombra.promotion.dto.details.UserDetails;
+import com.sombra.promotion.dto.response.UserResponse;
 import com.sombra.promotion.enums.RoleEnum;
-import com.sombra.promotion.factory.UserDetailsFactory;
+import com.sombra.promotion.factory.UserFactory;
 import com.sombra.promotion.repository.UserRoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,12 +17,12 @@ public class UserRegistrationService {
 
     private final UserRoleRepository userRoleRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UserDetailsFactory userDetailsFactory;
+    private final UserFactory userFactory;
 
-    public UserDetails register(RegistrationUserRequest request) {
+    public UserResponse register(RegistrationUserRequest request) {
         String hashedPassword = passwordEncoder.encode(request.getPassword());
         UUID createdUserId = userRoleRepository.insertUser(request.getUsername(), hashedPassword, RoleEnum.student);
-        return userDetailsFactory.build(createdUserId);
+        return userFactory.build(createdUserId);
     }
 
 }

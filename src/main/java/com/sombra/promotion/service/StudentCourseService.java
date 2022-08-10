@@ -1,10 +1,10 @@
 package com.sombra.promotion.service;
 
-import com.sombra.promotion.dto.details.StudentCourseDetails;
+import com.sombra.promotion.dto.response.StudentCourseResponse;
 import com.sombra.promotion.dto.request.CourseSubscriptionRequest;
 import com.sombra.promotion.exception.CoursesForStudentOverflowException;
 import com.sombra.promotion.exception.NotFoundCourseBelongsForStudentException;
-import com.sombra.promotion.factory.StudentCourseDetailsFactory;
+import com.sombra.promotion.factory.StudentCourseFactory;
 import com.sombra.promotion.repository.StudentCourseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,16 +17,16 @@ import java.util.UUID;
 public class StudentCourseService {
 
     private final StudentCourseRepository studentCourseRepository;
-    private final StudentCourseDetailsFactory studentCourseDetailsFactory;
+    private final StudentCourseFactory studentCourseFactory;
     @Value("${app.max-course-for-student}") private int maxCourseForStudent;
 
-    public StudentCourseDetails subscribeStudentOnCourse(CourseSubscriptionRequest request) {
+    public StudentCourseResponse subscribeStudentOnCourse(CourseSubscriptionRequest request) {
 
         int amount = studentCourseRepository.countAmountStudentCourseBy(request.getStudent());
         if (amount > maxCourseForStudent) throw new CoursesForStudentOverflowException(maxCourseForStudent);
 
         studentCourseRepository.setStudentForCourse(request.getStudent(), request.getCourse());
-        return studentCourseDetailsFactory.build(request.getStudent(), request.getCourse());
+        return studentCourseFactory.build(request.getStudent(), request.getCourse());
     }
 
     public void assertCourseContainsStudent(UUID courseId, String student) {

@@ -1,8 +1,8 @@
 package com.sombra.promotion.service;
 
 import com.sombra.promotion.dto.request.AssignRoleRequest;
-import com.sombra.promotion.dto.details.UserDetails;
-import com.sombra.promotion.factory.UserDetailsFactory;
+import com.sombra.promotion.dto.response.UserResponse;
+import com.sombra.promotion.factory.UserFactory;
 import com.sombra.promotion.repository.UserRoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,11 +13,11 @@ import org.springframework.stereotype.Service;
 public class UserRoleService {
 
     private final UserRoleRepository userRoleRepository;
-    private final UserDetailsFactory userDetailsFactory;
+    private final UserFactory userFactory;
 
-    public UserDetails assignRole(AssignRoleRequest request) {
+    public UserResponse assignRole(AssignRoleRequest request) {
         userRoleRepository.setRoleForUser(request.getUsername(), request.getRole());
-        return userDetailsFactory.build(request.getUsername());
+        return userFactory.build(request.getUsername());
     }
 
 }

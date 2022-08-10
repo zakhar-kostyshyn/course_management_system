@@ -1,7 +1,7 @@
 package com.sombra.promotion.factory;
 
-import com.sombra.promotion.dto.details.StudentsOfCourseAndInstructorDetails;
-import com.sombra.promotion.dto.details.UserDetails;
+import com.sombra.promotion.dto.response.StudentsOfCourseAndInstructorResponse;
+import com.sombra.promotion.dto.response.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,19 +12,19 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class StudentsOfCourseAndInstructorFactory {
 
-    private final CourseDetailsFactory courseDetailsFactory;
-    private final UserDetailsFactory userDetailsFactory;
+    private final CourseFactory courseFactory;
+    private final UserFactory userFactory;
 
-    public StudentsOfCourseAndInstructorDetails build(
+    public StudentsOfCourseAndInstructorResponse build(
             UUID courseId,
             String instructor,
-            List<UserDetails> students
+            List<UserResponse> students
     ) {
-        return StudentsOfCourseAndInstructorDetails
+        return StudentsOfCourseAndInstructorResponse
                 .builder()
-                .courseDetails(courseDetailsFactory.build(courseId))
+                .courseResponse(courseFactory.build(courseId))
                 .students(students)
-                .instructor(userDetailsFactory.build(instructor))
+                .instructor(userFactory.build(instructor))
                 .build();
     }
 

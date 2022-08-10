@@ -1,6 +1,6 @@
 package com.sombra.promotion.controller;
 
-import com.sombra.promotion.dto.details.*;
+import com.sombra.promotion.dto.response.*;
 import com.sombra.promotion.dto.request.CourseSubscriptionRequest;
 import com.sombra.promotion.dto.request.FinishCourseRequest;
 import com.sombra.promotion.dto.request.UploadHomeworkRequest;
@@ -25,12 +25,12 @@ public class StudentController {
     private final UserCourseFinishService userCourseFinishService;
 
     @PatchMapping("/subscribe")
-    public StudentCourseDetails subscribeOnCourse(@RequestBody CourseSubscriptionRequest request) {
+    public StudentCourseResponse subscribeOnCourse(@RequestBody CourseSubscriptionRequest request) {
         return studentCourseService.subscribeStudentOnCourse(request);
     }
 
     @PutMapping("/homework")
-    public HomeworkDetails uploadHomework(
+    public HomeworkResponse uploadHomework(
             @RequestParam MultipartFile homework,
             @RequestParam String student,
             @RequestParam String lesson,
@@ -42,12 +42,12 @@ public class StudentController {
     }
 
     @GetMapping("/courses")
-    public CoursesOfStudentDetails getAllCourses(@AuthenticationPrincipal SecurityUser authenticatedUser) {
+    public CoursesOfStudentResponse getAllCourses(@AuthenticationPrincipal SecurityUser authenticatedUser) {
         return courseService.getAllCoursesForStudent(authenticatedUser.getUsername());
     }
 
     @GetMapping("/course/{courseId}/lessons")
-    public LessonsOfCourseAndStudentDetails getStudentLessonsFromCourse(
+    public LessonsOfCourseAndStudentResponse getStudentLessonsFromCourse(
             @PathVariable UUID courseId,
             @AuthenticationPrincipal SecurityUser authenticatedUser
     ) {
@@ -55,7 +55,7 @@ public class StudentController {
     }
 
     @PostMapping("/finishCourse")
-    public FinishCourseDetails finishCourse(@RequestBody FinishCourseRequest request) {
+    public FinishCourseResponse finishCourse(@RequestBody FinishCourseRequest request) {
         return userCourseFinishService.finishCourse(request);
     }
 

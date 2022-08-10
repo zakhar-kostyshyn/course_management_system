@@ -1,6 +1,6 @@
 package com.sombra.promotion.factory;
 
-import com.sombra.promotion.dto.details.UserDetails;
+import com.sombra.promotion.dto.response.UserResponse;
 import com.sombra.promotion.enums.RoleEnum;
 import com.sombra.promotion.repository.UserRepository;
 import com.sombra.promotion.repository.UserRoleRepository;
@@ -16,28 +16,28 @@ import static java.util.stream.Collectors.toList;
 
 @Component
 @RequiredArgsConstructor
-public class UserDetailsFactory {
+public class UserFactory {
 
     private final UserRoleRepository userRoleRepository;
     private final UserRepository userRepository;
 
-    public UserDetails build(String username) {
+    public UserResponse build(String username) {
         return build(userRepository.selectUserByUsername(username));
     }
 
-    public UserDetails build(UUID id) {
+    public UserResponse build(UUID id) {
         return build(userRepository.selectUserById(id));
     }
 
-    public List<UserDetails> build(List<User> users) {
+    public List<UserResponse> build(List<User> users) {
         return users.stream().map(this::build).collect(toList());
     }
 
-    private UserDetails build(User user) {
+    private UserResponse build(User user) {
         List<RoleEnum> roles = userRoleRepository.selectRolesByUsername(user.getUsername()).stream()
                 .map(Role::getName)
                 .collect(toList());
-        return UserDetails.builder()
+        return UserResponse.builder()
                 .userId(user.getId())
                 .username(user.getUsername())
                 .roles(roles)

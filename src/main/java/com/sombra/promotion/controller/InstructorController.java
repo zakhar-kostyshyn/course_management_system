@@ -1,6 +1,6 @@
 package com.sombra.promotion.controller;
 
-import com.sombra.promotion.dto.details.*;
+import com.sombra.promotion.dto.response.*;
 import com.sombra.promotion.dto.request.CreateCourseRequest;
 import com.sombra.promotion.dto.request.CreateLessonsRequest;
 import com.sombra.promotion.dto.request.GiveFinalFeedbackRequest;
@@ -27,32 +27,32 @@ public class InstructorController {
     private final CreateCourseService createCourseService;
 
     @PatchMapping("/mark")
-    public MarkDetails putMarkForLesson(@RequestBody PutMarkRequest request) {
+    public MarkResponse putMarkForLesson(@RequestBody PutMarkRequest request) {
         return markService.assignMark(request);
     }
 
     @PostMapping("/feedback")
-    public FeedbackDetails giveFinalFeedback(@RequestBody GiveFinalFeedbackRequest request) {
+    public FeedbackResponse giveFinalFeedback(@RequestBody GiveFinalFeedbackRequest request) {
         return feedbackService.giveFeedbackForCourse(request);
     }
 
     @GetMapping("/courses/{instructor}")
-    public CoursesOfInstructorDetails allCourses(@PathVariable String instructor) {
+    public CoursesOfInstructorResponse allCourses(@PathVariable String instructor) {
         return courseService.getAllCoursesForInstructor(instructor);
     }
 
     @PostMapping("/course")
-    public CourseInstructorLessonsDetails createCourse(@RequestBody CreateCourseRequest request) {
+    public CourseInstructorLessonsResponse createCourse(@RequestBody CreateCourseRequest request) {
         return createCourseService.createCourse(request);
     }
 
     @PostMapping("/lesson")
-    public List<LessonDetails> createLesson(@RequestBody CreateLessonsRequest request) {
+    public List<LessonResponse> createLesson(@RequestBody CreateLessonsRequest request) {
         return lessonService.createLesson(request);
     }
 
     @GetMapping("/students/course/{courseId}")
-    public StudentsOfCourseAndInstructorDetails getStudentsInCourse(@PathVariable UUID courseId, @AuthenticationPrincipal SecurityUser authenticatedUser) {
+    public StudentsOfCourseAndInstructorResponse getStudentsInCourse(@PathVariable UUID courseId, @AuthenticationPrincipal SecurityUser authenticatedUser) {
         return instructorStudentCourseService.getAllStudentsByCourse(courseId, authenticatedUser);
     }
 

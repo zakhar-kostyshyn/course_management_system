@@ -1,4 +1,4 @@
-package com.sombra.promotion.dto.details;
+package com.sombra.promotion.dto.response;
 
 import com.sombra.promotion.enums.RoleEnum;
 import lombok.Builder;
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Builder
-public class UserDetails {
+public class UserResponse {
 
     @NonNull private UUID userId;
     @NonNull private String username;
