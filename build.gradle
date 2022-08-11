@@ -75,13 +75,14 @@ jooq {
                     database {
                         name = 'org.jooq.meta.postgres.PostgresDatabase'
                         inputSchema = 'public'
+                        includes = '.*'
+                        logSlowQueriesAfterSeconds = 20
+                        excludes = ''' databasechangelog | databasechangeloglock '''
                     }
                     generate {
-                        deprecated = false
-                        records = true
-                        pojos = true
-                        immutablePojos = false
-                        fluentSetters = true
+                        daos = true
+                        validationAnnotations = true
+                        springAnnotations = true
                     }
                     target {
                         packageName = 'com.sombra.promotion'
