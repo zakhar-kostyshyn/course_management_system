@@ -6,10 +6,10 @@ import static java.lang.String.format;
 
 public class NotFoundCourseBelongsForStudentException extends RuntimeException{
 
-    private final static String ERROR_MESSAGE = "Course with ID: %s and student with username: %s";
+    private final static String ERROR_MESSAGE = "Course with ID: %s and student with ID: %s";
 
-    public NotFoundCourseBelongsForStudentException(UUID courseId, String student) {
-        super(format(ERROR_MESSAGE, courseId, student));
+    public NotFoundCourseBelongsForStudentException(UUID studentId, UUID courseId) {
+        super(format(ERROR_MESSAGE, courseId, studentId));
     }
 
 }

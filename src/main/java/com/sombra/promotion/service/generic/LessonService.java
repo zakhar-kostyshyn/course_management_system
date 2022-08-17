@@ -1,0 +1,51 @@
+package com.sombra.promotion.service.generic;
+
+import com.sombra.promotion.util.UUIDUtil;
+import com.sombra.promotion.dto.response.LessonResponse;
+import com.sombra.promotion.dto.request.CreateLessonsRequest;
+import com.sombra.promotion.factory.generic.LessonFactory;
+import com.sombra.promotion.repository.LessonRepository;
+import com.sombra.promotion.tables.pojos.Lesson;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.UUID;
+
+import static java.util.stream.Collectors.toList;
+
+
+@Service
+@RequiredArgsConstructor
+public class LessonService {
+
+    private final LessonRepository lessonRepository;
+    private final LessonFactory lessonFactory;
+    private final UUIDUtil uuidUtil;
+
+    public List<LessonResponse> saveLessons(CreateLessonsRequest request) {
+        return request.getLessons().stream()
+                .map(lessonName -> saveLesson(lessonName, request.getCourseId()))
+                .collect(toList());
+    }
+
+    public LessonResponse saveLesson(String lessonName, UUID courseId) {
+        Lesson lesson = createLesson(lessonName, courseId);
+        lessonRepository.save(lesson);
+        return lessonFactory.build(lesson);
+    }
+
+    private Lesson createLesson(String lessonName, UUID courseId) {
+        Lesson lesson = new Lesson();
+        lesson.setId(uuidUtil.randomUUID());
+        lesson.setCourseId(courseId);
+        lesson.setName(lessonName);
+        return lesson;
+    }
+
+    public List<LessonResponse> getLessonsByCourse(UUID courseId) {
+        List<Lesson> lessons = lessonRepository.findByCourseId(courseId);
+        return lessonFactory.build(lessons);
+    }
+
+}

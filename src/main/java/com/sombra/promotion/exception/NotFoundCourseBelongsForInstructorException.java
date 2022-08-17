@@ -4,12 +4,12 @@ import java.util.UUID;
 
 import static java.lang.String.format;
 
-public class NotFoundCourseBelongsForInstructorException extends RuntimeException{
+public class NotFoundCourseBelongsForInstructorException extends RuntimeException {
 
-    private final static String ERROR_MESSAGE = "Course with ID: %s and instructor with username: %s";
+    private final static String ERROR_MESSAGE = "Course with ID: %s and instructor with ID: %s";
 
-    public NotFoundCourseBelongsForInstructorException(UUID courseId, String instructor) {
-        super(format(ERROR_MESSAGE, courseId, instructor));
+    public NotFoundCourseBelongsForInstructorException(UUID courseId, UUID instructorId) {
+        super(format(ERROR_MESSAGE, courseId, instructorId));
     }
 
 }
