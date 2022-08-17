@@ -1,15 +1,17 @@
 package com.sombra.promotion.dto.response;
 
-import lombok.Builder;
-import lombok.NonNull;
+import lombok.*;
 
 import java.util.List;
 
 @Builder
-public class LessonsOfCourseAndStudentResponse {
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class StudentCourseLessonsResponse {
 
-    @NonNull private List<LessonResponse> lessons;
     @NonNull private UserResponse student;
     @NonNull private CourseResponse course;
+    @NonNull private List<LessonResponse> lessons;
 
 }

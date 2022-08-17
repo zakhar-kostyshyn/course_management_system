@@ -1,17 +1,21 @@
 package com.sombra.promotion.dto.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UploadHomeworkRequest {
 
-    @NonNull private final MultipartFile homework;
-    @NonNull private final String student;
-    @NotNull private final String lesson;
-    @NotNull private final String course;
+    @NonNull private MultipartFile homework;
+    @NonNull private UUID studentId;
+    @NotNull private UUID lessonId;
 
 }

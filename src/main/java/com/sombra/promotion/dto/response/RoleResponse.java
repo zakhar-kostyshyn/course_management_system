@@ -3,16 +3,15 @@ package com.sombra.promotion.dto.response;
 import com.sombra.promotion.enums.RoleEnum;
 import lombok.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserResponse {
+public class RoleResponse {
 
-    @NonNull private UUID userId;
-    @NonNull private String username;
+    @NonNull private UUID id;
+    @NonNull private RoleEnum roleEnum;
 
 }

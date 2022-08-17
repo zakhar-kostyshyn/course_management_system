@@ -1,16 +1,16 @@
 package com.sombra.promotion.dto.request;
 
-import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class CreateLessonsRequest {
 
-    @NonNull private final String course;
-    @NonNull private final List<String> lessons;
+    @NonNull private UUID courseId;
+    @NonNull private List<String> lessons;
 
 }

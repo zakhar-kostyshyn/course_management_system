@@ -1,14 +1,20 @@
 package com.sombra.promotion.dto.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+import java.util.UUID;
+
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class GiveFinalFeedbackRequest {
 
-    @NonNull private final String feedback;
-    @NonNull private final String course;
-    @NonNull private final String student;
-    @NonNull private final String instructor;
+    @NonNull private String feedback;
+    @NonNull private UUID courseId;
+    @NonNull private UUID studentId;
+    @NonNull private UUID instructorId;
 
 }

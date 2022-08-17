@@ -1,18 +1,21 @@
 package com.sombra.promotion.dto.response;
 
-import lombok.Builder;
-import lombok.NonNull;
+import lombok.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Builder
-public class FinishCourseResponse {
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class CourseMarkResponse {
 
+    @NonNull private UUID id;
     @NonNull private UserResponse student;
     @NonNull private CourseResponse course;
     @NonNull private List<MarkResponse> courseMarks;
-    @NonNull private List<FeedbackResponse> feedbackDetails;      // we can get feedbacks from more than one instructor
     private boolean isCoursePassed;
-    private double finalMark;
+    private double mark;
 
 }

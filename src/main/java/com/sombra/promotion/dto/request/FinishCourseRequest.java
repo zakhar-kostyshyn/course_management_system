@@ -1,14 +1,16 @@
 package com.sombra.promotion.dto.request;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.NonNull;
+import lombok.*;
 
-@Getter
+import java.util.UUID;
+
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
 public class FinishCourseRequest {
 
-    @NonNull private String studentUsername;
-    @NonNull private String courseName;
+    @NonNull private UUID studentId;
+    @NonNull private UUID courseId;
 
 }

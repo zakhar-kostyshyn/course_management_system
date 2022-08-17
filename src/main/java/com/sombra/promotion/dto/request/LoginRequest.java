@@ -9,6 +9,8 @@ import lombok.NonNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginRequest {
+
     @NonNull private String username;
     @NonNull private String password;
+
 }
