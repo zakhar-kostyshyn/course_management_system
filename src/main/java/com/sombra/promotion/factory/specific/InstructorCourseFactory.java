@@ -1,13 +1,16 @@
-package com.sombra.promotion.factory;
+package com.sombra.promotion.factory.specific;
 
 import com.sombra.promotion.dto.response.InstructorCourseResponse;
 import com.sombra.promotion.dto.response.CoursesOfInstructorResponse;
+import com.sombra.promotion.factory.generic.CourseFactory;
+import com.sombra.promotion.factory.generic.UserFactory;
 import com.sombra.promotion.tables.pojos.Course;
 import com.sombra.promotion.tables.pojos.InstructorCourse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 import static java.util.stream.Collectors.toList;
 
@@ -29,9 +32,9 @@ public class InstructorCourseFactory {
         return instructorCourses.stream().map(this::build).collect(toList());
     }
 
-    public CoursesOfInstructorResponse build(String instructorUsername, List<Course> instructorCourses) {
+    public CoursesOfInstructorResponse build(UUID instructorId, List<Course> instructorCourses) {
         return CoursesOfInstructorResponse.builder()
-                .username(userFactory.build(instructorUsername))
+                .username(userFactory.build(instructorId))
                 .courses(
                         instructorCourses.stream()
                                 .map(Course::getId)
