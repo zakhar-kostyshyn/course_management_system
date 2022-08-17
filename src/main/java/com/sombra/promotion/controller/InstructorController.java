@@ -1,12 +1,17 @@
 package com.sombra.promotion.controller;
 
-import com.sombra.promotion.dto.response.*;
 import com.sombra.promotion.dto.request.CreateCourseRequest;
 import com.sombra.promotion.dto.request.CreateLessonsRequest;
 import com.sombra.promotion.dto.request.GiveFinalFeedbackRequest;
-import com.sombra.promotion.dto.request.PutMarkRequest;
+import com.sombra.promotion.dto.request.SaveMarkRequest;
+import com.sombra.promotion.dto.response.*;
 import com.sombra.promotion.security.SecurityUser;
-import com.sombra.promotion.service.*;
+import com.sombra.promotion.service.generic.FeedbackService;
+import com.sombra.promotion.service.generic.LessonService;
+import com.sombra.promotion.service.generic.MarkService;
+import com.sombra.promotion.service.generic.manyToMany.InstructorCourseService;
+import com.sombra.promotion.service.specific.CreateCourseService;
+import com.sombra.promotion.service.specific.InstructorStudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -21,24 +26,24 @@ public class InstructorController {
 
     private final MarkService markService;
     private final FeedbackService feedbackService;
-    private final CourseService courseService;
     private final LessonService lessonService;
-    private final InstructorStudentCourseService instructorStudentCourseService;
+    private final InstructorStudentService instructorStudentService;
+    private final InstructorCourseService instructorCourseService;
     private final CreateCourseService createCourseService;
 
     @PatchMapping("/mark")
-    public MarkResponse putMarkForLesson(@RequestBody PutMarkRequest request) {
-        return markService.assignMark(request);
+    public MarkResponse putMarkForLesson(@RequestBody SaveMarkRequest request) {
+        return markService.saveMark(request);
     }
 
     @PostMapping("/feedback")
     public FeedbackResponse giveFinalFeedback(@RequestBody GiveFinalFeedbackRequest request) {
-        return feedbackService.giveFeedbackForCourse(request);
+        return feedbackService.saveFeedback(request);
     }
 
-    @GetMapping("/courses/{instructor}")
-    public CoursesOfInstructorResponse allCourses(@PathVariable String instructor) {
-        return courseService.getAllCoursesForInstructor(instructor);
+    @GetMapping("/courses/{instructorId}")
+    public CoursesOfInstructorResponse allCourses(@PathVariable UUID instructorId) {
+        return instructorCourseService.getAllCoursesForInstructor(instructorId);
     }
 
     @PostMapping("/course")
@@ -48,12 +53,12 @@ public class InstructorController {
 
     @PostMapping("/lesson")
     public List<LessonResponse> createLesson(@RequestBody CreateLessonsRequest request) {
-        return lessonService.createLesson(request);
+        return lessonService.saveLessons(request);
     }
 
     @GetMapping("/students/course/{courseId}")
-    public StudentsOfCourseAndInstructorResponse getStudentsInCourse(@PathVariable UUID courseId, @AuthenticationPrincipal SecurityUser authenticatedUser) {
-        return instructorStudentCourseService.getAllStudentsByCourse(courseId, authenticatedUser);
+    public InstructorCourseStudentsResponse getStudentsInCourse(@AuthenticationPrincipal SecurityUser authenticatedUser, @PathVariable UUID courseId) {
+        return instructorStudentService.getAllStudentsInCourseForInstructor(authenticatedUser.getId(), courseId);
     }
 
 }

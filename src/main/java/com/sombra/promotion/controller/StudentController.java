@@ -1,11 +1,15 @@
 package com.sombra.promotion.controller;
 
-import com.sombra.promotion.dto.response.*;
 import com.sombra.promotion.dto.request.CourseSubscriptionRequest;
 import com.sombra.promotion.dto.request.FinishCourseRequest;
 import com.sombra.promotion.dto.request.UploadHomeworkRequest;
+import com.sombra.promotion.dto.response.*;
 import com.sombra.promotion.security.SecurityUser;
-import com.sombra.promotion.service.*;
+import com.sombra.promotion.service.generic.HomeworkService;
+import com.sombra.promotion.service.generic.manyToMany.StudentCourseService;
+import com.sombra.promotion.service.specific.FinishCourseService;
+import com.sombra.promotion.service.specific.StudentLessonService;
+import com.sombra.promotion.service.specific.StudentSubscriptionOnCourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -18,45 +22,44 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class StudentController {
 
-    private final StudentCourseService studentCourseService;
     private final HomeworkService homeworkService;
-    private final CourseService courseService;
-    private final StudentLessonCourseService studentLessonCourseService;
-    private final UserCourseFinishService userCourseFinishService;
+    private final StudentLessonService studentLessonService;
+    private final FinishCourseService finishCourseService;
+    private final StudentSubscriptionOnCourseService studentSubscriptionOnCourseService;
+    private final StudentCourseService studentCourseService;
 
     @PatchMapping("/subscribe")
     public StudentCourseResponse subscribeOnCourse(@RequestBody CourseSubscriptionRequest request) {
-        return studentCourseService.subscribeStudentOnCourse(request);
+        return studentSubscriptionOnCourseService.subscribeStudentOnCourse(request);
     }
 
     @PutMapping("/homework")
     public HomeworkResponse uploadHomework(
             @RequestParam MultipartFile homework,
-            @RequestParam String student,
-            @RequestParam String lesson,
-            @RequestParam String course
+            @RequestParam UUID studentId,
+            @RequestParam UUID lessonId
     ) {
         return homeworkService.saveHomework(new UploadHomeworkRequest(
-                homework, student, lesson, course
+                homework, studentId, lessonId
         ));
     }
 
     @GetMapping("/courses")
     public CoursesOfStudentResponse getAllCourses(@AuthenticationPrincipal SecurityUser authenticatedUser) {
-        return courseService.getAllCoursesForStudent(authenticatedUser.getUsername());
+        return studentCourseService.getAllCoursesForStudent(authenticatedUser.getId());
     }
 
     @GetMapping("/course/{courseId}/lessons")
-    public LessonsOfCourseAndStudentResponse getStudentLessonsFromCourse(
+    public StudentCourseLessonsResponse getStudentLessonsFromCourse(
             @PathVariable UUID courseId,
             @AuthenticationPrincipal SecurityUser authenticatedUser
     ) {
-        return studentLessonCourseService.getStudentLessonsFromCourse(courseId, authenticatedUser);
+        return studentLessonService.getLessonsInCourseOfStudent(courseId, authenticatedUser.getId());
     }
 
     @PostMapping("/finishCourse")
-    public FinishCourseResponse finishCourse(@RequestBody FinishCourseRequest request) {
-        return userCourseFinishService.finishCourse(request);
+    public CourseMarkResponse finishCourse(@RequestBody FinishCourseRequest request) {
+        return finishCourseService.finishCourse(request);
     }
 
 }

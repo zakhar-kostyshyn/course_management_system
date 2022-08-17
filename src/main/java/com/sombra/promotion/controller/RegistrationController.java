@@ -1,8 +1,8 @@
 package com.sombra.promotion.controller;
 
-import com.sombra.promotion.dto.response.UserResponse;
 import com.sombra.promotion.dto.request.RegistrationUserRequest;
-import com.sombra.promotion.service.UserRegistrationService;
+import com.sombra.promotion.dto.response.UserRoleResponse;
+import com.sombra.promotion.service.specific.UserRegistrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +17,7 @@ public class RegistrationController {
     private final UserRegistrationService userRegistrationService;
 
     @PostMapping
-    public UserResponse register(@RequestBody RegistrationUserRequest request) {
+    public UserRoleResponse register(@RequestBody RegistrationUserRequest request) {
         return userRegistrationService.register(request);
     }
 
