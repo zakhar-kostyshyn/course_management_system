@@ -1,42 +1,25 @@
 package com.sombra.promotion.repository;
 
-import com.sombra.promotion.dto.request.UploadHomeworkRequest;
+import com.sombra.promotion.interfaces.repository.AbstractDaoTableRepository;
+import com.sombra.promotion.tables.daos.HomeworkDao;
 import com.sombra.promotion.tables.pojos.Homework;
+import com.sombra.promotion.tables.records.HomeworkRecord;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import org.jooq.DSLContext;
+import org.jooq.impl.DAOImpl;
 import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
-import static com.sombra.promotion.tables.Homework.HOMEWORK;
-import static com.sombra.promotion.tables.User.USER;
-import static java.util.Objects.requireNonNull;
-
 @Repository
 @RequiredArgsConstructor
-public class HomeworkRepository {
+public class HomeworkRepository extends AbstractDaoTableRepository<Homework, HomeworkRecord> {
 
-    private final DSLContext ctx;
-    private final UserRepository userRepository;
-    private final LessonRepository lessonRepository;
+    private final HomeworkDao homeworkDao;
 
-    @SneakyThrows
-    public UUID insertHomework(UploadHomeworkRequest request) {
-        UUID studentId = userRepository.selectUserIdByUsername(request.getStudent());
-        UUID lessonId = lessonRepository.selectLessonByNameAndCourse(request.getLesson(), request.getCourse());
-        return requireNonNull(ctx.insertInto(HOMEWORK, HOMEWORK.FILE, HOMEWORK.LESSON_ID, HOMEWORK.STUDENT_ID)
-                        .values(request.getHomework().getBytes(), lessonId, studentId)
-                        .returningResult(HOMEWORK.ID)
-                        .fetchOne())
-                .component1();
+    @Override
+    protected DAOImpl<HomeworkRecord, Homework, UUID> getDao() {
+        return homeworkDao;
     }
 
-    public Homework selectHomeworkBy(UUID id) {
-        return ctx.select()
-                .from(USER)
-                .where(USER.ID.eq(id))
-                .fetchSingleInto(Homework.class);
-    }
 
 }

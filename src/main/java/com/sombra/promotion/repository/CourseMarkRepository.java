@@ -1,30 +1,25 @@
 package com.sombra.promotion.repository;
 
+
+import com.sombra.promotion.interfaces.repository.AbstractDaoTableRepository;
+import com.sombra.promotion.tables.daos.CourseMarkDao;
+import com.sombra.promotion.tables.pojos.CourseMark;
+import com.sombra.promotion.tables.records.CourseMarkRecord;
 import lombok.RequiredArgsConstructor;
-import org.jooq.DSLContext;
+import org.jooq.impl.DAOImpl;
 import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
-import static com.sombra.promotion.tables.CourseMark.COURSE_MARK;
-
 @Repository
 @RequiredArgsConstructor
-public class CourseMarkRepository {
+public class CourseMarkRepository extends AbstractDaoTableRepository<CourseMark, CourseMarkRecord> {
 
-    private final DSLContext ctx;
-    private final CourseRepository courseRepository;
-    private final UserRepository userRepository;
+    private final CourseMarkDao courseMarkDao;
 
-    // TODO add pass or not value
-    public UUID insertCourseMark(int mark, String student, String course, boolean isCoursePassed) {
-        UUID courseId = courseRepository.selectCourseIdBy(student);
-        UUID studentId = userRepository.selectUserIdByUsername(course);
-        return ctx.insertInto(COURSE_MARK, COURSE_MARK.MARK, COURSE_MARK.STUDENT_ID, COURSE_MARK.COURSE_ID)
-                .values(mark, studentId, courseId)
-                .returningResult(COURSE_MARK.ID)
-                .fetchSingle()
-                .component1();
+    @Override
+    protected DAOImpl<CourseMarkRecord, CourseMark, UUID> getDao() {
+        return courseMarkDao;
     }
 
 

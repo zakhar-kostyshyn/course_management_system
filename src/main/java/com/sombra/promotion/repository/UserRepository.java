@@ -1,75 +1,34 @@
 package com.sombra.promotion.repository;
 
-import com.sombra.promotion.enums.RoleEnum;
+import com.sombra.promotion.interfaces.repository.AbstractDaoTableRepository;
+import com.sombra.promotion.tables.daos.UserDao;
 import com.sombra.promotion.tables.pojos.User;
+import com.sombra.promotion.tables.records.UserRecord;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.DSLContext;
+import org.jooq.impl.DAOImpl;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.UUID;
 
-import static com.sombra.promotion.tables.Course.COURSE;
-import static com.sombra.promotion.tables.Role.ROLE;
-import static com.sombra.promotion.tables.StudentCourse.STUDENT_COURSE;
 import static com.sombra.promotion.tables.User.USER;
-import static com.sombra.promotion.tables.UserRole.USER_ROLE;
 import static java.util.Objects.requireNonNull;
 
 @Repository
 @RequiredArgsConstructor
 @Slf4j
-public class UserRepository {
+public class UserRepository extends AbstractDaoTableRepository<User, UserRecord> {
 
-    private final DSLContext ctx;
+    private final UserDao userDao;
 
-    public UUID selectUserIdByUsername(String username) {
-        return requireNonNull(ctx.select(USER.ID)
-                .from(USER)
-                .where(USER.USERNAME.eq(username))
-                .fetchOne()
-        ).component1();
+    public User findByUsername(String username) {
+        return findOneByCondition(USER.USERNAME.eq(username), User.class);
     }
 
-    public RoleEnum selectRoleTypeByUsername(String username) {
-        return requireNonNull(ctx.select(ROLE.NAME)
-                .from(USER)
-                .join(USER_ROLE).on(USER.ID.eq(USER_ROLE.USER_ID))
-                .join(ROLE).on(ROLE.ID.eq(USER_ROLE.ROLE_ID))
-                .where(USER.USERNAME.eq(username))
-                .fetchOne()
-        ).component1();
-    }
-
-    public List<User> selectStudentsByCourseId(UUID courseId) {
-        return ctx.select(USER.ID, USER.USERNAME, USER.PASSWORD)
-                .from(COURSE)
-                .join(STUDENT_COURSE).on(STUDENT_COURSE.COURSE_ID.eq(COURSE.ID))
-                .join(USER).on(USER.ID.eq(STUDENT_COURSE.STUDENT_ID))
-                .where(COURSE.ID.eq(courseId))
-                .fetchInto(User.class);
-    }
-
-    public List<User> selectAllUsers() {
-        return ctx.select()
-                .from(USER)
-                .fetchInto(User.class);
-    }
-
-
-    public User selectUserByUsername(String username) {
-        return ctx.select()
-                .from(USER)
-                .where(USER.USERNAME.eq(username))
-                .fetchSingleInto(User.class);
-    }
-
-    public User selectUserById(UUID id) {
-           return ctx.select()
-                   .from(USER)
-                   .where(USER.ID.eq(id))
-                   .fetchSingleInto(User.class);
+    @Override
+    protected DAOImpl<UserRecord, User, UUID> getDao() {
+        return userDao;
     }
 
 }
