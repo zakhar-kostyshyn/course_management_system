@@ -36,4 +36,11 @@
                                  referencedColumnNames="id"/>
     </changeSet>
 
+    <changeSet id="327f6227-f6bb-4d18-bd20-d2cf4d76aca4" author="Zakhar Kostyshyn">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="course_mark" columnName="mark"/>
+        </preConditions>
+        <modifyDataType tableName="course_mark" columnName="mark" newDataType="DOUBLE PRECISION"/>
+    </changeSet>
+
 </databaseChangeLog>
