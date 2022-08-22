@@ -106,5 +106,8 @@ liquibase {
     }
 }
 
-update.dependsOn 'databaseComposeUp'
+update.dependsOn databaseComposeUp
 generateJooq.dependsOn update
+test.dependsOn generateJooq
+
+tasks.named("build") { finalizedBy(databaseComposeDown) }
