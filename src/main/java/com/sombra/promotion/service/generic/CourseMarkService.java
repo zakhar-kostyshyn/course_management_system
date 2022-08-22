@@ -33,7 +33,7 @@ public class CourseMarkService {
         CourseMark courseMark = new CourseMark();
         courseMark.setId(uuidUtil.randomUUID());
         courseMark.setStudentId(studentId);
-        courseMark.setMark((int) mark);
+        courseMark.setMark(mark);
         courseMark.setCourseId(courseId);
         return courseMark;
     }
