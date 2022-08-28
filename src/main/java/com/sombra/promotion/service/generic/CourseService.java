@@ -1,6 +1,6 @@
 package com.sombra.promotion.service.generic;
 
-import com.sombra.promotion.util.UUIDUtil;
+import com.sombra.promotion.service.util.UUIDUtil;
 import com.sombra.promotion.dto.response.CourseResponse;
 import com.sombra.promotion.factory.generic.CourseFactory;
 import com.sombra.promotion.repository.CourseRepository;

@@ -5,7 +5,7 @@ import com.sombra.promotion.enums.RoleEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import org.springframework.lang.NonNull;
 
 import java.util.UUID;
 

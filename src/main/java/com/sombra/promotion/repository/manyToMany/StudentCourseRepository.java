@@ -1,6 +1,6 @@
 package com.sombra.promotion.repository.manyToMany;
 
-import com.sombra.promotion.interfaces.repository.ManyToManyTableRepository;
+import com.sombra.promotion.abstraction.repository.ManyToManyTableRepository;
 import com.sombra.promotion.tables.pojos.Course;
 import com.sombra.promotion.tables.pojos.StudentCourse;
 import com.sombra.promotion.tables.pojos.User;
@@ -45,21 +45,21 @@ public class StudentCourseRepository implements ManyToManyTableRepository<Studen
     }
 
     @Override
-    public List<Course> findByFirstId(UUID userId) {
-        return ctx.select(COURSE.ID, COURSE.NAME)
+    public List<Course> findByFirstId(UUID studentId) {
+        return ctx.select(COURSE.fields())
                 .from(COURSE)
-                .join(STUDENT_COURSE).on(STUDENT_COURSE.COURSE_ID.eq(COURSE.ID))
+                .join(STUDENT_COURSE).on(COURSE.ID.eq(STUDENT_COURSE.COURSE_ID))
                 .join(USER).on(USER.ID.eq(STUDENT_COURSE.STUDENT_ID))
-                .where(USER.ID.eq(userId))
+                .where(USER.ID.eq(studentId))
                 .fetchInto(Course.class);
     }
 
     @Override
     public List<User> findBySecondId(UUID courseId) {
-        return ctx.select(USER.ID, USER.USERNAME, USER.PASSWORD)
+        return ctx.select(USER.fields())
                 .from(USER)
-                .join(STUDENT_COURSE).on(STUDENT_COURSE.COURSE_ID.eq(COURSE.ID))
-                .join(USER).on(USER.ID.eq(STUDENT_COURSE.STUDENT_ID))
+                .join(STUDENT_COURSE).on(USER.ID.eq(STUDENT_COURSE.STUDENT_ID))
+                .join(COURSE).on(COURSE.ID.eq(STUDENT_COURSE.COURSE_ID))
                 .where(COURSE.ID.eq(courseId))
                 .fetchInto(User.class);
     }

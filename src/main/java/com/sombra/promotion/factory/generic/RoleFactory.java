@@ -1,7 +1,7 @@
 package com.sombra.promotion.factory.generic;
 
 import com.sombra.promotion.dto.response.RoleResponse;
-import com.sombra.promotion.interfaces.factory.AbstractResponseFactory;
+import com.sombra.promotion.abstraction.factory.AbstractResponseFactory;
 import com.sombra.promotion.repository.RoleRepository;
 import com.sombra.promotion.tables.pojos.Role;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ public class RoleFactory extends AbstractResponseFactory<Role, RoleResponse, Rol
     private final RoleRepository roleRepository;
 
     @Override
-    public RoleRepository getDao() {
+    public RoleRepository getRepository() {
         return roleRepository;
     }
 
@@ -22,7 +22,7 @@ public class RoleFactory extends AbstractResponseFactory<Role, RoleResponse, Rol
     public RoleResponse build(Role role) {
         return RoleResponse.builder()
                 .id(role.getId())
-                .roleEnum(role.getName())
+                .role(role.getName())
                 .build();
     }
 

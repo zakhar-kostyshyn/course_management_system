@@ -1,9 +1,11 @@
 package com.sombra.promotion.service.generic;
 
-import com.sombra.promotion.util.UUIDUtil;
+import com.sombra.promotion.service.util.UUIDUtil;
 import com.sombra.promotion.repository.CourseMarkRepository;
 import com.sombra.promotion.tables.pojos.CourseMark;
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.NonNullApi;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -35,6 +37,7 @@ public class CourseMarkService {
         courseMark.setStudentId(studentId);
         courseMark.setMark(mark);
         courseMark.setCourseId(courseId);
+        courseMark.setCoursePassed(isPassed);
         return courseMark;
     }
 

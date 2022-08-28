@@ -1,7 +1,7 @@
 package com.sombra.promotion.repository;
 
 
-import com.sombra.promotion.interfaces.repository.AbstractDaoTableRepository;
+import com.sombra.promotion.abstraction.repository.AbstractTableRepository;
 import com.sombra.promotion.tables.daos.CourseMarkDao;
 import com.sombra.promotion.tables.pojos.CourseMark;
 import com.sombra.promotion.tables.records.CourseMarkRecord;
@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
-public class CourseMarkRepository extends AbstractDaoTableRepository<CourseMark, CourseMarkRecord> {
+public class CourseMarkRepository extends AbstractTableRepository<CourseMark, CourseMarkRecord> {
 
     private final CourseMarkDao courseMarkDao;
 

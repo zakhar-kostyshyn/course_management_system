@@ -1,7 +1,7 @@
 package com.sombra.promotion.factory.generic;
 
 import com.sombra.promotion.dto.response.UserResponse;
-import com.sombra.promotion.interfaces.factory.AbstractResponseFactory;
+import com.sombra.promotion.abstraction.factory.AbstractResponseFactory;
 import com.sombra.promotion.repository.UserRepository;
 import com.sombra.promotion.tables.pojos.User;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ public class UserFactory extends AbstractResponseFactory<User, UserResponse, Use
     private final UserRepository userRepository;
 
     @Override
-    public UserRepository getDao() {
+    public UserRepository getRepository() {
         return userRepository;
     }
 

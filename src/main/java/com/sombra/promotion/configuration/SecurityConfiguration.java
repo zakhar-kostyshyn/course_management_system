@@ -1,7 +1,7 @@
 package com.sombra.promotion.configuration;
 
-import com.sombra.promotion.security.JwtRequestFilter;
-import com.sombra.promotion.security.UserDetailsService;
+import com.sombra.promotion.security.filter.JwtRequestFilter;
+import com.sombra.promotion.security.service.SecurityUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +21,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final JwtRequestFilter jwtRequestFilter;
     private final PasswordEncoder passwordEncoder;
-    private final UserDetailsService userDetailsService;
+    private final SecurityUserDetailsService securityUserDetailsService;
 
     @Override
     @Bean
@@ -31,17 +31,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService)
+        auth.userDetailsService(securityUserDetailsService)
                 .passwordEncoder(passwordEncoder);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
+                .cors().disable()
                 .authorizeRequests()
-                .antMatchers("/admin/**").hasAnyRole("ROLE_ADMIN")
-                .antMatchers("/instructor/**").hasAnyRole("ROLE_INSTRUCTOR", "ROLE_ADMIN")
-                .antMatchers("/student/**").hasAnyRole("ROLE_STUDENT", "ROLE_ADMIN")
+                .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers("/instructor/**").hasAnyAuthority("ROLE_INSTRUCTOR", "ROLE_ADMIN")
+                .antMatchers("/student/**").hasAnyAuthority("ROLE_STUDENT", "ROLE_ADMIN")
                 .antMatchers("/", "/register", "/login").permitAll()
                 .antMatchers("/swagger", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated()

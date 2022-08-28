@@ -1,7 +1,7 @@
 package com.sombra.promotion.factory.generic;
 
 import com.sombra.promotion.dto.response.LessonResponse;
-import com.sombra.promotion.interfaces.factory.AbstractResponseFactory;
+import com.sombra.promotion.abstraction.factory.AbstractResponseFactory;
 import com.sombra.promotion.repository.LessonRepository;
 import com.sombra.promotion.tables.pojos.Lesson;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ public class LessonFactory extends AbstractResponseFactory<Lesson, LessonRespons
     private final CourseFactory courseFactory;
 
     @Override
-    public LessonRepository getDao() {
+    public LessonRepository getRepository() {
         return lessonRepository;
     }
 

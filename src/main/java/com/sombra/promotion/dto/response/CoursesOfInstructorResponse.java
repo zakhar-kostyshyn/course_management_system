@@ -11,6 +11,6 @@ import java.util.List;
 public class CoursesOfInstructorResponse {
 
     @NonNull private List<CourseResponse> courses;
-    @NonNull private UserResponse username;
+    @NonNull private UserResponse user;
 
 }

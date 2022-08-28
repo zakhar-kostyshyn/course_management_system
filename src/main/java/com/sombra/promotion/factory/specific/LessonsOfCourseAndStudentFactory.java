@@ -27,7 +27,7 @@ public class LessonsOfCourseAndStudentFactory {
                 .lessons(lessonIds.stream()
                         .map(lessonFactory::build)
                         .collect(toList())
-                ).student(userFactory.build(studentId))
+                ).user(userFactory.build(studentId))
                 .course(courseFactory.build(courseId))
                 .build();
     }

@@ -1,7 +1,7 @@
 package com.sombra.promotion.factory.generic;
 
+import com.sombra.promotion.abstraction.factory.AbstractResponseFactory;
 import com.sombra.promotion.dto.response.CourseMarkResponse;
-import com.sombra.promotion.interfaces.factory.AbstractResponseFactory;
 import com.sombra.promotion.repository.CourseMarkRepository;
 import com.sombra.promotion.tables.pojos.CourseMark;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ public class CourseMarkFactory extends AbstractResponseFactory<CourseMark, Cours
     private final UserFactory userFactory;
 
     @Override
-    public CourseMarkRepository getDao() {
+    public CourseMarkRepository getRepository() {
         return courseMarkRepository;
     }
 
@@ -24,9 +24,10 @@ public class CourseMarkFactory extends AbstractResponseFactory<CourseMark, Cours
     public CourseMarkResponse build(CourseMark courseMark) {
         return CourseMarkResponse.builder()
                 .id(courseMark.getId())
-                .mark(courseMark.getMark())
+                .courseMark(courseMark.getMark())
                 .student(userFactory.build(courseMark.getStudentId()))
                 .course(courseFactory.build(courseMark.getCourseId()))
+                .isCoursePassed(courseMark.getCoursePassed())
                 .build();
     }
 

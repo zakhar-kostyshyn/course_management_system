@@ -1,11 +1,15 @@
 package com.sombra.promotion.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 import java.util.UUID;
+
+import static com.sombra.promotion.service.util.statics.SecurityPrincipalUtil.authenticatedUserId;
 
 @Data
 @NoArgsConstructor
@@ -15,6 +19,14 @@ public class GiveFinalFeedbackRequest {
     @NonNull private String feedback;
     @NonNull private UUID courseId;
     @NonNull private UUID studentId;
-    @NonNull private UUID instructorId;
+
+    @Nullable @JsonIgnore
+    private UUID instructorId;
+
+    public GiveFinalFeedbackRequest(@NonNull String feedback, @NonNull UUID courseId, @NonNull UUID studentId) {
+        this.feedback = feedback;
+        this.courseId = courseId;
+        this.studentId = studentId;
+    }
 
 }

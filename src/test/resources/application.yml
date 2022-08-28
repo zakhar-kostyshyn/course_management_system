@@ -8,3 +8,10 @@ spring:
     enabled: false
 security:
   secret: test
+app:
+  minimum-course-pass-mark: 70
+  max-course-for-student: 5
+  minimum-lessons-per-course: 2
+  controller-advise:
+    generic-error-message: Something went wrong!
+    show-stacktrace: true

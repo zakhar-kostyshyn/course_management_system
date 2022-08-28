@@ -22,8 +22,8 @@ public class StudentCourseFactory {
 
     public StudentCourseResponse build(StudentCourse studentCourse) {
         return StudentCourseResponse.builder()
-                .userResponse(userFactory.build(studentCourse.getStudentId()))
-                .courseResponse(courseFactory.build(studentCourse.getCourseId()))
+                .user(userFactory.build(studentCourse.getStudentId()))
+                .course(courseFactory.build(studentCourse.getCourseId()))
                 .build();
     }
 
@@ -33,7 +33,7 @@ public class StudentCourseFactory {
                         .map(Course::getId)
                         .map(courseFactory::build)
                         .collect(Collectors.toList())
-                ).student(userFactory.build(studentId))
+                ).user(userFactory.build(studentId))
                 .build();
     }
 

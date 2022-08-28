@@ -13,7 +13,7 @@ public class RoleService {
     private final RoleRepository roleRepository;
 
     public Role getRoleByRoleEnum(RoleEnum roleEnum) {
-        return roleRepository.findByRoleEnum(roleEnum);
+        return roleRepository.requiredByRoleEnum(roleEnum);
     }
 
 }

@@ -51,7 +51,7 @@ public class InstructorCourseService {
         return instructorCourseFactory.build(instructorId, coursesByInstructor);
     }
 
-    public void assertThatStudentInCourse(UUID instructorId, UUID courseId) {
+    public void assertThatInstructorInCourse(UUID instructorId, UUID courseId) {
         boolean isExist = instructorCourseRepository.exist(instructorId, courseId);
         if (!isExist) throw new NotFoundCourseBelongsForInstructorException(instructorId, courseId);
     }

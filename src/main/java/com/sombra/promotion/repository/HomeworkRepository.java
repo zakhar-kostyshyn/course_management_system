@@ -1,6 +1,6 @@
 package com.sombra.promotion.repository;
 
-import com.sombra.promotion.interfaces.repository.AbstractDaoTableRepository;
+import com.sombra.promotion.abstraction.repository.AbstractTableRepository;
 import com.sombra.promotion.tables.daos.HomeworkDao;
 import com.sombra.promotion.tables.pojos.Homework;
 import com.sombra.promotion.tables.records.HomeworkRecord;
@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
-public class HomeworkRepository extends AbstractDaoTableRepository<Homework, HomeworkRecord> {
+public class HomeworkRepository extends AbstractTableRepository<Homework, HomeworkRecord> {
 
     private final HomeworkDao homeworkDao;
 

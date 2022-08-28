@@ -1,6 +1,7 @@
 package com.sombra.promotion.service.generic;
 
-import com.sombra.promotion.util.UUIDUtil;
+import com.sombra.promotion.service.generic.validation.HomeworkValidationService;
+import com.sombra.promotion.service.util.UUIDUtil;
 import com.sombra.promotion.dto.request.UploadHomeworkRequest;
 import com.sombra.promotion.dto.response.HomeworkResponse;
 import com.sombra.promotion.factory.generic.HomeworkFactory;
@@ -19,8 +20,10 @@ public class HomeworkService {
     private final HomeworkRepository homeworkRepository;
     private final HomeworkFactory homeworkFactory;
     private final UUIDUtil uuidUtil;
+    private final HomeworkValidationService homeworkValidationService;
 
     public HomeworkResponse saveHomework(UploadHomeworkRequest request) {
+        homeworkValidationService.assertThatInstructorInCourse(request.getStudentId(), request.getLessonId());
         Homework homework;
         try {
             homework = createHomework(request.getHomework().getBytes(), request.getStudentId(), request.getLessonId());

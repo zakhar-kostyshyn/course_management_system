@@ -42,5 +42,19 @@
         </preConditions>
         <modifyDataType tableName="course_mark" columnName="mark" newDataType="DOUBLE PRECISION"/>
     </changeSet>
+    
+    <changeSet id="6975945c-a89d-4389-894a-bb1b8c220e84" author="Zakhar Kostyshyn">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="course_mark"/>
+            <not>
+                <columnExists tableName="course_mark" columnName="course_passed"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="course_mark">
+            <column name="course_passed" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
 
 </databaseChangeLog>

@@ -2,7 +2,7 @@ package com.sombra.promotion.repository;
 
 
 import com.sombra.promotion.enums.RoleEnum;
-import com.sombra.promotion.interfaces.repository.AbstractDaoTableRepository;
+import com.sombra.promotion.abstraction.repository.AbstractTableRepository;
 import com.sombra.promotion.tables.daos.RoleDao;
 import com.sombra.promotion.tables.pojos.Role;
 import com.sombra.promotion.tables.records.RoleRecord;
@@ -17,12 +17,12 @@ import static java.util.Objects.requireNonNull;
 
 @Repository
 @RequiredArgsConstructor
-public class RoleRepository extends AbstractDaoTableRepository<Role, RoleRecord> {
+public class RoleRepository extends AbstractTableRepository<Role, RoleRecord> {
 
     private final RoleDao roleDao;
 
-    public Role findByRoleEnum(RoleEnum roleEnum) {
-        return findOneByCondition(ROLE.NAME.eq(roleEnum), Role.class);
+    public Role requiredByRoleEnum(RoleEnum roleEnum) {
+        return requiredByCondition(ROLE.NAME.eq(roleEnum), ROLE, Role.class);
     }
 
     @Override

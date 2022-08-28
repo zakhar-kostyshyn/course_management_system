@@ -1,21 +1,28 @@
 package com.sombra.promotion.dto.request;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class SaveMarkRequest {
 
     private int mark;
     @NonNull private UUID studentId;
-    @NonNull private UUID instructorId;
     @NonNull private UUID lessonId;
-    @NonNull private UUID courseId;
+
+    @Nullable @JsonIgnore
+    private UUID instructorId;
+
+    public SaveMarkRequest(int mark, @NonNull UUID studentId, @NonNull UUID lessonId) {
+        this.mark = mark;
+        this.studentId = studentId;
+        this.lessonId = lessonId;
+    }
 
 }

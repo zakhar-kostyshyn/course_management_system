@@ -1,6 +1,7 @@
 package com.sombra.promotion.dto.response;
 
 import lombok.*;
+import org.springframework.lang.NonNull;
 
 import java.util.UUID;
 
@@ -14,6 +15,6 @@ public class FeedbackResponse {
     @NonNull private String feedback;
     @NonNull private UserResponse studentWhoReceive;
     @NonNull private UserResponse instructorWhoLeft;
-    @NonNull private CourseResponse courseResponse;
+    @NonNull private CourseResponse course;
 
 }

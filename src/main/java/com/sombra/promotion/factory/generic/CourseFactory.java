@@ -1,7 +1,7 @@
 package com.sombra.promotion.factory.generic;
 
 import com.sombra.promotion.dto.response.CourseResponse;
-import com.sombra.promotion.interfaces.factory.AbstractResponseFactory;
+import com.sombra.promotion.abstraction.factory.AbstractResponseFactory;
 import com.sombra.promotion.repository.CourseRepository;
 import com.sombra.promotion.tables.pojos.Course;
 import lombok.RequiredArgsConstructor;
@@ -16,13 +16,13 @@ public class CourseFactory extends AbstractResponseFactory<Course, CourseRespons
     @Override
     public CourseResponse build(Course model) {
         return CourseResponse.builder()
-                .id(model.getId())
+                .courseId(model.getId())
                 .courseName(model.getName())
                 .build();
     }
 
     @Override
-    public CourseRepository getDao() {
+    public CourseRepository getRepository() {
         return courseRepository;
     }
 

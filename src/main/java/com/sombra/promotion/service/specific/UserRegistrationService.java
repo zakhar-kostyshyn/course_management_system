@@ -28,7 +28,7 @@ public class UserRegistrationService {
     public UserRoleResponse register(RegistrationUserRequest request) {
         String hashedPassword = passwordEncoder.encode(request.getPassword());
         UserResponse userResponse = userService.saveUser(request.getUsername(), hashedPassword);
-        Role studentRole = roleRepository.findByRoleEnum(RoleEnum.student);
+        Role studentRole = roleRepository.requiredByRoleEnum(RoleEnum.student);
         userRoleService.saveUserRole(userResponse.getUserId(), studentRole.getId());
         return userRoleFactory.build(userResponse.getUserId(), studentRole.getId());
     }

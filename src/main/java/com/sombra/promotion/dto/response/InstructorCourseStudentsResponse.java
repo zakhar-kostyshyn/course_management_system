@@ -1,6 +1,7 @@
 package com.sombra.promotion.dto.response;
 
 import lombok.*;
+import org.springframework.lang.NonNull;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
 public class InstructorCourseStudentsResponse {
 
     @NonNull private List<UserResponse> students;
-    @NonNull private CourseResponse courseResponse;
+    @NonNull private CourseResponse course;
     @NonNull private UserResponse instructor;
 
 }

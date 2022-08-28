@@ -23,8 +23,8 @@ public class InstructorCourseFactory {
 
     public InstructorCourseResponse build(InstructorCourse instructorCourse) {
         return InstructorCourseResponse.builder()
-                .userResponse(userFactory.build(instructorCourse.getCourseId()))
-                .courseResponse(courseFactory.build(instructorCourse.getInstructorId()))
+                .user(userFactory.build(instructorCourse.getInstructorId()))
+                .course(courseFactory.build(instructorCourse.getCourseId()))
                 .build();
     }
 
@@ -34,7 +34,7 @@ public class InstructorCourseFactory {
 
     public CoursesOfInstructorResponse build(UUID instructorId, List<Course> instructorCourses) {
         return CoursesOfInstructorResponse.builder()
-                .username(userFactory.build(instructorId))
+                .user(userFactory.build(instructorId))
                 .courses(
                         instructorCourses.stream()
                                 .map(Course::getId)

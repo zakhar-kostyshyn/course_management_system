@@ -1,7 +1,7 @@
 package com.sombra.promotion.factory.generic;
 
 import com.sombra.promotion.dto.response.FeedbackResponse;
-import com.sombra.promotion.interfaces.factory.AbstractResponseFactory;
+import com.sombra.promotion.abstraction.factory.AbstractResponseFactory;
 import com.sombra.promotion.repository.FeedbackRepository;
 import com.sombra.promotion.tables.pojos.Feedback;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ public class FeedbackFactory extends AbstractResponseFactory<Feedback, FeedbackR
     private final CourseFactory courseFactory;
 
     @Override
-    public FeedbackRepository getDao() {
+    public FeedbackRepository getRepository() {
         return feedbackRepository;
     }
 
@@ -27,7 +27,7 @@ public class FeedbackFactory extends AbstractResponseFactory<Feedback, FeedbackR
                 .feedback(model.getFeedback())
                 .studentWhoReceive(userFactory.build(model.getStudentId()))
                 .instructorWhoLeft(userFactory.build(model.getInstructorId()))
-                .courseResponse(courseFactory.build(model.getCourseId()))
+                .course(courseFactory.build(model.getCourseId()))
                 .build();
     }
 

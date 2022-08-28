@@ -1,6 +1,7 @@
 package com.sombra.promotion.service.generic;
 
-import com.sombra.promotion.util.UUIDUtil;
+import com.sombra.promotion.service.generic.validation.StudentInstructorInCourseValidationService;
+import com.sombra.promotion.service.util.UUIDUtil;
 import com.sombra.promotion.dto.response.FeedbackResponse;
 import com.sombra.promotion.dto.request.GiveFinalFeedbackRequest;
 import com.sombra.promotion.factory.generic.FeedbackFactory;
@@ -18,8 +19,10 @@ public class FeedbackService {
     private final FeedbackRepository feedbackRepository;
     private final FeedbackFactory feedbackFactory;
     private final UUIDUtil uuidUtil;
+    private final StudentInstructorInCourseValidationService studentInstructorInCourseValidationService;
 
     public FeedbackResponse saveFeedback(GiveFinalFeedbackRequest request) {
+        studentInstructorInCourseValidationService.assertThatInstructorAndStudentInCourse(request.getStudentId(), request.getInstructorId(), request.getCourseId());
         Feedback feedback = createFeedback(request.getFeedback(), request.getStudentId(), request.getInstructorId(), request.getCourseId());
         feedbackRepository.save(feedback);
         return feedbackFactory.build(feedback);

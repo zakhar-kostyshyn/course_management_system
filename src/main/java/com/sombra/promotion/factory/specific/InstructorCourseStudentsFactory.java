@@ -22,7 +22,7 @@ public class InstructorCourseStudentsFactory {
                                                   List<User> students) {
         return InstructorCourseStudentsResponse
                 .builder()
-                .courseResponse(courseFactory.build(courseId))
+                .course(courseFactory.build(courseId))
                 .students(userFactory.build(students))
                 .instructor(userFactory.build(instructorId))
                 .build();

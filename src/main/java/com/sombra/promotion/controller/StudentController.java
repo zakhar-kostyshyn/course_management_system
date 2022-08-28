@@ -4,18 +4,18 @@ import com.sombra.promotion.dto.request.CourseSubscriptionRequest;
 import com.sombra.promotion.dto.request.FinishCourseRequest;
 import com.sombra.promotion.dto.request.UploadHomeworkRequest;
 import com.sombra.promotion.dto.response.*;
-import com.sombra.promotion.security.SecurityUser;
 import com.sombra.promotion.service.generic.HomeworkService;
 import com.sombra.promotion.service.generic.manyToMany.StudentCourseService;
 import com.sombra.promotion.service.specific.FinishCourseService;
 import com.sombra.promotion.service.specific.StudentLessonService;
 import com.sombra.promotion.service.specific.StudentSubscriptionOnCourseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
+
+import static com.sombra.promotion.service.util.statics.SecurityPrincipalUtil.authenticatedUserId;
 
 @RestController
 @RequestMapping("/student")
@@ -30,35 +30,30 @@ public class StudentController {
 
     @PatchMapping("/subscribe")
     public StudentCourseResponse subscribeOnCourse(@RequestBody CourseSubscriptionRequest request) {
+        request.setStudentId(authenticatedUserId());
         return studentSubscriptionOnCourseService.subscribeStudentOnCourse(request);
     }
 
-    @PutMapping("/homework")
-    public HomeworkResponse uploadHomework(
-            @RequestParam MultipartFile homework,
-            @RequestParam UUID studentId,
-            @RequestParam UUID lessonId
-    ) {
+    @PostMapping("/homework")
+    public HomeworkResponse uploadHomework(@RequestParam MultipartFile homework, @RequestParam UUID lessonId) {
         return homeworkService.saveHomework(new UploadHomeworkRequest(
-                homework, studentId, lessonId
+                homework, authenticatedUserId(), lessonId
         ));
     }
 
     @GetMapping("/courses")
-    public CoursesOfStudentResponse getAllCourses(@AuthenticationPrincipal SecurityUser authenticatedUser) {
-        return studentCourseService.getAllCoursesForStudent(authenticatedUser.getId());
+    public CoursesOfStudentResponse getAllCourses() {
+        return studentCourseService.getAllCoursesForStudent(authenticatedUserId());
     }
 
-    @GetMapping("/course/{courseId}/lessons")
-    public StudentCourseLessonsResponse getStudentLessonsFromCourse(
-            @PathVariable UUID courseId,
-            @AuthenticationPrincipal SecurityUser authenticatedUser
-    ) {
-        return studentLessonService.getLessonsInCourseOfStudent(courseId, authenticatedUser.getId());
+    @GetMapping("/lessons/{courseId}")
+    public StudentCourseLessonsResponse getStudentLessonsFromCourse(@PathVariable UUID courseId) {
+        return studentLessonService.getLessonsOfStudentInCourse(authenticatedUserId(), courseId);
     }
 
-    @PostMapping("/finishCourse")
-    public CourseMarkResponse finishCourse(@RequestBody FinishCourseRequest request) {
+    @PostMapping("/course-finish")
+    public FinishCourseResponse finishCourse(@RequestBody FinishCourseRequest request) {
+        request.setStudentId(authenticatedUserId());
         return finishCourseService.finishCourse(request);
     }
 

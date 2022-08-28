@@ -1,11 +1,12 @@
 package com.sombra.promotion.service.generic;
 
-import com.sombra.promotion.util.UUIDUtil;
 import com.sombra.promotion.dto.request.SaveMarkRequest;
 import com.sombra.promotion.dto.response.LessonResponse;
 import com.sombra.promotion.dto.response.MarkResponse;
 import com.sombra.promotion.factory.generic.MarkFactory;
 import com.sombra.promotion.repository.MarkRepository;
+import com.sombra.promotion.service.generic.validation.StudentInstructorInLessonValidationService;
+import com.sombra.promotion.service.util.UUIDUtil;
 import com.sombra.promotion.tables.pojos.Mark;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,11 +25,20 @@ public class MarkService {
     private final LessonService lessonService;
     private final UUIDUtil uuidUtil;
 
+    private final StudentInstructorInLessonValidationService studentInstructorInLessonValidationService;
+
     public MarkResponse saveMark(SaveMarkRequest request) {
-        Mark mark = createMark(request.getMark(),
+
+        studentInstructorInLessonValidationService.assertThatInstructorAndStudentHasLesson(
+                request.getStudentId(), request.getInstructorId(), request.getLessonId()
+        );
+
+        Mark mark = createMark(
+                request.getMark(),
                 request.getStudentId(),
                 request.getInstructorId(),
-                request.getLessonId());
+                request.getLessonId()
+        );
         markRepository.save(mark);
         return markFactory.build(mark);
     }

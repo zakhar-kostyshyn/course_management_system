@@ -19,3 +19,7 @@ security:
 app:
   minimum-course-pass-mark: 80
   max-course-for-student: 5
+  minimum-lessons-per-course: 5
+  controller-advise:
+    generic-error-message: Something went wrong!
+    show-stacktrace: true

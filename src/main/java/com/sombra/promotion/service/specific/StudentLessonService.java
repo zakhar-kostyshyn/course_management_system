@@ -21,7 +21,7 @@ public class StudentLessonService {
     private final StudentCourseService studentCourseService;
     private final LessonService lessonService;
 
-    public StudentCourseLessonsResponse getLessonsInCourseOfStudent(UUID studentId, UUID courseId) {
+    public StudentCourseLessonsResponse getLessonsOfStudentInCourse(UUID studentId, UUID courseId) {
         studentCourseService.assertThatStudentInCourse(studentId, courseId);
         List<LessonResponse> lessonsByCourse = lessonService.getLessonsByCourse(courseId);
         return lessonsOfCourseAndStudentFactory.build(studentId, courseId, lessonsByCourse.stream().map(LessonResponse::getLessonId).collect(toList()));

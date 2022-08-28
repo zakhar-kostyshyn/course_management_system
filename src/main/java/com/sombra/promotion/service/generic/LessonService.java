@@ -1,10 +1,11 @@
 package com.sombra.promotion.service.generic;
 
-import com.sombra.promotion.util.UUIDUtil;
-import com.sombra.promotion.dto.response.LessonResponse;
 import com.sombra.promotion.dto.request.CreateLessonsRequest;
+import com.sombra.promotion.dto.response.LessonResponse;
 import com.sombra.promotion.factory.generic.LessonFactory;
 import com.sombra.promotion.repository.LessonRepository;
+import com.sombra.promotion.service.generic.validation.LessonValidationService;
+import com.sombra.promotion.service.util.UUIDUtil;
 import com.sombra.promotion.tables.pojos.Lesson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,10 @@ public class LessonService {
     private final LessonRepository lessonRepository;
     private final LessonFactory lessonFactory;
     private final UUIDUtil uuidUtil;
+    private final LessonValidationService lessonValidationService;
 
     public List<LessonResponse> saveLessons(CreateLessonsRequest request) {
+        lessonValidationService.assertThatInstructorInCourse(request.getInstructorId(), request.getCourseId());
         return request.getLessons().stream()
                 .map(lessonName -> saveLesson(lessonName, request.getCourseId()))
                 .collect(toList());
@@ -46,6 +49,10 @@ public class LessonService {
     public List<LessonResponse> getLessonsByCourse(UUID courseId) {
         List<Lesson> lessons = lessonRepository.findByCourseId(courseId);
         return lessonFactory.build(lessons);
+    }
+
+    public UUID findCourseIdByLessonId(UUID lessonId) {
+        return lessonRepository.requiredById(lessonId).getCourseId();
     }
 
 }

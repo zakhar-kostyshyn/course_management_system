@@ -1,7 +1,7 @@
 package com.sombra.promotion.factory.generic;
 
 import com.sombra.promotion.dto.response.MarkResponse;
-import com.sombra.promotion.interfaces.factory.AbstractResponseFactory;
+import com.sombra.promotion.abstraction.factory.AbstractResponseFactory;
 import com.sombra.promotion.repository.MarkRepository;
 import com.sombra.promotion.tables.pojos.Mark;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ public class MarkFactory extends AbstractResponseFactory<Mark, MarkResponse, Mar
     private final LessonFactory lessonFactory;
 
     @Override
-    public MarkRepository getDao() {
+    public MarkRepository getRepository() {
         return markRepository;
     }
 

@@ -1,8 +1,11 @@
 package com.sombra.promotion.dto.response;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.lang.NonNull;
 
-import java.util.List;
 import java.util.UUID;
 
 @Builder
@@ -14,8 +17,7 @@ public class CourseMarkResponse {
     @NonNull private UUID id;
     @NonNull private UserResponse student;
     @NonNull private CourseResponse course;
-    @NonNull private List<MarkResponse> courseMarks;
     private boolean isCoursePassed;
-    private double mark;
+    private double courseMark;
 
 }

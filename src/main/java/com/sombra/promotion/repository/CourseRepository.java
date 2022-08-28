@@ -1,6 +1,6 @@
 package com.sombra.promotion.repository;
 
-import com.sombra.promotion.interfaces.repository.AbstractDaoTableRepository;
+import com.sombra.promotion.abstraction.repository.AbstractTableRepository;
 import com.sombra.promotion.tables.daos.CourseDao;
 import com.sombra.promotion.tables.pojos.Course;
 import com.sombra.promotion.tables.records.CourseRecord;
@@ -14,12 +14,12 @@ import static com.sombra.promotion.tables.Course.COURSE;
 
 @Repository
 @RequiredArgsConstructor
-public class CourseRepository extends AbstractDaoTableRepository<Course, CourseRecord> {
+public class CourseRepository extends AbstractTableRepository<Course, CourseRecord> {
 
     private final CourseDao courseDao;
 
-    public Course findByCourseName(String courseName) {
-        return findOneByCondition(COURSE.NAME.eq(courseName), Course.class);
+    public Course requiredByCourseName(String courseName) {
+        return requiredByCondition(COURSE.NAME.eq(courseName), COURSE, Course.class);
     }
 
     @Override

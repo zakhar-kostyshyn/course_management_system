@@ -1,12 +1,11 @@
 package com.sombra.promotion.repository;
 
-import com.sombra.promotion.interfaces.repository.AbstractDaoTableRepository;
+import com.sombra.promotion.abstraction.repository.AbstractTableRepository;
 import com.sombra.promotion.tables.daos.UserDao;
 import com.sombra.promotion.tables.pojos.User;
 import com.sombra.promotion.tables.records.UserRecord;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jooq.DSLContext;
 import org.jooq.impl.DAOImpl;
 import org.springframework.stereotype.Repository;
 
@@ -18,12 +17,12 @@ import static java.util.Objects.requireNonNull;
 @Repository
 @RequiredArgsConstructor
 @Slf4j
-public class UserRepository extends AbstractDaoTableRepository<User, UserRecord> {
+public class UserRepository extends AbstractTableRepository<User, UserRecord> {
 
     private final UserDao userDao;
 
-    public User findByUsername(String username) {
-        return findOneByCondition(USER.USERNAME.eq(username), User.class);
+    public User requiredByUsername(String username) {
+        return requiredByCondition(USER.USERNAME.eq(username), USER, User.class);
     }
 
     @Override

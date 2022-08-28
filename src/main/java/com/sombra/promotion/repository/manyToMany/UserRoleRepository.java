@@ -1,7 +1,7 @@
 package com.sombra.promotion.repository.manyToMany;
 
 
-import com.sombra.promotion.interfaces.repository.ManyToManyTableRepository;
+import com.sombra.promotion.abstraction.repository.ManyToManyTableRepository;
 import com.sombra.promotion.tables.pojos.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,22 +39,22 @@ public class UserRoleRepository implements ManyToManyTableRepository<UserRole, U
     }
 
     @Override
-    public List<Role> findByFirstId(UUID id) {
+    public List<Role> findByFirstId(UUID userId) {
         return ctx.select(ROLE.fields())
                 .from(ROLE)
-                .join(USER_ROLE).on(USER_ROLE.ROLE_ID.eq(ROLE.ID))
-                .join(USER).on(USER_ROLE.USER_ID.eq(USER.ID))
-                .where(USER.ID.eq(id))
+                .join(USER_ROLE).on(ROLE.ID.eq(USER_ROLE.ROLE_ID))
+                .join(USER).on(USER.ID.eq(USER_ROLE.USER_ID))
+                .where(USER.ID.eq(userId))
                 .fetchInto(Role.class);
     }
 
     @Override
-    public List<User> findBySecondId(UUID id) {
+    public List<User> findBySecondId(UUID roleId) {
         return ctx.select(USER.fields())
                 .from(USER)
-                .join(USER_ROLE).on(USER_ROLE.USER_ID.eq(USER.ID))
-                .join(ROLE).on(USER_ROLE.ROLE_ID.eq(ROLE.ID))
-                .where(ROLE.ID.eq(id))
+                .join(USER_ROLE).on(USER.ID.eq(USER_ROLE.USER_ID))
+                .join(ROLE).on(ROLE.ID.eq(USER_ROLE.ROLE_ID))
+                .where(ROLE.ID.eq(roleId))
                 .fetchInto(User.class);
     }
 }

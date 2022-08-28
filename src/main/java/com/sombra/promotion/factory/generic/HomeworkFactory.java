@@ -1,7 +1,7 @@
 package com.sombra.promotion.factory.generic;
 
 import com.sombra.promotion.dto.response.HomeworkResponse;
-import com.sombra.promotion.interfaces.factory.AbstractResponseFactory;
+import com.sombra.promotion.abstraction.factory.AbstractResponseFactory;
 import com.sombra.promotion.repository.HomeworkRepository;
 import com.sombra.promotion.tables.pojos.Homework;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ public class HomeworkFactory extends AbstractResponseFactory<Homework, HomeworkR
     private final UserFactory userFactory;
 
     @Override
-    public HomeworkRepository getDao() {
+    public HomeworkRepository getRepository() {
         return homeworkRepository;
     }
 
@@ -25,7 +25,7 @@ public class HomeworkFactory extends AbstractResponseFactory<Homework, HomeworkR
         return HomeworkResponse.builder()
                 .homeworkId(homework.getId())
                 .lesson(lessonFactory.build(homework.getLessonId()))
-                .student(userFactory.build(homework.getStudentId()))
+                .user(userFactory.build(homework.getStudentId()))
                 .build();
     }
 

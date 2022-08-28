@@ -1,7 +1,7 @@
 package com.sombra.promotion.controller;
 
 import com.sombra.promotion.dto.request.LoginRequest;
-import com.sombra.promotion.security.LoginService;
+import com.sombra.promotion.security.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -1,9 +1,8 @@
 package com.sombra.promotion.dto.response;
 
-import com.sombra.promotion.enums.RoleEnum;
 import lombok.*;
+import org.springframework.lang.NonNull;
 
-import java.util.List;
 import java.util.UUID;
 
 @Builder

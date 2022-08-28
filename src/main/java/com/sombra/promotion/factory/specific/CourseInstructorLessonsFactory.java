@@ -13,11 +13,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CourseInstructorLessonsFactory {
 
-    public CourseInstructorLessonsResponse build(List<InstructorCourseResponse> instructors,
+    public CourseInstructorLessonsResponse build(List<InstructorCourseResponse> listOfInstructorCourses,
                                                  CourseResponse course,
                                                  List<LessonResponse> lessons) {
         return CourseInstructorLessonsResponse.builder()
-                .instructorsCourses(instructors)
+                .instructorsCourses(listOfInstructorCourses)
                 .course(course)
                 .lessons(lessons)
                 .build();
