@@ -3,6 +3,7 @@ package com.sombra.promotion.configuration;
 import com.sombra.promotion.security.filter.JwtRequestFilter;
 import com.sombra.promotion.security.service.SecurityUserDetailsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +23,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final JwtRequestFilter jwtRequestFilter;
     private final PasswordEncoder passwordEncoder;
     private final SecurityUserDetailsService securityUserDetailsService;
+
+    @Value("${springdoc.swagger-ui.path}")
+    private String swaggerUiPath;
 
     @Override
     @Bean
@@ -44,7 +48,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/instructor/**").hasAnyAuthority("ROLE_INSTRUCTOR", "ROLE_ADMIN")
                 .antMatchers("/student/**").hasAnyAuthority("ROLE_STUDENT", "ROLE_ADMIN")
                 .antMatchers("/", "/register", "/login").permitAll()
-                .antMatchers("/swagger", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .antMatchers(swaggerUiPath, "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
