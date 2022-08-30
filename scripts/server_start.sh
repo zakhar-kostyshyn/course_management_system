@@ -8,5 +8,5 @@ sudo java -jar \
  -DDATABASE_USERNAME="$(aws ssm get-parameters --output text --region eu-central-1 --names DATABASE_USERNAME --query Parameters[0].Value)" \
  -DSPRING_SERVER_PORT="$(aws ssm get-parameters --output text --region eu-central-1 --names SPRING_SERVER_PORT --query Parameters[0].Value)" \
  -DSWAGGER_URL="$(aws ssm get-parameters --output text --region eu-central-1 --names SWAGGER_URL --query Parameters[0].Value)" \
- -SECURITY_SECRET="$(aws ssm get-parameters --output text --region eu-central-1 --names SECURITY_SECRET --query Parameters[0].Value)" \
+ -DSECURITY_SECRET="$(aws ssm get-parameters --output text --region eu-central-1 --names SECURITY_SECRET --query Parameters[0].Value)" \
  promotion-0.0.1-SNAPSHOT.jar > /dev/null 2> /dev/null < /dev/null &
