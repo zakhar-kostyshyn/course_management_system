@@ -39,7 +39,7 @@ public class MarkService {
                 request.getInstructorId(),
                 request.getLessonId()
         );
-        markRepository.save(mark);
+        markRepository.persist(mark);
         return markFactory.build(mark);
     }
 

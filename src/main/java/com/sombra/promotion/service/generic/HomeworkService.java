@@ -30,7 +30,7 @@ public class HomeworkService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        homeworkRepository.save(homework);
+        homeworkRepository.persist(homework);
         return homeworkFactory.build(homework);
     }
 

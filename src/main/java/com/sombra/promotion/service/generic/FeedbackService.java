@@ -24,7 +24,7 @@ public class FeedbackService {
     public FeedbackResponse saveFeedback(GiveFinalFeedbackRequest request) {
         studentInstructorInCourseValidationService.assertThatInstructorAndStudentInCourse(request.getStudentId(), request.getInstructorId(), request.getCourseId());
         Feedback feedback = createFeedback(request.getFeedback(), request.getStudentId(), request.getInstructorId(), request.getCourseId());
-        feedbackRepository.save(feedback);
+        feedbackRepository.persist(feedback);
         return feedbackFactory.build(feedback);
     }
 

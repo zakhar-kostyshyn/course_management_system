@@ -34,7 +34,7 @@ public class LessonService {
 
     public LessonResponse saveLesson(String lessonName, UUID courseId) {
         Lesson lesson = createLesson(lessonName, courseId);
-        lessonRepository.save(lesson);
+        lessonRepository.persist(lesson);
         return lessonFactory.build(lesson);
     }
 

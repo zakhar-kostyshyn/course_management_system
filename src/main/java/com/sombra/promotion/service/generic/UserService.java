@@ -29,7 +29,7 @@ public class UserService {
 
     public UserResponse saveUser(String username, String hashedPassword) {
         User user = createUser(username, hashedPassword);
-        userRepository.save(user);
+        userRepository.persist(user);
         return userFactory.build(user);
     }
 

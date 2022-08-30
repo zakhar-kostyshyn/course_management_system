@@ -18,7 +18,7 @@ public class CourseService {
 
     public CourseResponse saveCourse(String courseName) {
         Course course = createCourse(courseName);
-        courseRepository.save(course);
+        courseRepository.persist(course);
         return courseFactory.build(course);
     }
 

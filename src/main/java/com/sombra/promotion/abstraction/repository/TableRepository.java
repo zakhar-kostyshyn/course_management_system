@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface TableRepository<P extends Serializable> {
 
-    void save(P pojo);
+    void persist(P pojo);
 
     void update(P pojo);
 
@@ -18,6 +18,7 @@ public interface TableRepository<P extends Serializable> {
     @NonNull
     P requiredById(UUID id);
 
+    @NonNull
     List<P> findAll();
 
 }

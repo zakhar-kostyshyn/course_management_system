@@ -22,7 +22,7 @@ public abstract class AbstractTableRepository<P extends Serializable, R extends 
     private DSLContext ctx;
 
     @Override
-    public void save(P pojo) {
+    public void persist(P pojo) {
         getDao().insert(pojo);
     }
 
@@ -43,6 +43,7 @@ public abstract class AbstractTableRepository<P extends Serializable, R extends 
     }
 
     @Override
+    @NonNull
     public List<P> findAll() {
         return getDao().findAll();
     }
