@@ -41,7 +41,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String authorizationHeader = request.getHeader(AUTHORIZATION_HEADER);
 
         if (authorizationHeader == null) {
-            log.warn("Authorization header doesn't persist");
             filterChain.doFilter(request, response);
             return;
         }
