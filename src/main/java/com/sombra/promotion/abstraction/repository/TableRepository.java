@@ -7,9 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface TableRepository<P extends Serializable> {
-
-    void persist(P pojo);
+public interface TableRepository<P extends Serializable> extends Persistence<P> {
 
     void update(P pojo);
 
