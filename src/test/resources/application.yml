@@ -8,6 +8,9 @@ spring:
     enabled: false
 security:
   secret: test
+springdoc:
+  swagger-ui:
+    path: /swagger
 app:
   minimum-course-pass-mark: 70
   max-course-for-student: 5
