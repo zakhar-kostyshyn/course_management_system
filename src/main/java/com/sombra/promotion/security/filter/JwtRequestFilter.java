@@ -7,6 +7,7 @@ import com.sombra.promotion.exception.token.TokenExpiredException;
 import com.sombra.promotion.security.model.SecurityUser;
 import com.sombra.promotion.security.service.JwtTokenService;
 import com.sombra.promotion.security.service.SecurityUserDetailsService;
+import com.sombra.promotion.service.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final SecurityUserDetailsService securityUserDetailsService;
     private final JwtTokenService jwtTokenService;
+    private final DateUtil dateUtil;
 
     @Override
     @SneakyThrows
@@ -59,7 +61,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         String token = authorizationHeader.substring(NUMBER_OF_LETTERS_BEFORE_TOKEN_PAYLOAD);
         DecodedJWT decodedToken = jwtTokenService.decode(token);
-        if (decodedToken.getExpiresAtAsInstant().isBefore(Instant.now()))
+        if (decodedToken.getExpiresAtAsInstant().isBefore(dateUtil.nowInstant()))
             throw new TokenExpiredException();
 
         String username = decodedToken.getSubject();
