@@ -24,8 +24,8 @@ public class InstructorCourseService {
     private final InstructorCourseRepository instructorCourseRepository;
     private final InstructorCourseFactory instructorCourseFactory;
 
-    public InstructorCourseResponse saveInstructorCourse(AssignInstructorForCourseRequest request) {
-        InstructorCourse instructorCourse = createInstructorCourse(request.getInstructorId(), request.getCourseId());
+    public InstructorCourseResponse saveInstructorCourse(UUID instructorId, UUID courseId) {
+        InstructorCourse instructorCourse = createInstructorCourse(instructorId, courseId);
         instructorCourseRepository.save(instructorCourse);
         return instructorCourseFactory.build(instructorCourse);
     }
@@ -38,12 +38,10 @@ public class InstructorCourseService {
     }
 
     @Transactional
-    public List<InstructorCourseResponse> saveInstructorCourse(UUID courseId, List<UUID> instructors) {
-        List<InstructorCourse> instructorCourses = instructors.stream()
-                .map(instructor -> createInstructorCourse(instructor, courseId))
-                .peek(instructorCourseRepository::save)
+    public List<InstructorCourseResponse> saveInstructorCourse(List<UUID> instructorIds, UUID courseId) {
+        return instructorIds.stream()
+                .map(instructorId -> saveInstructorCourse(instructorId, courseId))
                 .collect(toList());
-        return instructorCourseFactory.build(instructorCourses);
     }
 
     public CoursesOfInstructorResponse getAllCoursesForInstructor(UUID instructorId) {

@@ -30,7 +30,7 @@ public class AdminController {
 
     @PatchMapping("/instructor-course")
     public InstructorCourseResponse assignInstructorForCourse(@RequestBody AssignInstructorForCourseRequest request) {
-        return instructorCourseService.saveInstructorCourse(request);
+        return instructorCourseService.saveInstructorCourse(request.getInstructorId(), request.getCourseId());
     }
 
     @GetMapping("/users")

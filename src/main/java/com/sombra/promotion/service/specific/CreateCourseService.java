@@ -34,7 +34,7 @@ public class CreateCourseService {
         if (request.getLessonNames().size() < minimumLessonsPerCourse)
             throw new NotEnoughLessonsForCourseException(request.getLessonNames().size(), minimumLessonsPerCourse);
         CourseResponse course = courseService.saveCourse(request.getCourseName());
-        List<InstructorCourseResponse> listOfInstructorCourse = instructorCourseService.saveInstructorCourse(course.getCourseId(), request.getInstructorIds());
+        List<InstructorCourseResponse> listOfInstructorCourse = instructorCourseService.saveInstructorCourse(request.getInstructorIds(), course.getCourseId());
         List<LessonResponse> lessons = request.getLessonNames().stream()
                 .map(lessonName -> lessonService.saveLesson(lessonName, course.getCourseId()))
                 .collect(toList());
