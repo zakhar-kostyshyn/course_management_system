@@ -11,7 +11,7 @@ public class InvalidTokenException extends RuntimeException {
         super(message);
     }
 
-    public InvalidTokenException(String message, NotFoundException e) {
+    public InvalidTokenException(String message, Exception e) {
         super(message, e);
     }
 

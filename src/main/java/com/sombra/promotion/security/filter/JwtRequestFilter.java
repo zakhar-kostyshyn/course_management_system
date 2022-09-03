@@ -69,8 +69,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         SecurityUser securityUser;
         try {
             securityUser = securityUserDetailsService.loadUserByUsername(username);
-        } catch (NotFoundException e) {
-            throw new InvalidTokenException("Username from token not exist.", e);
+        } catch (Exception e) {
+            throw new InvalidTokenException("Cannot get user from DB by token subject", e);
         }
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
