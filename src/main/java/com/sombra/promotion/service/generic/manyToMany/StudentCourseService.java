@@ -22,8 +22,8 @@ public class StudentCourseService {
     private final StudentCourseRepository studentCourseRepository;
     private final StudentCourseFactory studentCourseFactory;
 
-    public StudentCourseResponse saveStudentCourse(CourseSubscriptionRequest request) {
-        StudentCourse studentCourse = createStudentCourse(request.getStudentId(), request.getCourseId());
+    public StudentCourseResponse saveStudentCourse(UUID studentId, UUID courseId) {
+        StudentCourse studentCourse = createStudentCourse(studentId, courseId);
         studentCourseRepository.save(studentCourse);
         return studentCourseFactory.build(studentCourse);
     }

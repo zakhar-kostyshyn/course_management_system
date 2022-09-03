@@ -20,7 +20,7 @@ public class StudentSubscriptionOnCourseService {
     public StudentCourseResponse subscribeStudentOnCourse(CourseSubscriptionRequest request) {
         int amount = studentCourseRepository.countAmountStudentCourseBy(request.getStudentId());
         if (amount > maxCourseForStudent) throw new CoursesForStudentOverflowException(maxCourseForStudent);
-        return studentCourseService.saveStudentCourse(request);
+        return studentCourseService.saveStudentCourse(request.getStudentId(), request.getCourseId());
     }
 
 
