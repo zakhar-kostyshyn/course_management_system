@@ -4,11 +4,8 @@ import com.sombra.promotion.dto.request.FinishCourseRequest;
 import com.sombra.promotion.dto.response.CourseMarkResponse;
 import com.sombra.promotion.dto.response.FinishCourseResponse;
 import com.sombra.promotion.dto.response.MarkResponse;
-import com.sombra.promotion.factory.generic.CourseMarkFactory;
-import com.sombra.promotion.factory.specific.FinishCourseFactory;
 import com.sombra.promotion.service.generic.CourseMarkService;
 import com.sombra.promotion.service.generic.MarkService;
-import com.sombra.promotion.tables.pojos.CourseMark;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,7 +18,6 @@ import java.util.List;
 public class FinishCourseService {
 
     private final CourseMarkService courseMarkService;
-    private final FinishCourseFactory finishCourseFactory;
     private final MarkService markService;
 
     @Value("${app.minimum-course-pass-mark}")
@@ -34,12 +30,12 @@ public class FinishCourseService {
         double averageMarkForCourse = calculateAverageMarkForCourse(marksByStudentAndCourse);
         boolean isCoursePassed = isCoursePassed(averageMarkForCourse);
 
-        CourseMark courseMark;
+        CourseMarkResponse courseMark;
         if (isCoursePassed)
             courseMark = courseMarkService.savePassedCourseMark(averageMarkForCourse, request.getStudentId(), request.getCourseId());
         else courseMark = courseMarkService.saveNonPassedCourseMark(averageMarkForCourse, request.getStudentId(), request.getCourseId());
 
-        return finishCourseFactory.build(courseMark, marksByStudentAndCourse);
+        return new FinishCourseResponse(courseMark, marksByStudentAndCourse);
     }
 
     private double calculateAverageMarkForCourse(List<MarkResponse> markDetails) {

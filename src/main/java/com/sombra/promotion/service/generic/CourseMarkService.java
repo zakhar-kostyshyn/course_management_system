@@ -1,5 +1,7 @@
 package com.sombra.promotion.service.generic;
 
+import com.sombra.promotion.dto.response.CourseMarkResponse;
+import com.sombra.promotion.factory.generic.CourseMarkFactory;
 import com.sombra.promotion.service.util.UUIDUtil;
 import com.sombra.promotion.repository.CourseMarkRepository;
 import com.sombra.promotion.tables.pojos.CourseMark;
@@ -13,20 +15,21 @@ import java.util.UUID;
 public class CourseMarkService {
 
     private final CourseMarkRepository courseMarkRepository;
-    private final UUIDUtil uuidUtil;
+    private final CourseMarkFactory courseMarkFactory;
 
-    public CourseMark savePassedCourseMark(double mark, UUID studentId, UUID courseId) {
+    public CourseMarkResponse savePassedCourseMark(double mark, UUID studentId, UUID courseId) {
         return saveCourseMark(mark, studentId, courseId, true);
     }
+    private final UUIDUtil uuidUtil;
 
-    public CourseMark saveNonPassedCourseMark(double mark, UUID studentId, UUID courseId) {
+    public CourseMarkResponse saveNonPassedCourseMark(double mark, UUID studentId, UUID courseId) {
         return saveCourseMark(mark, studentId, courseId, false);
     }
 
-    private CourseMark saveCourseMark(double mark, UUID studentId, UUID courseId, boolean isPassed) {
+    private CourseMarkResponse saveCourseMark(double mark, UUID studentId, UUID courseId, boolean isPassed) {
         CourseMark courseMark = createCourseMark(mark, studentId, courseId, isPassed);
         courseMarkRepository.persist(courseMark);
-        return courseMark;
+        return courseMarkFactory.build(courseMark);
     }
 
     private CourseMark createCourseMark(double mark, UUID studentId, UUID courseId, boolean isPassed) {
