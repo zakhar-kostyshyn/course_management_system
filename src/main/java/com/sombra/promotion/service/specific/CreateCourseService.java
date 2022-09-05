@@ -36,7 +36,7 @@ public class CreateCourseService {
         CourseResponse course = courseService.saveCourse(request.getCourseName());
         List<InstructorCourseResponse> listOfInstructorCourse = instructorCourseService.saveInstructorCourse(request.getInstructorIds(), course.getCourseId());
         List<LessonResponse> lessons = request.getLessonNames().stream()
-                .map(lessonName -> lessonService.saveLesson(lessonName, course.getCourseId()))
+                .map(lessonName -> lessonService.addLessonToCourse(lessonName, course.getCourseId()))
                 .collect(toList());
         return courseInstructorLessonsFactory.build(listOfInstructorCourse, course, lessons);
     }

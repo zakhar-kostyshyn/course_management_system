@@ -28,11 +28,11 @@ public class LessonService {
     public List<LessonResponse> saveLessons(CreateLessonsRequest request) {
         lessonValidationService.assertThatInstructorInCourse(request.getInstructorId(), request.getCourseId());
         return request.getLessons().stream()
-                .map(lessonName -> saveLesson(lessonName, request.getCourseId()))
+                .map(lessonName -> addLessonToCourse(lessonName, request.getCourseId()))
                 .collect(toList());
     }
 
-    public LessonResponse saveLesson(String lessonName, UUID courseId) {
+    public LessonResponse addLessonToCourse(String lessonName, UUID courseId) {
         Lesson lesson = createLesson(lessonName, courseId);
         lessonRepository.persist(lesson);
         return lessonFactory.build(lesson);

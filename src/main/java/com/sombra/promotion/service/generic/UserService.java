@@ -22,7 +22,6 @@ public class UserService {
 
     public List<UserResponse> getAllUsers() {
         return userRepository.findAll().stream()
-                .map(User::getId)
                 .map(userFactory::build)
                 .collect(toList());
     }

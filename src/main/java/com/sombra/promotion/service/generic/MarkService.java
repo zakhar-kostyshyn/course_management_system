@@ -24,7 +24,6 @@ public class MarkService {
     private final MarkFactory markFactory;
     private final LessonService lessonService;
     private final UUIDUtil uuidUtil;
-
     private final StudentInstructorInLessonValidationService studentInstructorInLessonValidationService;
 
     public MarkResponse saveMark(SaveMarkRequest request) {
@@ -43,16 +42,6 @@ public class MarkService {
         return markFactory.build(mark);
     }
 
-    public List<MarkResponse> getMarksByStudentAndHisLessons(UUID studentId, List<UUID> lessonsIds) {
-        List<Mark> marks = markRepository.findByStudentIdAndLessonId(studentId, lessonsIds);
-        return markFactory.build(marks);
-    }
-
-    public List<MarkResponse> getMarksByStudentAndCourse(UUID studentId, UUID courseId) {
-        List<LessonResponse> lessonsByCourse = lessonService.getLessonsByCourse(courseId);
-        return getMarksByStudentAndHisLessons(studentId, lessonsByCourse.stream().map(LessonResponse::getLessonId).collect(toList()));
-    }
-
     private Mark createMark(int markNumber, UUID studentId, UUID instructorId, UUID lessonId) {
         Mark mark = new Mark();
         mark.setId(uuidUtil.randomUUID());
@@ -61,6 +50,16 @@ public class MarkService {
         mark.setInstructorId(instructorId);
         mark.setLessonId(lessonId);
         return mark;
+    }
+
+    public List<MarkResponse> getMarksByStudentAndHisLessons(UUID studentId, List<UUID> lessonsIds) {
+        List<Mark> marks = markRepository.findByStudentIdAndLessonId(studentId, lessonsIds);
+        return markFactory.build(marks);
+    }
+
+    public List<MarkResponse> getMarksByStudentAndCourse(UUID studentId, UUID courseId) {
+        List<LessonResponse> lessonsByCourse = lessonService.getLessonsByCourse(courseId);
+        return getMarksByStudentAndHisLessons(studentId, lessonsByCourse.stream().map(LessonResponse::getLessonId).collect(toList()));
     }
 
 }
