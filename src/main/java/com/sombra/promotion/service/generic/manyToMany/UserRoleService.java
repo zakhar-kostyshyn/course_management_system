@@ -28,7 +28,7 @@ public class UserRoleService {
 
     public UserRoleResponse saveUserRole(UUID userId, UUID roleId) {
         UserRole userRole = createUserRole(userId, roleId);
-        userRoleRepository.save(userRole);
+        userRoleRepository.persist(userRole);
         return userRoleFactory.build(userRole);
     }
 

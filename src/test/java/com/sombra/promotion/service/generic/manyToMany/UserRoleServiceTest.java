@@ -61,7 +61,7 @@ class UserRoleServiceTest {
     void must_save_user_role_and_return_response() {
         when(userRoleFactory.build(any())).thenReturn(response);
         var result = userRoleService.saveUserRole(userId, roleId);
-        verify(userRoleRepository).save(userRoleCaptor.capture());
+        verify(userRoleRepository).persist(userRoleCaptor.capture());
         assertThat(userRoleCaptor.getValue().getRoleId(), is(roleId));
         assertThat(userRoleCaptor.getValue().getUserId(), is(userId));
         verify(userRoleFactory).build(userRoleCaptor.capture());

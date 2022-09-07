@@ -43,7 +43,7 @@ class InstructorCourseServiceTest {
     @Test
     void must_save_instructor_course() {
         instructorCourseService.saveInstructorCourse(instructorId, courseId);
-        verify(instructorCourseRepository).save(instructorCourseCaptor.capture());
+        verify(instructorCourseRepository).persist(instructorCourseCaptor.capture());
         assertThat(instructorCourseCaptor.getValue().getInstructorId(), is(instructorId));
         assertThat(instructorCourseCaptor.getValue().getCourseId(), is(courseId));
     }

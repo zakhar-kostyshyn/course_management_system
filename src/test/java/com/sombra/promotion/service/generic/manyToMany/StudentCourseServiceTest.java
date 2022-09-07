@@ -56,7 +56,7 @@ class StudentCourseServiceTest {
     @Test
     void must_save_student_course() {
         studentCourseService.saveStudentCourse(studentId, courseId);
-        verify(studentCourseRepository).save(studentCourseCaptor.capture());
+        verify(studentCourseRepository).persist(studentCourseCaptor.capture());
         assertThat(studentCourseCaptor.getValue().getStudentId(), is(studentId));
         assertThat(studentCourseCaptor.getValue().getCourseId(), is(courseId));
     }

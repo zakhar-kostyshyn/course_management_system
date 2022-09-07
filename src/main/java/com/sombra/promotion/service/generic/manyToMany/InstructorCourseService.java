@@ -26,7 +26,7 @@ public class InstructorCourseService {
 
     public InstructorCourseResponse saveInstructorCourse(UUID instructorId, UUID courseId) {
         InstructorCourse instructorCourse = createInstructorCourse(instructorId, courseId);
-        instructorCourseRepository.save(instructorCourse);
+        instructorCourseRepository.persist(instructorCourse);
         return instructorCourseFactory.build(instructorCourse);
     }
 

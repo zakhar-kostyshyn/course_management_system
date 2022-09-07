@@ -24,7 +24,7 @@ public class UserRoleRepository implements ManyToManyTableRepository<UserRole, U
     private final DSLContext ctx;
 
     @Override
-    public void save(UserRole userRole) {
+    public void persist(UserRole userRole) {
         ctx.insertInto(USER_ROLE, USER_ROLE.ROLE_ID, USER_ROLE.USER_ID)
                 .values(userRole.getRoleId(), userRole.getUserId())
                 .execute();

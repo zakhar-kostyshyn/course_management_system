@@ -22,7 +22,7 @@ public class InstructorCourseRepository implements ManyToManyTableRepository<Ins
     private final DSLContext ctx;
 
     @Override
-    public void save(InstructorCourse instructorCourse) {
+    public void persist(InstructorCourse instructorCourse) {
         ctx.insertInto(INSTRUCTOR_COURSE, INSTRUCTOR_COURSE.INSTRUCTOR_ID, INSTRUCTOR_COURSE.COURSE_ID)
                 .values(instructorCourse.getInstructorId(), instructorCourse.getCourseId())
                 .execute();

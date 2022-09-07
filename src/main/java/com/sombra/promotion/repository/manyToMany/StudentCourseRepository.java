@@ -30,7 +30,7 @@ public class StudentCourseRepository implements ManyToManyTableRepository<Studen
     }
 
     @Override
-    public void save(StudentCourse studentCourse) {
+    public void persist(StudentCourse studentCourse) {
         ctx.insertInto(STUDENT_COURSE, STUDENT_COURSE.STUDENT_ID, STUDENT_COURSE.COURSE_ID)
                 .values(studentCourse.getStudentId(), studentCourse.getCourseId())
                 .execute();
