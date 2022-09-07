@@ -1,4 +1,4 @@
-package com.sombra.promotion.service.util;
+package com.sombra.promotion.repository.util;
 
 import org.jooq.Condition;
 import org.jooq.DSLContext;
