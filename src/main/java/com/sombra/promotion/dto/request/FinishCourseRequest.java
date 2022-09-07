@@ -11,6 +11,7 @@ import static com.sombra.promotion.service.util.statics.SecurityPrincipalUtil.au
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 public class FinishCourseRequest {
 
