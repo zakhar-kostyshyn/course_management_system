@@ -1,6 +1,6 @@
-package com.sombra.promotion.controller.admin;
+package com.sombra.promotion.e2e;
 
-import abstraction.E2ETest;
+import com.sombra.promotion.e2e.abstraction.E2ETest;
 import com.sombra.promotion.dto.request.RegistrationUserRequest;
 import com.sombra.promotion.enums.RoleEnum;
 import org.junit.jupiter.api.Test;

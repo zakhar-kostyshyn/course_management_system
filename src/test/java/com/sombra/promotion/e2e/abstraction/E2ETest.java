@@ -1,4 +1,4 @@
-package abstraction;
+package com.sombra.promotion.e2e.abstraction;
 
 import helpers.testConfigs.TestHelpersConfiguration;
 import helpers.testHelpers.*;

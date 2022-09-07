@@ -1,9 +1,9 @@
-package com.sombra.promotion.controller.admin;
+package com.sombra.promotion.e2e;
 
 import com.sombra.promotion.dto.request.AssignInstructorForCourseRequest;
 import com.sombra.promotion.dto.request.AssignRoleRequest;
 import com.sombra.promotion.enums.RoleEnum;
-import abstraction.E2ETest;
+import com.sombra.promotion.e2e.abstraction.E2ETest;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;

@@ -1,11 +1,11 @@
-package com.sombra.promotion.controller.admin;
+package com.sombra.promotion.e2e;
 
 
 import com.sombra.promotion.dto.request.CreateCourseRequest;
 import com.sombra.promotion.dto.request.CreateLessonsRequest;
 import com.sombra.promotion.dto.request.GiveFinalFeedbackRequest;
 import com.sombra.promotion.dto.request.SaveMarkRequest;
-import abstraction.E2ETest;
+import com.sombra.promotion.e2e.abstraction.E2ETest;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
