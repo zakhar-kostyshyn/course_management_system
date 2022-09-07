@@ -13,6 +13,7 @@ import com.sombra.promotion.service.generic.manyToMany.InstructorCourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class CreateCourseService {
     @Value("${app.minimum-lessons-per-course}")
     private int minimumLessonsPerCourse;
 
+    @Transactional
     public CourseInstructorLessonsResponse createCourse(CreateCourseRequest request) {
         if (request.getLessonNames().size() < minimumLessonsPerCourse)
             throw new NotEnoughLessonsForCourseException(request.getLessonNames().size(), minimumLessonsPerCourse);
