@@ -1,6 +1,8 @@
 package com.sombra.promotion.e2e.abstraction;
 
-import helpers.testConfigs.TestHelpersConfiguration;
+import helpers.testConfigs.JsonTestConfiguration;
+import helpers.testConfigs.JwtTokenTestConfiguration;
+import helpers.testConfigs.DatabaseTestConfiguration;
 import helpers.testHelpers.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +11,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import({TestHelpersConfiguration.class})
+@Import({DatabaseTestConfiguration.class, JwtTokenTestConfiguration.class, JsonTestConfiguration.class})
 abstract public class E2ETest {
 
     @Autowired protected JsonBuilderUtils jsonBuilderUtils;
