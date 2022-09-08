@@ -9,8 +9,6 @@ import java.util.UUID;
 
 public interface TableRepository<P extends Serializable> extends Persistence<P> {
 
-    void update(P pojo);
-
     Optional<P> findById(UUID id);
 
     @NonNull

@@ -27,11 +27,6 @@ public abstract class AbstractTableRepository<P extends Serializable, R extends 
     }
 
     @Override
-    public void update(P pojo) {
-        getDao().update(pojo);
-    }
-
-    @Override
     public Optional<P> findById(UUID id) {
         return Optional.ofNullable(getDao().findById(id));
     }
