@@ -11,6 +11,7 @@ import java.util.UUID;
 import static com.sombra.promotion.Tables.INSTRUCTOR_COURSE;
 import static com.sombra.promotion.enums.RoleEnum.*;
 import static com.sombra.promotion.tables.Course.COURSE;
+import static com.sombra.promotion.tables.CourseMark.COURSE_MARK;
 import static com.sombra.promotion.tables.Lesson.LESSON;
 import static com.sombra.promotion.tables.Mark.MARK;
 import static com.sombra.promotion.tables.StudentCourse.STUDENT_COURSE;
@@ -86,6 +87,14 @@ public class InsertUtils {
         return ctx.insertInto(MARK, MARK.STUDENT_ID, MARK.INSTRUCTOR_ID, MARK.LESSON_ID, MARK.MARK_)
                 .values(studentId, instructorId, lessonId, mark)
                 .returning(MARK.ID)
+                .fetchOne()
+                .component1();
+    }
+
+    public UUID courseMark(double mark, UUID courseId, UUID studentId, boolean passed) {
+        return ctx.insertInto(COURSE_MARK, COURSE_MARK.MARK, COURSE_MARK.COURSE_ID, COURSE_MARK.STUDENT_ID, COURSE_MARK.COURSE_PASSED)
+                .values(mark, courseId, studentId, passed)
+                .returning(COURSE_MARK.ID)
                 .fetchOne()
                 .component1();
     }

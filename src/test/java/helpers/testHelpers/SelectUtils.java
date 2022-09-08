@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.sombra.promotion.tables.Course.COURSE;
+import static com.sombra.promotion.tables.CourseMark.COURSE_MARK;
 import static com.sombra.promotion.tables.Feedback.FEEDBACK;
 import static com.sombra.promotion.tables.Homework.HOMEWORK;
 import static com.sombra.promotion.tables.InstructorCourse.INSTRUCTOR_COURSE;
@@ -40,6 +41,10 @@ public class SelectUtils {
 
     public Course course() {
         return ctx.select().from(COURSE).fetchAnyInto(Course.class);
+    }
+
+    public CourseMark courseMark() {
+        return ctx.select().from(COURSE_MARK).fetchAnyInto(CourseMark.class);
     }
 
     public Lesson lesson() {
