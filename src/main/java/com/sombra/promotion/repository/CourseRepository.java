@@ -18,10 +18,6 @@ public class CourseRepository extends AbstractTableRepository<Course, CourseReco
 
     private final CourseDao courseDao;
 
-    public Course requiredByCourseName(String courseName) {
-        return requiredByCondition(COURSE.NAME.eq(courseName), COURSE, Course.class);
-    }
-
     @Override
     protected DAOImpl<CourseRecord, Course, UUID> getDao() {
         return courseDao;
