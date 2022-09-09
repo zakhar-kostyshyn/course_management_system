@@ -8,8 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
-import static com.sombra.promotion.Tables.FEEDBACK;
-import static com.sombra.promotion.Tables.INSTRUCTOR_COURSE;
+import static com.sombra.promotion.Tables.*;
 import static com.sombra.promotion.enums.RoleEnum.*;
 import static com.sombra.promotion.tables.Course.COURSE;
 import static com.sombra.promotion.tables.CourseMark.COURSE_MARK;
@@ -104,6 +103,14 @@ public class InsertUtils {
         return ctx.insertInto(FEEDBACK, FEEDBACK.FEEDBACK_, FEEDBACK.STUDENT_ID, FEEDBACK.INSTRUCTOR_ID, FEEDBACK.COURSE_ID)
                 .values(feedback, studentId, instructorId, courseId)
                 .returning(FEEDBACK.ID)
+                .fetchOne()
+                .component1();
+    }
+
+    public UUID homework(byte[] file, UUID studentId, UUID lessonId) {
+        return ctx.insertInto(HOMEWORK, HOMEWORK.FILE, HOMEWORK.STUDENT_ID, HOMEWORK.LESSON_ID)
+                .values(file, studentId, lessonId)
+                .returning(HOMEWORK.ID)
                 .fetchOne()
                 .component1();
     }
