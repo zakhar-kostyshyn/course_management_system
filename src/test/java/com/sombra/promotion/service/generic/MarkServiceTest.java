@@ -72,14 +72,14 @@ class MarkServiceTest {
         UUID lessonId = UUID.randomUUID();
         Mark mark = mock(Mark.class);
         MarkResponse response = mock(MarkResponse.class);
-        when(markRepository.findByStudentIdAndLessonId(any(), any())).thenReturn(List.of(mark));
+        when(markRepository.findMarkByStudentIdAndLessonId(any(), any())).thenReturn(List.of(mark));
         when(markFactory.build(any(List.class))).thenReturn(List.of(response));
 
         // act
         List<MarkResponse> result = markService.getMarksByStudentAndHisLessons(studentId, List.of(lessonId));
 
         // verify
-        verify(markRepository).findByStudentIdAndLessonId(studentId, List.of(lessonId));
+        verify(markRepository).findMarkByStudentIdAndLessonId(studentId, List.of(lessonId));
         verify(markFactory).build(List.of(mark));
         assertThat(result, hasItems(sameInstance(response)));
 

@@ -19,7 +19,7 @@ public class MarkRepository extends AbstractTableRepository<Mark, MarkRecord> {
 
     private final MarkDao markDao;
 
-    public List<Mark> findByStudentIdAndLessonId(UUID studentId, List<UUID> lessonIds) {
+    public List<Mark> findMarkByStudentIdAndLessonId(UUID studentId, List<UUID> lessonIds) {
         return findAllByCondition(MARK.STUDENT_ID.eq(studentId).and(MARK.LESSON_ID.in(lessonIds)), MARK, Mark.class);
     }
 

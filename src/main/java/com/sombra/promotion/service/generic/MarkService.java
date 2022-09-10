@@ -53,7 +53,7 @@ public class MarkService {
     }
 
     public List<MarkResponse> getMarksByStudentAndHisLessons(UUID studentId, List<UUID> lessonsIds) {
-        List<Mark> marks = markRepository.findByStudentIdAndLessonId(studentId, lessonsIds);
+        List<Mark> marks = markRepository.findMarkByStudentIdAndLessonId(studentId, lessonsIds);
         return markFactory.build(marks);
     }
 
