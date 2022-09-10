@@ -13,6 +13,7 @@ public class Constants {
     public static final String TEST_COURSE = "test-course";
     public static final String TEST_LESSON_1 = "test-lesson-1";
     public static final String TEST_LESSON_2 = "test-lesson-2";
+    public static final String TEST_LESSON_3 = "test-lesson-3";
     public static final int TEST_MARK = 100;
     public static final String TEST_HASH_PASSWORD = "test-hashed-password";
     public static final UUID TEST_RANDOM_UUID = UUID.randomUUID();
