@@ -19,7 +19,7 @@ public class LessonRepository extends AbstractTableRepository<Lesson, LessonReco
 
     private final LessonDao lessonDao;
 
-    public List<Lesson> findByCourseId(UUID courseId) {
+    public List<Lesson> findLessonByCourseId(UUID courseId) {
         return findAllByCondition(LESSON.COURSE_ID.eq(courseId), LESSON, Lesson.class);
     }
 

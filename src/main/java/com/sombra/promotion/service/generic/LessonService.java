@@ -47,7 +47,7 @@ public class LessonService {
     }
 
     public List<LessonResponse> getLessonsByCourse(UUID courseId) {
-        List<Lesson> lessons = lessonRepository.findByCourseId(courseId);
+        List<Lesson> lessons = lessonRepository.findLessonByCourseId(courseId);
         return lessonFactory.build(lessons);
     }
 
