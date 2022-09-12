@@ -38,7 +38,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Override
     @SneakyThrows
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
+    public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
 
         String authorizationHeader = request.getHeader(AUTHORIZATION_HEADER);
 
