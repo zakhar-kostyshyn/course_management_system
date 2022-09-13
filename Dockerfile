@@ -1,25 +1,13 @@
-FROM openjdk:11
+FROM eclipse-temurin:11-alpine
 
-RUN apt-get update && apt-get install dos2unix -y
+RUN mkdir -p /opt/promotion
 
-COPY gradlew /cms/gradlew
-COPY build.gradle /cms/build.gradle
-COPY gradlew.bat /cms/gradlew.bat
-COPY settings.gradle /cms/settings.gradle
-
-COPY gradle /cms/gradle
-COPY src /cms/src
-
-WORKDIR cms
-
-RUN dos2unix gradlew build.gradle gradlew.bat settings.gradle gradle
-
-RUN ./gradlew clean build
+WORKDIR /opt/promotion
+COPY gradle ./gradle
+COPY gradlew ./gradlew
+COPY build.gradle ./build.gradle
+COPY docker-compose-build.yml ./docker-compose-build.yml
 
 EXPOSE 8881
 
-WORKDIR build/libs
-
-RUN chmod +x promotion-0.0.1-SNAPSHOT.jar
-
-CMD java -jar promotion-0.0.1-SNAPSHOT.jar
+CMD ./gradlew --stacktrace --no-daemon bootRun
