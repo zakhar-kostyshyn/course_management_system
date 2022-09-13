@@ -5,7 +5,7 @@
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
     <changeSet id="29d775a1-e557-4808-914a-8993f7e2308c" author="Zakhar Kostyshyn">
-        <preConditions>
+        <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists tableName="course_mark"/>
             </not>
