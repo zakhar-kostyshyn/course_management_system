@@ -10,4 +10,4 @@ COPY docker-compose-build.yml ./docker-compose-build.yml
 
 EXPOSE 8881
 
-CMD ./gradlew --stacktrace --no-daemon bootRun
+CMD ./gradlew --stacktrace --no-daemon bootRun -x databaseComposeUp generateJooq

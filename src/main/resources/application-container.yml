@@ -1,16 +1,13 @@
 spring:
   datasource:
-    url: jdbc:postgresql://127.0.0.1:5432/cms_db
+    url: jdbc:postgresql://cms_db:5432/cms_db
     username: root
     password: root
     driverClassName: org.postgresql.Driver
   liquibase:
-    change-log: liquibase/main_changelog.xml
-    url: jdbc:postgresql://127.0.0.1:5432/cms_db
-    password: root
-    user: root
+    enabled: false
 server:
-  port: 8882
+  port: 8883
 springdoc:
   swagger-ui:
     path: /swagger

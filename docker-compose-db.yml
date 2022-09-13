@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+
+  db:
+    container_name: cms_db
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: cms_db
+    ports:
+      - "5432:5432"

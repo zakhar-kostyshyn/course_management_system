@@ -58,6 +58,14 @@ dependencies {
     jooqGenerator 'org.postgresql:postgresql:42.3.2'
 }
 
+var activeProfile = System.getenv('SPRING_PROFILES_ACTIVE')
+String databaseUrl
+if (activeProfile == 'container') {
+    databaseUrl = 'jdbc:postgresql://cms_db:5432/cms_db'
+} else {
+    databaseUrl = 'jdbc:postgresql://localhost:5433/cms_db'
+}
+
 dockerCompose {
     database {
         useComposeFiles = ['docker-compose-build.yml']
@@ -70,7 +78,7 @@ jooq {
             generationTool {
                 jdbc {
                     driver = 'org.postgresql.Driver'
-                    url = 'jdbc:postgresql://localhost:5433/cms_db'
+                    url = databaseUrl
                     user = 'root'
                     password = 'root'
                 }
@@ -103,15 +111,19 @@ liquibase {
     activities {
         main {
             changeLogFile 'src/main/resources/liquibase/main_changelog.xml'
-            url 'jdbc:postgresql://localhost:5433/cms_db'
+            url databaseUrl
             username 'root'
             password 'root'
         }
     }
 }
 
-update.dependsOn databaseComposeUp
-generateJooq.dependsOn update
-test.dependsOn generateJooq
-
-tasks.named("build") { finalizedBy(databaseComposeDown) }
+if (activeProfile == 'container') {
+    generateJooq.dependsOn update
+    test.dependsOn generateJooq
+} else {
+    update.dependsOn databaseComposeUp
+    generateJooq.dependsOn update
+    test.dependsOn generateJooq
+    tasks.named("build") { finalizedBy(databaseComposeDown) }
+}

@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: root
       POSTGRES_DB: cms_db
     ports:
-      - "5432:5432"
+      - "5434:5432"
 
   api:
     container_name: cms_api
@@ -19,7 +19,7 @@ services:
     ports:
       - "8881:8881"
     environment:
-      SPRING_PROFILES_ACTIVE: dev
+      SPRING_PROFILES_ACTIVE: container
     volumes:
       - .:/opt/promotion
       - ./gradle.cache/}:/root/.gradle
