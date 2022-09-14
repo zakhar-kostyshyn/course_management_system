@@ -19,7 +19,7 @@ public class SwaggerConfig {
         OpenAPI openAPI = new OpenAPI();
         openAPI.info(new Info()
                 .title("Course Management System API")
-                .description("Help your learning business growth")
+                .description("Course Management System :)")
                 .version("v0.0.1")
                 .license(new License().name("Apache 2.0"))
         );
