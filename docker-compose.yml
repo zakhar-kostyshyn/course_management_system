@@ -17,7 +17,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8881:8881"
+      - "8883:8080"
     environment:
       SPRING_PROFILES_ACTIVE: container
     volumes:

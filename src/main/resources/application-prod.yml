@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_DB}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driverClassName: org.postgresql.Driver
+  liquibase:
+    change-log: liquibase/main_changelog.xml
+    url: jdbc:postgresql://${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_DB}
+    password: ${DATABASE_PASSWORD}
+    user: ${DATABASE_USERNAME}
+server:
+  port: ${SPRING_SERVER_PORT}
+springdoc:
+  swagger-ui:
+    path: ${SWAGGER_URL}
+security:
+  secret: ${SECURITY_SECRET}
+app:
+  minimum-course-pass-mark: 80
+  max-course-for-student: 5
+  minimum-lessons-per-course: 5
+  controller-advise:
+    generic-error-message: Something went wrong!
+    show-stacktrace: true

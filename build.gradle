@@ -126,4 +126,5 @@ if (activeProfile == 'container') {
     generateJooq.dependsOn update
     test.dependsOn generateJooq
     tasks.named("build") { finalizedBy(databaseComposeDown) }
+    bootRun.dependsOn databaseComposeDown
 }

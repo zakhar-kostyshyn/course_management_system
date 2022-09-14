@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 cd /app/course_management_system || exit
-sudo java -jar \
+sudo java -Dspring.profiles.active=prod -jar \
  -DDATABASE_DB="$(aws ssm get-parameters --output text --region eu-central-1 --names DATABASE_DB --query Parameters[0].Value)" \
  -DDATABASE_HOST="$(aws ssm get-parameters --output text --region eu-central-1 --names DATABASE_HOST --query Parameters[0].Value)" \
  -DDATABASE_PASSWORD="$(aws ssm get-parameters --output text --region eu-central-1 --names DATABASE_PASSWORD --query Parameters[0].Value)" \
