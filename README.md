@@ -12,6 +12,7 @@ Start Backend and Database in docker:
 ```
 docker-compose up
 ```
+After successful Run open [Swagger](http://localhost:8883/swagger)
 
 ### Backend on Host with Database in Docker
 
@@ -19,7 +20,6 @@ Start DB in docker:
 ```
 docker-compose -f docker-compose-db.yml up -d
 ```
-After successful Run open [Swagger](http://localhost:8883/swagger)
 
 Run BE:
 ```
