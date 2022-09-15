@@ -1,4 +1,4 @@
-package helpers.testConfigs;
+package configs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import helpers.testHelpers.JsonBuilderUtils;

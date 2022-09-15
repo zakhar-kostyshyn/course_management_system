@@ -1,4 +1,4 @@
-package helpers.testConfigs;
+package configs;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import helpers.testHelpers.JwtTokenUtil;

@@ -1,8 +1,8 @@
 package com.sombra.promotion.e2e.abstraction;
 
-import helpers.testConfigs.JsonTestConfiguration;
-import helpers.testConfigs.JwtTokenTestConfiguration;
-import helpers.testConfigs.DatabaseTestConfiguration;
+import configs.JsonTestConfiguration;
+import configs.JwtTokenTestConfiguration;
+import configs.DatabaseTestConfiguration;
 import helpers.testHelpers.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package helpers.testConfigs;
+package configs;
 
 import helpers.testHelpers.*;
 import org.jooq.DSLContext;

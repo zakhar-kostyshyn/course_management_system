@@ -1,6 +1,6 @@
 package com.sombra.promotion.integration.database.abstraction;
 
-import helpers.testConfigs.DatabaseTestConfiguration;
+import configs.DatabaseTestConfiguration;
 import helpers.testHelpers.DeleteUtils;
 import helpers.testHelpers.InsertUtils;
 import helpers.testHelpers.SelectUtils;

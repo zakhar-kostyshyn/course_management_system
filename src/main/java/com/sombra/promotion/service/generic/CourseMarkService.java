@@ -16,11 +16,11 @@ public class CourseMarkService {
 
     private final CourseMarkRepository courseMarkRepository;
     private final CourseMarkFactory courseMarkFactory;
+    private final UUIDUtil uuidUtil;
 
     public CourseMarkResponse savePassedCourseMark(double mark, UUID studentId, UUID courseId) {
         return saveCourseMark(mark, studentId, courseId, true);
     }
-    private final UUIDUtil uuidUtil;
 
     public CourseMarkResponse saveNonPassedCourseMark(double mark, UUID studentId, UUID courseId) {
         return saveCourseMark(mark, studentId, courseId, false);
