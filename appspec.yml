@@ -19,3 +19,6 @@ hooks:
   ApplicationStop:
     - location: server_stop.sh
       runas: root
+  ValidateService:
+    - location: health_check.sh
+      runas: root
