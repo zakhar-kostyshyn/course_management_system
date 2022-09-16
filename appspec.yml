@@ -10,6 +10,8 @@ hooks:
   BeforeInstall:
     - location: server_clear.sh
       runas: root
+    - location: server_stop.sh
+      runas: root
   AfterInstall:
     - location: fix_privileges.sh
       runas: root
@@ -22,3 +24,4 @@ hooks:
   ValidateService:
     - location: health_check.sh
       runas: root
+      timeout: 1000
