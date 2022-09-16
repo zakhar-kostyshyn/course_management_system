@@ -49,6 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/student/**").hasAnyAuthority("ROLE_STUDENT", "ROLE_ADMIN")
                 .antMatchers("/", "/register", "/login").permitAll()
                 .antMatchers(swaggerUiPath, "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .antMatchers("/healthcheck").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
