@@ -23,3 +23,7 @@ app:
   controller-advise:
     generic-error-message: Something went wrong!
     show-stacktrace: true
+logging:
+  file:
+    path: /logs
+    name: app.log
