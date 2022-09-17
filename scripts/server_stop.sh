@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-sudo pkill -f 'java -jar'
+sudo kill $(pgrep -f promotion-0.0.1-SNAPSHOT.jar)
