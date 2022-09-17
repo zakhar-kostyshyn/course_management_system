@@ -1,13 +1,13 @@
 package com.sombra.promotion.controller;
 
 import com.sombra.promotion.dto.response.InstructorCourseResponse;
-import com.sombra.promotion.dto.response.UserResponse;
 import com.sombra.promotion.dto.request.AssignInstructorForCourseRequest;
 import com.sombra.promotion.dto.request.AssignRoleRequest;
+import com.sombra.promotion.dto.response.UserInfoResponse;
 import com.sombra.promotion.dto.response.UserRoleResponse;
+import com.sombra.promotion.service.UserInfoService;
 import com.sombra.promotion.service.common.manyToMany.InstructorCourseService;
 import com.sombra.promotion.service.common.manyToMany.UserRoleService;
-import com.sombra.promotion.service.common.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +20,7 @@ public class AdminController {
 
     private final UserRoleService userRoleService;
     private final InstructorCourseService instructorCourseService;
-    private final UserService userService;
+    private final UserInfoService userInfoService;
 
 
     @PatchMapping("/assign-role")
@@ -34,8 +34,8 @@ public class AdminController {
     }
 
     @GetMapping("/users")
-    public List<UserResponse> getAllUsers() {
-        return userService.getAllUsers();
+    public List<UserInfoResponse> getAllUsers() {
+        return userInfoService.getUserInfo();
     }
 
 

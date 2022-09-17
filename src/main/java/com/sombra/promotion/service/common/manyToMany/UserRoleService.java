@@ -1,5 +1,6 @@
 package com.sombra.promotion.service.common.manyToMany;
 
+import com.sombra.promotion.dto.response.RoleResponse;
 import com.sombra.promotion.dto.response.UserRoleResponse;
 import com.sombra.promotion.enums.RoleEnum;
 import com.sombra.promotion.mapper.UserRoleMapper;
@@ -10,7 +11,10 @@ import com.sombra.promotion.tables.pojos.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+
+import static java.util.stream.Collectors.toList;
 
 
 @Service
@@ -20,6 +24,13 @@ public class UserRoleService {
     private final UserRoleRepository userRoleRepository;
     private final UserRoleMapper userRoleMapper;
     private final RoleService roleService;
+
+    public List<RoleResponse> getRoleResponsesByUserId(UUID userId) {
+        return userRoleRepository.findByFirstId(userId).stream()
+                .map(Role::getId)
+                .map(roleService::getRoleById)
+                .collect(toList());
+    }
 
     public UserRoleResponse saveUserRole(UUID userId, RoleEnum roleEnum) {
         Role role = roleService.getRoleByRoleEnum(roleEnum);
