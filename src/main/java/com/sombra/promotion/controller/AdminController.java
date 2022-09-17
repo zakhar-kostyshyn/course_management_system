@@ -23,12 +23,12 @@ public class AdminController {
     private final UserService userService;
 
 
-    @PatchMapping("/user-role")
+    @PatchMapping("/assign-role")
     public UserRoleResponse assignRole(@RequestBody AssignRoleRequest request) {
         return userRoleService.saveUserRole(request.getUserId(), request.getRole());
     }
 
-    @PatchMapping("/instructor-course")
+    @PatchMapping("/assign-instructor-for-course")
     public InstructorCourseResponse assignInstructorForCourse(@RequestBody AssignInstructorForCourseRequest request) {
         return instructorCourseService.saveInstructorCourse(request.getInstructorId(), request.getCourseId());
     }
