@@ -25,7 +25,7 @@ class AdminE2ETest extends E2ETest {
                 .header(AUTHORIZATION, jwtTokenUtil.bearerToken(TEST_USERNAME))
                 .body(new AssignRoleRequest(studentId, RoleEnum.instructor))
                 .when()
-                .patch(testURL("/admin/user-role"))
+                .patch(testURL("/admin/assign-role"))
                 .then()
                 .statusCode(200)
                 .assertThat()
@@ -42,7 +42,7 @@ class AdminE2ETest extends E2ETest {
                 .header(AUTHORIZATION, jwtTokenUtil.bearerToken(TEST_USERNAME))
                 .body(new AssignRoleRequest(UUID.randomUUID(), RoleEnum.instructor))
                 .when()
-                .patch(testURL("/admin/assign/role"))
+                .patch(testURL("/admin/assign-role"))
                 .then()
                 .statusCode(403);
     }
@@ -75,7 +75,7 @@ class AdminE2ETest extends E2ETest {
                 .header(AUTHORIZATION, jwtTokenUtil.bearerToken(TEST_USERNAME))
                 .body(new AssignInstructorForCourseRequest(instructorId, courseId))
                 .when()
-                .patch(testURL("/admin/instructor-course"))
+                .patch(testURL("/admin/assign-instructor-for-course"))
                 .then()
                 .statusCode(200)
                 .assertThat()

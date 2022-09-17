@@ -162,7 +162,7 @@ public class InstructorE2ETest extends E2ETest {
         given().header(CONTENT_TYPE, "application/json")
                 .header(AUTHORIZATION, jwtTokenUtil.bearerToken(TEST_USERNAME))
                 .when()
-                .get(testURL("/instructor/students/"+courseId))
+                .get(testURL("/instructor/students/in/"+courseId))
                 .then()
                 .statusCode(200)
                 .assertThat()
