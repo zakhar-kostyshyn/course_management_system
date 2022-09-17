@@ -59,7 +59,7 @@ public class InstructorController {
         return instructorCourseService.getAllCoursesForInstructor(authenticatedUserId());
     }
 
-    @GetMapping("/students/{courseId}")
+    @GetMapping("/students/in/{courseId}")
     public InstructorCourseStudentsResponse getAllStudentsInCourseForInstructor(@PathVariable UUID courseId) {
         return instructorStudentService.getAllStudentsInCourseForInstructor(authenticatedUserId(), courseId);
     }

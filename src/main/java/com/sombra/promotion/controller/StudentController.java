@@ -28,7 +28,7 @@ public class StudentController {
     private final StudentSubscriptionOnCourseService studentSubscriptionOnCourseService;
     private final StudentCourseService studentCourseService;
 
-    @PatchMapping("/subscribe")
+    @PatchMapping("/course-subscribe")
     public StudentCourseResponse subscribeOnCourse(@RequestBody CourseSubscriptionRequest request) {
         request.setStudentId(authenticatedUserId());
         return studentSubscriptionOnCourseService.subscribeStudentOnCourse(request);
@@ -46,7 +46,7 @@ public class StudentController {
         return studentCourseService.getAllCoursesForStudent(authenticatedUserId());
     }
 
-    @GetMapping("/lessons/{courseId}")
+    @GetMapping("/lessons/in/{courseId}")
     public StudentCourseLessonsResponse getStudentLessonsFromCourse(@PathVariable UUID courseId) {
         return studentLessonService.getLessonsOfStudentInCourse(authenticatedUserId(), courseId);
     }
