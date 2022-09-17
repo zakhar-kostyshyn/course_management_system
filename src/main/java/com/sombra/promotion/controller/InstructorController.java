@@ -45,6 +45,9 @@ public class InstructorController {
 
     @PostMapping("/course")
     public CourseInstructorLessonsResponse createCourse(@RequestBody CreateCourseRequest request) {
+        List<UUID> instructorIds = request.getInstructorIds();
+        if (!instructorIds.contains(authenticatedUserId()))
+            instructorIds.add(authenticatedUserId());
         return createCourseService.createCourse(request);
     }
 
