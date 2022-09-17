@@ -2,9 +2,9 @@ package com.sombra.promotion.unit.service.generic.manyToMany;
 
 import com.sombra.promotion.dto.response.InstructorCourseResponse;
 import com.sombra.promotion.exception.NotFoundCourseBelongsForInstructorException;
-import com.sombra.promotion.factory.specific.InstructorCourseFactory;
+import com.sombra.promotion.mapper.InstructorCourseMapper;
 import com.sombra.promotion.repository.manyToMany.InstructorCourseRepository;
-import com.sombra.promotion.service.generic.manyToMany.InstructorCourseService;
+import com.sombra.promotion.service.common.manyToMany.InstructorCourseService;
 import com.sombra.promotion.tables.pojos.InstructorCourse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,8 @@ import static org.mockito.Mockito.*;
 class InstructorCourseServiceTest {
 
     @Mock InstructorCourseRepository instructorCourseRepository;
-    @Mock InstructorCourseFactory instructorCourseFactory;
+    @Mock
+    InstructorCourseMapper instructorCourseMapper;
     @InjectMocks
     InstructorCourseService instructorCourseService;
     @InjectMocks @Spy InstructorCourseService spy;
@@ -52,7 +53,7 @@ class InstructorCourseServiceTest {
 
     @Test
     void must_return_response_of_saved_instructor_course() {
-        when(instructorCourseFactory.build(any(InstructorCourse.class))).thenReturn(response);
+        when(instructorCourseMapper.build(any(InstructorCourse.class))).thenReturn(response);
         var result = instructorCourseService.saveInstructorCourse(instructorId, courseId);
         assertThat(result, sameInstance(response));
     }

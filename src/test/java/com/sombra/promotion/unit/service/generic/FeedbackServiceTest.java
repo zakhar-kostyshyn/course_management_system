@@ -2,10 +2,10 @@ package com.sombra.promotion.unit.service.generic;
 
 import com.sombra.promotion.dto.request.GiveFinalFeedbackRequest;
 import com.sombra.promotion.dto.response.FeedbackResponse;
-import com.sombra.promotion.factory.generic.FeedbackFactory;
+import com.sombra.promotion.mapper.common.FeedbackMapper;
 import com.sombra.promotion.repository.FeedbackRepository;
-import com.sombra.promotion.service.generic.FeedbackService;
-import com.sombra.promotion.service.generic.validation.StudentInstructorInCourseValidationService;
+import com.sombra.promotion.service.common.FeedbackService;
+import com.sombra.promotion.service.common.validation.StudentInstructorInCourseValidationService;
 import com.sombra.promotion.service.util.UUIDUtil;
 import com.sombra.promotion.tables.pojos.Feedback;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,8 @@ import static org.mockito.Mockito.*;
 class FeedbackServiceTest {
 
     @Mock FeedbackRepository feedbackRepository;
-    @Mock FeedbackFactory feedbackFactory;
+    @Mock
+    FeedbackMapper feedbackMapper;
     @Mock UUIDUtil uuidUtil;
     @Mock StudentInstructorInCourseValidationService studentInstructorInCourseValidationService;
     @InjectMocks
@@ -47,7 +48,7 @@ class FeedbackServiceTest {
         GiveFinalFeedbackRequest request = new GiveFinalFeedbackRequest(feedback, courseId, studentId, instructorId);
         FeedbackResponse response = mock(FeedbackResponse.class);
         when(uuidUtil.randomUUID()).thenReturn(feedbackId);
-        when(feedbackFactory.build(any(Feedback.class))).thenReturn(response);
+        when(feedbackMapper.build(any(Feedback.class))).thenReturn(response);
 
         // act
         FeedbackResponse result = feedbackService.saveFeedback(request);
@@ -56,7 +57,7 @@ class FeedbackServiceTest {
         verify(studentInstructorInCourseValidationService).assertThatInstructorAndStudentInCourse(studentId, instructorId, courseId);
         verify(uuidUtil).randomUUID();
         verify(feedbackRepository).persist(feedbackCaptor.capture());
-        verify(feedbackFactory).build(feedbackCaptor.capture());
+        verify(feedbackMapper).build(feedbackCaptor.capture());
         assertThat(feedbackCaptor.getValue().getId(), is(feedbackId));
         assertThat(feedbackCaptor.getValue().getFeedback(), is(feedback));
         assertThat(feedbackCaptor.getValue().getStudentId(), is(studentId));

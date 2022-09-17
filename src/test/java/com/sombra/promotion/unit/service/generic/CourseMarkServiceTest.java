@@ -1,9 +1,9 @@
 package com.sombra.promotion.unit.service.generic;
 
 import com.sombra.promotion.dto.response.CourseMarkResponse;
-import com.sombra.promotion.factory.generic.CourseMarkFactory;
+import com.sombra.promotion.mapper.common.CourseMarkMapper;
 import com.sombra.promotion.repository.CourseMarkRepository;
-import com.sombra.promotion.service.generic.CourseMarkService;
+import com.sombra.promotion.service.common.CourseMarkService;
 import com.sombra.promotion.service.util.UUIDUtil;
 import com.sombra.promotion.tables.pojos.CourseMark;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,8 @@ class CourseMarkServiceTest {
 
     @Mock CourseMarkRepository courseMarkRepository;
     @Mock UUIDUtil uuidUtil;
-    @Mock CourseMarkFactory courseMarkFactory;
+    @Mock
+    CourseMarkMapper courseMarkMapper;
     @InjectMocks
     CourseMarkService courseMarkService;
     @Captor ArgumentCaptor<CourseMark> courseMarkCaptor;
@@ -42,7 +43,7 @@ class CourseMarkServiceTest {
         UUID courseMarkID = UUID.randomUUID();
         CourseMarkResponse response = mock(CourseMarkResponse.class);
         when(uuidUtil.randomUUID()).thenReturn(courseMarkID);
-        when(courseMarkFactory.build(any(CourseMark.class))).thenReturn(response);
+        when(courseMarkMapper.build(any(CourseMark.class))).thenReturn(response);
 
         // act
         CourseMarkResponse result = courseMarkService.savePassedCourseMark(mark, studentId, courseId);
@@ -50,7 +51,7 @@ class CourseMarkServiceTest {
         // verify
         verify(uuidUtil).randomUUID();
         verify(courseMarkRepository).persist(courseMarkCaptor.capture());
-        verify(courseMarkFactory).build(courseMarkCaptor.capture());
+        verify(courseMarkMapper).build(courseMarkCaptor.capture());
         assertThat(courseMarkCaptor.getValue().getId(), is(courseMarkID));
         assertThat(courseMarkCaptor.getValue().getMark(), is(mark));
         assertThat(courseMarkCaptor.getValue().getStudentId(), is(studentId));
@@ -71,7 +72,7 @@ class CourseMarkServiceTest {
         UUID courseMarkID = UUID.randomUUID();
         CourseMarkResponse response = mock(CourseMarkResponse.class);
         when(uuidUtil.randomUUID()).thenReturn(courseMarkID);
-        when(courseMarkFactory.build(any(CourseMark.class))).thenReturn(response);
+        when(courseMarkMapper.build(any(CourseMark.class))).thenReturn(response);
 
         // act
         CourseMarkResponse result = courseMarkService.saveNonPassedCourseMark(mark, studentId, courseId);
@@ -79,7 +80,7 @@ class CourseMarkServiceTest {
         // verify
         verify(uuidUtil).randomUUID();
         verify(courseMarkRepository).persist(courseMarkCaptor.capture());
-        verify(courseMarkFactory).build(courseMarkCaptor.capture());
+        verify(courseMarkMapper).build(courseMarkCaptor.capture());
         assertThat(courseMarkCaptor.getValue().getId(), is(courseMarkID));
         assertThat(courseMarkCaptor.getValue().getMark(), is(mark));
         assertThat(courseMarkCaptor.getValue().getStudentId(), is(studentId));

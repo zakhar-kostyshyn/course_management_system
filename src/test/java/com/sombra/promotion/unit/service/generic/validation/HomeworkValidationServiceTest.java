@@ -2,9 +2,9 @@ package com.sombra.promotion.unit.service.generic.validation;
 
 import com.sombra.promotion.exception.NotFoundCourseBelongsForStudentException;
 import com.sombra.promotion.exception.StudentNotAbleToUploadHomework;
-import com.sombra.promotion.service.generic.LessonService;
-import com.sombra.promotion.service.generic.manyToMany.StudentCourseService;
-import com.sombra.promotion.service.generic.validation.HomeworkValidationService;
+import com.sombra.promotion.service.common.LessonService;
+import com.sombra.promotion.service.common.manyToMany.StudentCourseService;
+import com.sombra.promotion.service.common.validation.HomeworkValidationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

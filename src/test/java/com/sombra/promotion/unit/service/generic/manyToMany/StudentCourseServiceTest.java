@@ -3,9 +3,9 @@ package com.sombra.promotion.unit.service.generic.manyToMany;
 import com.sombra.promotion.dto.response.CoursesOfStudentResponse;
 import com.sombra.promotion.dto.response.StudentCourseResponse;
 import com.sombra.promotion.exception.NotFoundCourseBelongsForStudentException;
-import com.sombra.promotion.factory.specific.StudentCourseFactory;
+import com.sombra.promotion.mapper.StudentCourseMapper;
 import com.sombra.promotion.repository.manyToMany.StudentCourseRepository;
-import com.sombra.promotion.service.generic.manyToMany.StudentCourseService;
+import com.sombra.promotion.service.common.manyToMany.StudentCourseService;
 import com.sombra.promotion.tables.pojos.Course;
 import com.sombra.promotion.tables.pojos.StudentCourse;
 import com.sombra.promotion.tables.pojos.User;
@@ -32,7 +32,8 @@ import static org.mockito.Mockito.*;
 class StudentCourseServiceTest {
 
     @Mock StudentCourseRepository studentCourseRepository;
-    @Mock StudentCourseFactory studentCourseFactory;
+    @Mock
+    StudentCourseMapper studentCourseMapper;
     @InjectMocks
     StudentCourseService studentCourseService;
     @Captor ArgumentCaptor<StudentCourse> studentCourseCaptor;
@@ -66,7 +67,7 @@ class StudentCourseServiceTest {
 
     @Test
     void must_return_response_of_saved_student_course() {
-        when(studentCourseFactory.build(any(StudentCourse.class))).thenReturn(studentCourseResponse);
+        when(studentCourseMapper.build(any(StudentCourse.class))).thenReturn(studentCourseResponse);
         var result = studentCourseService.saveStudentCourse(studentId, courseId);
         assertThat(result, sameInstance(studentCourseResponse));
     }
@@ -82,12 +83,12 @@ class StudentCourseServiceTest {
     @Test
     void must_get_all_courses_for_student_response() {
         when(studentCourseRepository.findByFirstId(any())).thenReturn(coursesByStudent);
-        when(studentCourseFactory.build(any(), any())).thenReturn(coursesOfStudentResponse);
+        when(studentCourseMapper.build(any(), any())).thenReturn(coursesOfStudentResponse);
 
         var result = studentCourseService.getAllCoursesForStudent(studentId);
 
         verify(studentCourseRepository).findByFirstId(studentId);
-        verify(studentCourseFactory).build(studentId, coursesByStudent);
+        verify(studentCourseMapper).build(studentId, coursesByStudent);
         assertThat(result, sameInstance(coursesOfStudentResponse));
     }
 

@@ -1,9 +1,9 @@
 package com.sombra.promotion.unit.service.generic;
 
 import com.sombra.promotion.dto.response.CourseResponse;
-import com.sombra.promotion.factory.generic.CourseFactory;
+import com.sombra.promotion.mapper.common.CourseMapper;
 import com.sombra.promotion.repository.CourseRepository;
-import com.sombra.promotion.service.generic.CourseService;
+import com.sombra.promotion.service.common.CourseService;
 import com.sombra.promotion.service.util.UUIDUtil;
 import com.sombra.promotion.tables.pojos.Course;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,8 @@ import static org.mockito.Mockito.*;
 class CourseServiceTest {
 
     @Mock CourseRepository courseRepository;
-    @Mock CourseFactory courseFactory;
+    @Mock
+    CourseMapper courseMapper;
     @Mock UUIDUtil uuidUtil;
     @InjectMocks
     CourseService courseService;
@@ -40,7 +41,7 @@ class CourseServiceTest {
         UUID courseId = UUID.randomUUID();
         CourseResponse response = mock(CourseResponse.class);
         when(uuidUtil.randomUUID()).thenReturn(courseId);
-        when(courseFactory.build(any(Course.class))).thenReturn(response);
+        when(courseMapper.build(any(Course.class))).thenReturn(response);
 
         // act
         CourseResponse result = courseService.saveCourse(courseName);
@@ -48,7 +49,7 @@ class CourseServiceTest {
         // verify
         verify(uuidUtil).randomUUID();
         verify(courseRepository).persist(courseMarkCaptor.capture());
-        verify(courseFactory).build(courseMarkCaptor.capture());
+        verify(courseMapper).build(courseMarkCaptor.capture());
         assertThat(courseMarkCaptor.getValue().getId(), is(courseId));
         assertThat(courseMarkCaptor.getValue().getName(), is(courseName));
         assertThat(result, sameInstance(response));

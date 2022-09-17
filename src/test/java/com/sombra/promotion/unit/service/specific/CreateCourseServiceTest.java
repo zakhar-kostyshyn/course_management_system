@@ -6,11 +6,11 @@ import com.sombra.promotion.dto.response.CourseResponse;
 import com.sombra.promotion.dto.response.InstructorCourseResponse;
 import com.sombra.promotion.dto.response.LessonResponse;
 import com.sombra.promotion.exception.NotEnoughLessonsForCourseException;
-import com.sombra.promotion.factory.specific.CourseInstructorLessonsFactory;
-import com.sombra.promotion.service.generic.CourseService;
-import com.sombra.promotion.service.generic.LessonService;
-import com.sombra.promotion.service.generic.manyToMany.InstructorCourseService;
-import com.sombra.promotion.service.specific.CreateCourseService;
+import com.sombra.promotion.mapper.CourseInstructorLessonsMapper;
+import com.sombra.promotion.service.common.CourseService;
+import com.sombra.promotion.service.common.LessonService;
+import com.sombra.promotion.service.common.manyToMany.InstructorCourseService;
+import com.sombra.promotion.service.CreateCourseService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -33,7 +33,8 @@ class CreateCourseServiceTest {
     @Mock CourseService courseService;
     @Mock InstructorCourseService instructorCourseService;
     @Mock LessonService lessonService;
-    @Mock CourseInstructorLessonsFactory courseInstructorLessonsFactory;
+    @Mock
+    CourseInstructorLessonsMapper courseInstructorLessonsMapper;
     @InjectMocks
     CreateCourseService createCourseService;
 
@@ -77,7 +78,7 @@ class CreateCourseServiceTest {
         verify(courseService).saveCourse(courseName);
         verify(instructorCourseService).saveInstructorCourse(instructorIds, courseId);
         verify(lessonService).addLessonToCourse("test-lesson", courseId);
-        verify(courseInstructorLessonsFactory).build(instructorCourseResponses, courseResponse, List.of(lesson));
+        verify(courseInstructorLessonsMapper).build(instructorCourseResponses, courseResponse, List.of(lesson));
 
     }
 
@@ -93,7 +94,7 @@ class CreateCourseServiceTest {
         CourseResponse courseResponse = new CourseResponse(courseId, courseName);
         CourseInstructorLessonsResponse response = mock(CourseInstructorLessonsResponse.class);
         when(courseService.saveCourse(anyString())).thenReturn(courseResponse);
-        when(courseInstructorLessonsFactory.build(anyList(), any(), anyList())).thenReturn(response);
+        when(courseInstructorLessonsMapper.build(anyList(), any(), anyList())).thenReturn(response);
 
         // act
         CourseInstructorLessonsResponse result = createCourseService.createCourse(request);

@@ -2,10 +2,10 @@ package com.sombra.promotion.unit.service.generic.manyToMany;
 
 import com.sombra.promotion.dto.response.UserRoleResponse;
 import com.sombra.promotion.enums.RoleEnum;
-import com.sombra.promotion.factory.specific.UserRoleFactory;
+import com.sombra.promotion.mapper.UserRoleMapper;
 import com.sombra.promotion.repository.manyToMany.UserRoleRepository;
-import com.sombra.promotion.service.generic.RoleService;
-import com.sombra.promotion.service.generic.manyToMany.UserRoleService;
+import com.sombra.promotion.service.common.RoleService;
+import com.sombra.promotion.service.common.manyToMany.UserRoleService;
 import com.sombra.promotion.tables.pojos.Role;
 import com.sombra.promotion.tables.pojos.UserRole;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +26,8 @@ import static org.mockito.Mockito.*;
 class UserRoleServiceTest {
 
     @Mock UserRoleRepository userRoleRepository;
-    @Mock UserRoleFactory userRoleFactory;
+    @Mock
+    UserRoleMapper userRoleMapper;
     @Mock RoleService roleService;
     @InjectMocks
     UserRoleService userRoleService;
@@ -61,12 +62,12 @@ class UserRoleServiceTest {
 
     @Test
     void must_save_user_role_and_return_response() {
-        when(userRoleFactory.build(any())).thenReturn(response);
+        when(userRoleMapper.build(any())).thenReturn(response);
         var result = userRoleService.saveUserRole(userId, roleId);
         verify(userRoleRepository).persist(userRoleCaptor.capture());
         assertThat(userRoleCaptor.getValue().getRoleId(), is(roleId));
         assertThat(userRoleCaptor.getValue().getUserId(), is(userId));
-        verify(userRoleFactory).build(userRoleCaptor.capture());
+        verify(userRoleMapper).build(userRoleCaptor.capture());
         assertThat(userRoleCaptor.getValue().getRoleId(), is(roleId));
         assertThat(userRoleCaptor.getValue().getUserId(), is(userId));
         assertThat(result, sameInstance(response));

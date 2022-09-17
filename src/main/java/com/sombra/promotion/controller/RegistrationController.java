@@ -2,7 +2,7 @@ package com.sombra.promotion.controller;
 
 import com.sombra.promotion.dto.request.RegistrationUserRequest;
 import com.sombra.promotion.dto.response.UserRoleResponse;
-import com.sombra.promotion.service.specific.UserRegistrationService;
+import com.sombra.promotion.service.UserRegistrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

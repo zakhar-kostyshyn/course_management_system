@@ -2,10 +2,10 @@ package com.sombra.promotion.unit.service.specific;
 
 import com.sombra.promotion.dto.response.LessonResponse;
 import com.sombra.promotion.dto.response.StudentCourseLessonsResponse;
-import com.sombra.promotion.factory.specific.LessonsOfCourseAndStudentFactory;
-import com.sombra.promotion.service.generic.LessonService;
-import com.sombra.promotion.service.generic.manyToMany.StudentCourseService;
-import com.sombra.promotion.service.specific.StudentLessonService;
+import com.sombra.promotion.mapper.LessonsOfCourseAndStudentMapper;
+import com.sombra.promotion.service.common.LessonService;
+import com.sombra.promotion.service.common.manyToMany.StudentCourseService;
+import com.sombra.promotion.service.StudentLessonService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,7 +23,8 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class StudentLessonServiceTest {
 
-    @Mock LessonsOfCourseAndStudentFactory lessonsOfCourseAndStudentFactory;
+    @Mock
+    LessonsOfCourseAndStudentMapper lessonsOfCourseAndStudentMapper;
     @Mock StudentCourseService studentCourseService;
     @Mock LessonService lessonService;
     @InjectMocks
@@ -56,14 +57,14 @@ class StudentLessonServiceTest {
         when(lessonResponse.getLessonId()).thenReturn(lessonId);
         when(lessonService.getLessonsByCourse(any())).thenReturn(List.of(lessonResponse));
         StudentCourseLessonsResponse response = mock(StudentCourseLessonsResponse.class);
-        when(lessonsOfCourseAndStudentFactory.build(any(), any(), anyList())).thenReturn(response);
+        when(lessonsOfCourseAndStudentMapper.build(any(), any(), anyList())).thenReturn(response);
 
         // act
         StudentCourseLessonsResponse result = studentLessonService.getLessonsOfStudentInCourse(studentId, courseId);
 
         // verify
         verify(lessonService).getLessonsByCourse(courseId);
-        verify(lessonsOfCourseAndStudentFactory).build(studentId, courseId, List.of(lessonId));
+        verify(lessonsOfCourseAndStudentMapper).build(studentId, courseId, List.of(lessonId));
         assertThat(result, sameInstance(response));
 
     }

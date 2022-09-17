@@ -2,10 +2,10 @@ package com.sombra.promotion.unit.service.generic;
 
 import com.sombra.promotion.dto.request.CreateLessonsRequest;
 import com.sombra.promotion.dto.response.LessonResponse;
-import com.sombra.promotion.factory.generic.LessonFactory;
+import com.sombra.promotion.mapper.common.LessonMapper;
 import com.sombra.promotion.repository.LessonRepository;
-import com.sombra.promotion.service.generic.LessonService;
-import com.sombra.promotion.service.generic.validation.LessonValidationService;
+import com.sombra.promotion.service.common.LessonService;
+import com.sombra.promotion.service.common.validation.LessonValidationService;
 import com.sombra.promotion.service.util.UUIDUtil;
 import com.sombra.promotion.tables.pojos.Lesson;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,8 @@ import static org.mockito.Mockito.*;
 class LessonServiceTest {
 
     @Mock LessonRepository lessonRepository;
-    @Mock LessonFactory lessonFactory;
+    @Mock
+    LessonMapper lessonMapper;
     @Mock UUIDUtil uuidUtil;
     @Mock LessonValidationService lessonValidationService;
     @InjectMocks
@@ -65,7 +66,7 @@ class LessonServiceTest {
         UUID lessonId = UUID.randomUUID();
         LessonResponse response = mock(LessonResponse.class);
         when(uuidUtil.randomUUID()).thenReturn(lessonId);
-        when(lessonFactory.build(any(Lesson.class))).thenReturn(response);
+        when(lessonMapper.build(any(Lesson.class))).thenReturn(response);
 
         // act
         LessonResponse result = lessonService.addLessonToCourse(lesson, courseId);
@@ -73,7 +74,7 @@ class LessonServiceTest {
         // verify
         verify(uuidUtil).randomUUID();
         verify(lessonRepository).persist(lessonCaptor.capture());
-        verify(lessonFactory).build(lessonCaptor.capture());
+        verify(lessonMapper).build(lessonCaptor.capture());
         assertThat(lessonCaptor.getValue().getId(), is(lessonId));
         assertThat(lessonCaptor.getValue().getName(), is(lesson));
         assertThat(lessonCaptor.getValue().getCourseId(), is(courseId));

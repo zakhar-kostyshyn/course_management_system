@@ -5,9 +5,9 @@ import com.sombra.promotion.dto.response.UserResponse;
 import com.sombra.promotion.dto.request.AssignInstructorForCourseRequest;
 import com.sombra.promotion.dto.request.AssignRoleRequest;
 import com.sombra.promotion.dto.response.UserRoleResponse;
-import com.sombra.promotion.service.generic.manyToMany.InstructorCourseService;
-import com.sombra.promotion.service.generic.manyToMany.UserRoleService;
-import com.sombra.promotion.service.generic.UserService;
+import com.sombra.promotion.service.common.manyToMany.InstructorCourseService;
+import com.sombra.promotion.service.common.manyToMany.UserRoleService;
+import com.sombra.promotion.service.common.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

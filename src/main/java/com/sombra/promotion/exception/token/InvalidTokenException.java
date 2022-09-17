@@ -1,6 +1,5 @@
 package com.sombra.promotion.exception.token;
 
-import com.sombra.promotion.exception.generic.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 

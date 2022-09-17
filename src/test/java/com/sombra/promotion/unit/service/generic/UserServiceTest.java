@@ -1,9 +1,9 @@
 package com.sombra.promotion.unit.service.generic;
 
 import com.sombra.promotion.dto.response.UserResponse;
-import com.sombra.promotion.factory.generic.UserFactory;
+import com.sombra.promotion.mapper.common.UserMapper;
 import com.sombra.promotion.repository.UserRepository;
-import com.sombra.promotion.service.generic.UserService;
+import com.sombra.promotion.service.common.UserService;
 import com.sombra.promotion.service.util.UUIDUtil;
 import com.sombra.promotion.tables.pojos.User;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,8 @@ import static org.mockito.Mockito.*;
 class UserServiceTest {
 
     @Mock UserRepository userRepository;
-    @Mock UserFactory userFactory;
+    @Mock
+    UserMapper userMapper;
     @Mock UUIDUtil uuidUtil;
     @InjectMocks
     UserService userService;
@@ -39,14 +40,14 @@ class UserServiceTest {
         User user = mock(User.class);
         UserResponse response = mock(UserResponse.class);
         when(userRepository.findAll()).thenReturn(List.of(user));
-        when(userFactory.build(any(User.class))).thenReturn(response);
+        when(userMapper.build(any(User.class))).thenReturn(response);
 
         // act
         List<UserResponse> result = userService.getAllUsers();
 
         // verify
         verify(userRepository).findAll();
-        verify(userFactory).build(user);
+        verify(userMapper).build(user);
         assertThat(result, hasItems(sameInstance(response)));
 
     }
@@ -60,7 +61,7 @@ class UserServiceTest {
         UUID userId = UUID.randomUUID();
         UserResponse response = mock(UserResponse.class);
         when(uuidUtil.randomUUID()).thenReturn(userId);
-        when(userFactory.build(any(User.class))).thenReturn(response);
+        when(userMapper.build(any(User.class))).thenReturn(response);
 
         // act
         UserResponse result = userService.saveUser(username, hashedPassword);
@@ -68,7 +69,7 @@ class UserServiceTest {
         // verify
         verify(uuidUtil).randomUUID();
         verify(userRepository).persist(userCaptor.capture());
-        verify(userFactory).build(userCaptor.capture());
+        verify(userMapper).build(userCaptor.capture());
         assertThat(userCaptor.getValue().getId(), is(userId));
         assertThat(userCaptor.getValue().getUsername(), is(username));
         assertThat(userCaptor.getValue().getPassword(), is(hashedPassword));

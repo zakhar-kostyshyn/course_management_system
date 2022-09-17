@@ -1,7 +1,6 @@
 package com.sombra.promotion.security.filter;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.sombra.promotion.exception.generic.NotFoundException;
 import com.sombra.promotion.exception.token.InvalidTokenException;
 import com.sombra.promotion.exception.token.TokenExpiredException;
 import com.sombra.promotion.security.model.SecurityUser;
@@ -20,7 +19,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.time.Instant;
 
 @Component
 @RequiredArgsConstructor

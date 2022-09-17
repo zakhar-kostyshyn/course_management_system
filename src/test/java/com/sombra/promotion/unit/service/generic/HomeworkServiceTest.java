@@ -2,10 +2,10 @@ package com.sombra.promotion.unit.service.generic;
 
 import com.sombra.promotion.dto.request.UploadHomeworkRequest;
 import com.sombra.promotion.dto.response.HomeworkResponse;
-import com.sombra.promotion.factory.generic.HomeworkFactory;
+import com.sombra.promotion.mapper.common.HomeworkMapper;
 import com.sombra.promotion.repository.HomeworkRepository;
-import com.sombra.promotion.service.generic.HomeworkService;
-import com.sombra.promotion.service.generic.validation.HomeworkValidationService;
+import com.sombra.promotion.service.common.HomeworkService;
+import com.sombra.promotion.service.common.validation.HomeworkValidationService;
 import com.sombra.promotion.service.util.UUIDUtil;
 import com.sombra.promotion.tables.pojos.Homework;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,8 @@ import static org.mockito.Mockito.*;
 class HomeworkServiceTest {
 
     @Mock HomeworkRepository homeworkRepository;
-    @Mock HomeworkFactory homeworkFactory;
+    @Mock
+    HomeworkMapper homeworkMapper;
     @Mock UUIDUtil uuidUtil;
     @Mock HomeworkValidationService homeworkValidationService;
     @InjectMocks
@@ -50,7 +51,7 @@ class HomeworkServiceTest {
         UploadHomeworkRequest request = new UploadHomeworkRequest(homework, studentId, lessonId);
         HomeworkResponse response = mock(HomeworkResponse.class);
         when(uuidUtil.randomUUID()).thenReturn(homeworkId);
-        when(homeworkFactory.build(any(Homework.class))).thenReturn(response);
+        when(homeworkMapper.build(any(Homework.class))).thenReturn(response);
 
         // act
         HomeworkResponse result = homeworkService.saveHomework(request);
@@ -59,7 +60,7 @@ class HomeworkServiceTest {
         verify(homeworkValidationService).assertThatInstructorInCourse(studentId, lessonId);
         verify(uuidUtil).randomUUID();
         verify(homeworkRepository).persist(homeworkCaptor.capture());
-        verify(homeworkFactory).build(homeworkCaptor.capture());
+        verify(homeworkMapper).build(homeworkCaptor.capture());
         assertThat(homeworkCaptor.getValue().getId(), is(homeworkId));
         assertThat(homeworkCaptor.getValue().getFile(), is(homework.getBytes()));
         assertThat(homeworkCaptor.getValue().getStudentId(), is(studentId));

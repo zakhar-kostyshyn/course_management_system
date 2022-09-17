@@ -5,12 +5,12 @@ import com.sombra.promotion.dto.request.CreateLessonsRequest;
 import com.sombra.promotion.dto.request.GiveFinalFeedbackRequest;
 import com.sombra.promotion.dto.request.SaveMarkRequest;
 import com.sombra.promotion.dto.response.*;
-import com.sombra.promotion.service.generic.FeedbackService;
-import com.sombra.promotion.service.generic.LessonService;
-import com.sombra.promotion.service.generic.MarkService;
-import com.sombra.promotion.service.generic.manyToMany.InstructorCourseService;
-import com.sombra.promotion.service.specific.CreateCourseService;
-import com.sombra.promotion.service.generic.manyToMany.transition.InstructorStudentService;
+import com.sombra.promotion.service.common.FeedbackService;
+import com.sombra.promotion.service.common.LessonService;
+import com.sombra.promotion.service.common.MarkService;
+import com.sombra.promotion.service.common.manyToMany.InstructorCourseService;
+import com.sombra.promotion.service.CreateCourseService;
+import com.sombra.promotion.service.common.manyToMany.transition.InstructorStudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

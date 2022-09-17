@@ -1,6 +1,6 @@
 package com.sombra.promotion.abstraction.repository;
 
-import com.sombra.promotion.exception.generic.NotFoundException;
+import com.sombra.promotion.exception.global.NotFoundException;
 import com.sombra.promotion.repository.util.DatabaseSelectUtil;
 import org.jooq.*;
 import org.jooq.exception.NoDataFoundException;

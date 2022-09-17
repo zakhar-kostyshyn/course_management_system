@@ -1,10 +1,10 @@
 package com.sombra.promotion.unit.service.generic.manyToMany.transition;
 
 import com.sombra.promotion.dto.response.InstructorCourseStudentsResponse;
-import com.sombra.promotion.factory.specific.InstructorCourseStudentsFactory;
-import com.sombra.promotion.service.generic.manyToMany.InstructorCourseService;
-import com.sombra.promotion.service.generic.manyToMany.StudentCourseService;
-import com.sombra.promotion.service.generic.manyToMany.transition.InstructorStudentService;
+import com.sombra.promotion.mapper.InstructorCourseStudentsMapper;
+import com.sombra.promotion.service.common.manyToMany.InstructorCourseService;
+import com.sombra.promotion.service.common.manyToMany.StudentCourseService;
+import com.sombra.promotion.service.common.manyToMany.transition.InstructorStudentService;
 import com.sombra.promotion.tables.pojos.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,8 @@ class InstructorStudentServiceTest {
 
     @Mock InstructorCourseService instructorCourseService;
     @Mock StudentCourseService studentCourseService;
-    @Mock InstructorCourseStudentsFactory instructorCourseStudentsFactory;
+    @Mock
+    InstructorCourseStudentsMapper instructorCourseStudentsMapper;
     @InjectMocks
     InstructorStudentService instructorStudentService;
 
@@ -58,13 +59,13 @@ class InstructorStudentServiceTest {
     void must_build_response_with_instructor_course_and_student_info() {
         when(studentCourseService.getStudentsByCourse(any())).thenReturn(studentsByCourse);
         instructorStudentService.getAllStudentsInCourseForInstructor(instructorId, courseId);
-        verify(instructorCourseStudentsFactory).build(instructorId, courseId, studentsByCourse);
+        verify(instructorCourseStudentsMapper).build(instructorId, courseId, studentsByCourse);
     }
 
     @Test
     void must_return_response_with_instructor_course_and_student_info() {
         when(studentCourseService.getStudentsByCourse(any())).thenReturn(studentsByCourse);
-        when(instructorCourseStudentsFactory.build(any(), any(), anyList())).thenReturn(response);
+        when(instructorCourseStudentsMapper.build(any(), any(), anyList())).thenReturn(response);
         var result = instructorStudentService.getAllStudentsInCourseForInstructor(instructorId, courseId);
         assertThat(result, sameInstance(response));
     }

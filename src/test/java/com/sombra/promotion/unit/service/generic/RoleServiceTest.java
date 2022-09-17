@@ -2,7 +2,7 @@ package com.sombra.promotion.unit.service.generic;
 
 import com.sombra.promotion.enums.RoleEnum;
 import com.sombra.promotion.repository.RoleRepository;
-import com.sombra.promotion.service.generic.RoleService;
+import com.sombra.promotion.service.common.RoleService;
 import com.sombra.promotion.tables.pojos.Role;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

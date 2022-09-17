@@ -4,11 +4,11 @@ import com.sombra.promotion.dto.request.RegistrationUserRequest;
 import com.sombra.promotion.dto.response.UserResponse;
 import com.sombra.promotion.dto.response.UserRoleResponse;
 import com.sombra.promotion.enums.RoleEnum;
-import com.sombra.promotion.factory.specific.UserRoleFactory;
+import com.sombra.promotion.mapper.UserRoleMapper;
 import com.sombra.promotion.repository.RoleRepository;
-import com.sombra.promotion.service.generic.UserService;
-import com.sombra.promotion.service.generic.manyToMany.UserRoleService;
-import com.sombra.promotion.service.specific.UserRegistrationService;
+import com.sombra.promotion.service.common.UserService;
+import com.sombra.promotion.service.common.manyToMany.UserRoleService;
+import com.sombra.promotion.service.UserRegistrationService;
 import com.sombra.promotion.tables.pojos.Role;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +31,8 @@ class UserRegistrationServiceTest {
     @Mock UserService userService;
     @Mock UserRoleService userRoleService;
     @Mock RoleRepository roleRepository;
-    @Mock UserRoleFactory userRoleFactory;
+    @Mock
+    UserRoleMapper userRoleMapper;
     @InjectMocks
     UserRegistrationService userRegistrationService;
 
@@ -118,13 +119,13 @@ class UserRegistrationServiceTest {
         when(roleRepository.requiredByRoleEnum(any())).thenReturn(role);
 
         UserRoleResponse response = mock(UserRoleResponse.class);
-        when(userRoleFactory.build(any(), any())).thenReturn(response);
+        when(userRoleMapper.build(any(), any())).thenReturn(response);
 
         // act
         UserRoleResponse result = userRegistrationService.register(request);
 
         // verify
-        verify(userRoleFactory).build(userId, roleId);
+        verify(userRoleMapper).build(userId, roleId);
         assertThat(result, sameInstance(response));
 
     }

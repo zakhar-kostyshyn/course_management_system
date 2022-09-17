@@ -2,8 +2,8 @@ package com.sombra.promotion.unit.service.generic.validation;
 
 import com.sombra.promotion.exception.InstructorNotAbleToCreateLesson;
 import com.sombra.promotion.exception.NotFoundCourseBelongsForInstructorException;
-import com.sombra.promotion.service.generic.manyToMany.InstructorCourseService;
-import com.sombra.promotion.service.generic.validation.LessonValidationService;
+import com.sombra.promotion.service.common.manyToMany.InstructorCourseService;
+import com.sombra.promotion.service.common.validation.LessonValidationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
