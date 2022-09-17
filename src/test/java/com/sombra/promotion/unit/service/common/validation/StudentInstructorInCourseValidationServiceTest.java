@@ -1,4 +1,4 @@
-package com.sombra.promotion.unit.service.generic.validation;
+package com.sombra.promotion.unit.service.common.validation;
 
 import com.sombra.promotion.exception.CourseDontHaveStudentOrInstructorException;
 import com.sombra.promotion.service.common.manyToMany.InstructorCourseService;

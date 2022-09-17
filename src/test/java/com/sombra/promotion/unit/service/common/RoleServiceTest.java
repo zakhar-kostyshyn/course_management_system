@@ -1,4 +1,4 @@
-package com.sombra.promotion.unit.service.generic;
+package com.sombra.promotion.unit.service.common;
 
 import com.sombra.promotion.enums.RoleEnum;
 import com.sombra.promotion.repository.RoleRepository;

@@ -1,4 +1,4 @@
-package com.sombra.promotion.unit.service.specific;
+package com.sombra.promotion.unit.service;
 
 import com.sombra.promotion.dto.response.LessonResponse;
 import com.sombra.promotion.dto.response.StudentCourseLessonsResponse;

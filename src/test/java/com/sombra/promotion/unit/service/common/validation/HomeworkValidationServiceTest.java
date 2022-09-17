@@ -1,4 +1,4 @@
-package com.sombra.promotion.unit.service.generic.validation;
+package com.sombra.promotion.unit.service.common.validation;
 
 import com.sombra.promotion.exception.NotFoundCourseBelongsForStudentException;
 import com.sombra.promotion.exception.StudentNotAbleToUploadHomework;

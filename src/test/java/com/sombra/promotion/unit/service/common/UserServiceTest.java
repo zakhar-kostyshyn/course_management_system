@@ -1,4 +1,4 @@
-package com.sombra.promotion.unit.service.generic;
+package com.sombra.promotion.unit.service.common;
 
 import com.sombra.promotion.dto.response.UserResponse;
 import com.sombra.promotion.mapper.common.UserMapper;

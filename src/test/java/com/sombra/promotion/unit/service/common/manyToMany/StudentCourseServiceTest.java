@@ -1,4 +1,4 @@
-package com.sombra.promotion.unit.service.generic.manyToMany;
+package com.sombra.promotion.unit.service.common.manyToMany;
 
 import com.sombra.promotion.dto.response.CoursesOfStudentResponse;
 import com.sombra.promotion.dto.response.StudentCourseResponse;

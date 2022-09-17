@@ -1,4 +1,4 @@
-package com.sombra.promotion.unit.service.generic.manyToMany.transition;
+package com.sombra.promotion.unit.service.common.manyToMany.transition;
 
 import com.sombra.promotion.dto.response.InstructorCourseStudentsResponse;
 import com.sombra.promotion.mapper.InstructorCourseStudentsMapper;
