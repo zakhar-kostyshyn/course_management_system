@@ -1,0 +1,146 @@
+{
+	"info": {
+		"_postman_id": "6b8c12d6-57b1-408c-aa4d-c56d3694ff99",
+		"name": "Admin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7004432"
+	},
+	"item": [
+		{
+			"name": "Get all users from DB",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{origin}}/{{admin}}/users",
+					"host": [
+						"{{origin}}"
+					],
+					"path": [
+						"{{admin}}",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Assign instructor for course",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"instructorId\": \"{{instructor_id}}\",\r\n    \"courseId\": \"{{course_id}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{origin}}/{{admin}}/assign-instructor-for-course",
+					"host": [
+						"{{origin}}"
+					],
+					"path": [
+						"{{admin}}",
+						"assign-instructor-for-course"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Assign new role for user",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": \"{{userId}}\",\r\n    \"role\": \"{{role}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{origin}}/{{admin}}/assign-role",
+					"host": [
+						"{{origin}}"
+					],
+					"path": [
+						"{{admin}}",
+						"assign-role"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{admin_jwt_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "admin",
+			"value": "admin",
+			"type": "string"
+		},
+		{
+			"key": "instructor_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "course_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "role",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "userId",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

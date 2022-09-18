@@ -1,0 +1,182 @@
+{
+	"info": {
+		"_postman_id": "9f3240db-5dcd-41b6-a7c3-443298ea3baa",
+		"name": "Student",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7004432"
+	},
+	"item": [
+		{
+			"name": "Send student's homework for lesson",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "lessonId",
+							"value": "{{lesson_id}}",
+							"type": "text"
+						},
+						{
+							"key": "homework",
+							"type": "file",
+							"src": []
+						}
+					]
+				},
+				"url": {
+					"raw": "{{origin}}/{{student}}/homework",
+					"host": [
+						"{{origin}}"
+					],
+					"path": [
+						"{{student}}",
+						"homework"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Finish student's course",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"courseId\": {{course_id}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{origin}}/{{student}}/course-finish",
+					"host": [
+						"{{origin}}"
+					],
+					"path": [
+						"{{student}}",
+						"course-finish"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Subscribe student on course",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"courseId\": {{course_id}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{origin}}/{{student}}/course-subscribe",
+					"host": [
+						"{{origin}}"
+					],
+					"path": [
+						"{{student}}",
+						"course-subscribe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all student's lesson in course",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{origin}}/{{student}}/lessons/in/{{course_id}}",
+					"host": [
+						"{{origin}}"
+					],
+					"path": [
+						"{{student}}",
+						"lessons",
+						"in",
+						"{{course_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all student's courses",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{origin}}/{{student}}/courses",
+					"host": [
+						"{{origin}}"
+					],
+					"path": [
+						"{{student}}",
+						"courses"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{student_jwt_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "student",
+			"value": "student",
+			"type": "string"
+		},
+		{
+			"key": "lesson_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "course_id",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

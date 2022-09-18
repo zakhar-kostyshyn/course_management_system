@@ -1,0 +1,219 @@
+{
+	"info": {
+		"_postman_id": "138e623a-13ae-4e19-891c-60b37dfcef1b",
+		"name": "Instructor",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7004432"
+	},
+	"item": [
+		{
+			"name": "Put a mark for student's lesson",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mark\": {{$randomInt}},\r\n    \"studentId\": \"{{student_id}}\",\r\n    \"lessonId\": {{lesson_id}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{origin}}/{{instructor}}/mark",
+					"host": [
+						"{{origin}}"
+					],
+					"path": [
+						"{{instructor}}",
+						"mark"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create new Lesson",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"courseId\": \"{{course_id}}\",\r\n    \"lessons\": \"{{$randomWords}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{origin}}/{{instructor}}/lesson",
+					"host": [
+						"{{origin}}"
+					],
+					"path": [
+						"{{instructor}}",
+						"lesson"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Give final feedback for user for all course",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"feedback\": \"{{$randomWord}}\",\r\n    \"courseId\": \"{{course_id}}\",\r\n    \"studentId\": \"{{student_id}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{origin}}/{{instructor}}/feedback",
+					"host": [
+						"{{origin}}"
+					],
+					"path": [
+						"{{instructor}}",
+						"feedback"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create new course",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"instructorIds\": [],\r\n  \"courseName\": \"{{$randomWord}}\",\r\n  \"lessonNames\": [\r\n    \"{{$randomWord}}\",\r\n    \"{{$randomWord}}\",\r\n    \"{{$randomWord}}\",\r\n    \"{{$randomWord}}\",\r\n    \"{{$randomWord}}\"\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{origin}}/{{instructor}}/course",
+					"host": [
+						"{{origin}}"
+					],
+					"path": [
+						"{{instructor}}",
+						"course"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all students from instructor's course",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{origin}}/{{instructor}}/students/in/{{course_id}}",
+					"host": [
+						"{{origin}}"
+					],
+					"path": [
+						"{{instructor}}",
+						"students",
+						"in",
+						"{{course_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all instructor's courses",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{origin}}/{{instructor}}/courses",
+					"host": [
+						"{{origin}}"
+					],
+					"path": [
+						"{{instructor}}",
+						"courses"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{instructor_jwt_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "instructor",
+			"value": "instructor",
+			"type": "string"
+		},
+		{
+			"key": "student_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "lesson_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "course_id",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

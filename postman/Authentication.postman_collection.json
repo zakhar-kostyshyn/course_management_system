@@ -1,0 +1,113 @@
+{
+	"info": {
+		"_postman_id": "e1621e9b-ac7a-48c3-b29b-bdaa24e951ec",
+		"name": "Authentication",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7004432"
+	},
+	"item": [
+		{
+			"name": "Authenticate user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code == 200) {\r",
+							"\r",
+							"    origin = pm.environment.get(\"origin\");\r",
+							"    token = pm.response.text()\r",
+							"\r",
+							"    pm.sendRequest({\r",
+							"        url: `${origin}/user/roles`,\r",
+							"        method: 'GET',\r",
+							"        header: `Authorization:Bearer ${token}`,\r",
+							"    }, (_, res) => {\r",
+							"\r",
+							"        userRoles = res.json().map(o => o.role )\r",
+							"\r",
+							"        if (userRoles.includes('admin')) {\r",
+							"            pm.globals.set(\"admin_jwt_token\", token);\r",
+							"            pm.globals.set('instructor_jwt_token', token)\r",
+							"            pm.globals.set('student_jwt_token', token)\r",
+							"        }\r",
+							"\r",
+							"        if (userRoles.includes('instructor')) {\r",
+							"            pm.globals.set('admin_jwt_token', '');\r",
+							"            pm.globals.set('instructor_jwt_token', token)\r",
+							"            pm.globals.set('student_jwt_token', '')\r",
+							"        } \r",
+							"\r",
+							"        if (userRoles.includes('student')) {\r",
+							"            pm.globals.set('admin_jwt_token', '');\r",
+							"            pm.globals.set('instructor_jwt_token', '')\r",
+							"            pm.globals.set('student_jwt_token', token)\r",
+							"        } \r",
+							"\r",
+							"    });\r",
+							"\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"{{auth_username}}\",\r\n    \"password\": \"{{auth_password}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{origin}}/login",
+					"host": [
+						"{{origin}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "auth_password",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "auth_username",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
